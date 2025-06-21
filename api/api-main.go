@@ -1,15 +1,13 @@
 package api
 
 import (
-	"net/http"
-
 	"github.com/gorilla/mux"
 )
 
+// RegisterAPIRoutes adds /api routes to the given router.
 func RegisterAPIRoutes(muxRouter *mux.Router) {
-	muxRouter.HandleFunc("/", handleRoot)
-}
 
-func handleRoot(w http.ResponseWriter, r *http.Request) {
-	w.Write([]byte("Hello from api root"))
+	// /api/config
+	configRouter := muxRouter.PathPrefix("/config").Subrouter()
+	RegisterConfigRoutes(configRouter)
 }

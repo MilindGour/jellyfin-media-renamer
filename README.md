@@ -3,6 +3,8 @@
 ## First points
 - Configurable options
   - List of download directories (Can be more than one). Title also can be configured
+    - Name
+    - Path
   - List of Jellyfin media directories (Can be more than one). Title also can be configured
 
 ## Screen flows
