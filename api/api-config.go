@@ -2,8 +2,10 @@
 package api
 
 import (
-	"github.com/gorilla/mux"
 	"net/http"
+
+	"github.com/MilindGour/jellyfin-media-renamer/config"
+	"github.com/gorilla/mux"
 )
 
 // RegisterConfigRoutes adds all the routes related to the config apis.
@@ -13,6 +15,6 @@ func RegisterConfigRoutes(r *mux.Router) {
 
 // getConfigSource GET /api/config/source.
 func getConfigSource(w http.ResponseWriter, r *http.Request) {
-	res := []byte("Hello from config source")
+	res := []byte(config.GetConfig())
 	w.Write(res)
 }

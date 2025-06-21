@@ -12,6 +12,5 @@ func main() {
 	// API subrouter
 	apiSubrouter := r.PathPrefix("/api").Subrouter()
 	api.RegisterAPIRoutes(apiSubrouter)
-
 	http.ListenAndServe(":7749", r)
 }
