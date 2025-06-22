@@ -5,6 +5,6 @@ import (
 )
 
 func GetConfigFileContents() ([]byte, error) {
-	data, err := os.ReadFile("../config.json")
+	data, err := os.ReadFile("config.json")
 	return data, err
 }

@@ -2,6 +2,8 @@
 package api
 
 import (
+	"encoding/json"
+	"fmt"
 	"net/http"
 
 	"github.com/MilindGour/jellyfin-media-renamer/config"
@@ -15,6 +17,20 @@ func RegisterConfigRoutes(r *mux.Router) {
 
 // getConfigSource GET /api/config/source.
 func getConfigSource(w http.ResponseWriter, r *http.Request) {
-	res := []byte(config.GetConfig())
-	w.Write(res)
+	cfg, err := config.GetConfigSource()
+	if err != nil {
+		w.WriteHeader(500)
+		fmt.Fprint(w, "Cannot get config.json. ", err)
+		return
+	}
+
+	cfgjson, err := json.Marshal(cfg)
+	if err != nil {
+		w.WriteHeader(500)
+		w.Write([]byte("Cannot marshal config.source. "))
+		return
+	}
+
+	w.Header().Add("Content-Type", "application/json")
+	w.Write(cfgjson)
 }
