@@ -24,6 +24,18 @@ func CleanFilename(inputFilename string) (string, uint) {
 	return outputFilename, outputYear
 }
 
+func JoinPaths(paths ...string) string {
+	out := ""
+	for _, path := range paths {
+		trimmedPath := strings.TrimRight(path, "/")
+		if len(out) > 0 {
+			out += "/"
+		}
+		out += trimmedPath
+	}
+	return out
+}
+
 func removeSpecialCharacters(inputFilename string) string {
 	outputFilename := ""
 	for _, ch := range inputFilename {

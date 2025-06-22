@@ -33,7 +33,22 @@ func GetDirectoryEntries(path string) ([]models.DirectoryEntry, error) {
 		curEntry.Name = eInfo.Name()
 		curEntry.Size = eInfo.Size()
 		curEntry.IsDirectory = eInfo.IsDir()
-		curEntry.Children = nil
+
+		if curEntry.IsDirectory {
+			childEntries, err := GetDirectoryEntries(JoinPaths(path, curEntry.Name))
+			if err != nil {
+				return nil, err
+			}
+			// calculate size of directory as OS does not provide correct size
+			dirsize := int64(0)
+			for _, sub := range childEntries {
+				dirsize += sub.Size
+			}
+			curEntry.Size = dirsize
+			curEntry.Children = childEntries
+		} else {
+			curEntry.Children = nil
+		}
 
 		out = append(out, curEntry)
 	}
