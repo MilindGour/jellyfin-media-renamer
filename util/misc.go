@@ -11,3 +11,20 @@ func Filter[T comparable](in []T, predicate func(T) bool) []T {
 	}
 	return out
 }
+
+// Environment related code
+type Environment int
+
+const (
+	DEV  Environment = 0
+	PROD Environment = 1
+)
+
+var env Environment = PROD
+
+func SetEnvironment(e Environment) {
+	env = e
+}
+func IsProduction() bool {
+	return env == PROD
+}

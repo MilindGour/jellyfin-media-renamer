@@ -35,7 +35,7 @@ func GetConfigSourceById(id int) ([]models.DirectoryEntry, error) {
 		dirPath := result[0].Path
 		return util.GetDirectoryEntries(dirPath)
 	}
-	return nil, errors.New(fmt.Sprint("Cannot find the id of the config"))
+	return nil, errors.New(fmt.Sprintf("Cannot find the id: %d of the config", id))
 }
 
 func readConfigJson() (*models.Config, error) {

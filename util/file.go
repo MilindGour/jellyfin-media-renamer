@@ -9,7 +9,7 @@ import (
 )
 
 func GetConfigFileContents() ([]byte, error) {
-	data, err := os.ReadFile("config.json")
+	data, err := os.ReadFile(GetConfigFilename())
 	return data, err
 }
 
@@ -54,4 +54,12 @@ func GetDirectoryEntries(path string) ([]models.DirectoryEntry, error) {
 	}
 
 	return out, nil
+}
+
+func GetConfigFilename() string {
+	if IsProduction() {
+		configFilename := fmt.Sprintf("%s/.config/jmr/config.json", os.Getenv("HOME"))
+		return configFilename
+	}
+	return "config.json"
 }
