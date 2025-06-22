@@ -12,12 +12,30 @@ import (
 func GetConfig() (*models.Config, error) {
 	return readConfigJson()
 }
+
 func GetConfigSource() ([]models.ConfigSource, error) {
 	theConfig, err := readConfigJson()
 	if err != nil {
 		return nil, err
 	}
 	return theConfig.Source, nil
+}
+
+func GetConfigSourceById(id int) ([]models.DirectoryEntry, error) {
+	cfg, err := GetConfig()
+	if err != nil {
+		return nil, err
+	}
+
+	result := util.Filter(cfg.Source, func(x models.ConfigSource) bool {
+		return x.Id == id
+	})
+
+	if len(result) > 0 {
+		dirPath := result[0].Path
+		return util.GetDirectoryEntries(dirPath)
+	}
+	return nil, errors.New(fmt.Sprint("Cannot find the id of the config"))
 }
 
 func readConfigJson() (*models.Config, error) {
