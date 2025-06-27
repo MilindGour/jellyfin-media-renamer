@@ -8,6 +8,13 @@ import (
 	"github.com/MilindGour/jellyfin-media-renamer/models"
 )
 
+var nextFileId uint = 0
+
+func getNextFileId() uint {
+	nextFileId += 1
+	return nextFileId
+}
+
 func GetConfigFileContents() ([]byte, error) {
 	data, err := os.ReadFile(GetConfigFilename())
 	return data, err
@@ -30,6 +37,7 @@ func GetDirectoryEntries(path string) ([]models.DirectoryEntry, error) {
 			return nil, errors.New(fmt.Sprint("Error reading entry info. ", err))
 		}
 
+		curEntry.Id = getNextFileId()
 		curEntry.Name = eInfo.Name()
 		curEntry.Size = eInfo.Size()
 		curEntry.IsDirectory = eInfo.IsDir()

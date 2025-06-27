@@ -19,6 +19,8 @@
 
 ### Second Screen
   - User will see all the selected items from first screen and a *Get IDs* button
+    - All selected items should have a generated Id to make refer easy.
+    - All subsequent operations must be done using the above Ids.
   - A drop-down menu with all the media database providers (like TMDB, IMDB etc)
   - Each item contains following additional fields:
     - Name, size
