@@ -7,11 +7,13 @@ import (
 )
 
 func HandleAPIError(w http.ResponseWriter, statusCode int, message string, optionalErrorObject error) {
-	w.WriteHeader(statusCode)
-	msg := fmt.Sprintf("[Error] %s. More info: %v", message, optionalErrorObject)
-	fmt.Fprint(w, msg)
+	msg := fmt.Sprintf("[Error] %d %s.", statusCode, message)
+	if optionalErrorObject != nil {
+		msg += fmt.Sprintf(" More info: %v", optionalErrorObject)
+	}
 
-	//console log
-	consolemsg := fmt.Sprintf("[Error] %d %s. More info: %v", statusCode, message, optionalErrorObject)
-	log.Println(consolemsg)
+	w.WriteHeader(statusCode)
+	log.Println(msg)   // Write to log
+	fmt.Fprint(w, msg) // Write to response
+	log.Printf("Message length: %d\n", len(msg))
 }

@@ -30,7 +30,7 @@ var cleanFilenames []string = []string{
 	"Random movie",
 }
 
-var cleanYears []uint = []uint{
+var cleanYears []int = []int{
 	2014,
 	0,
 	2015,

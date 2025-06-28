@@ -8,7 +8,7 @@ import (
 )
 
 // This function cleans the filenames to make it searchable in scrapped sites
-func CleanFilename(inputFilename string) (string, uint) {
+func CleanFilename(inputFilename string) (string, int) {
 	// "American Sniper (2014)",
 
 	// Step 1: remove special characters from input
@@ -16,7 +16,7 @@ func CleanFilename(inputFilename string) (string, uint) {
 
 	// Step 2: extract year from input, if present otherwise 0
 	// also remove all string after the year (including year)
-	var outputYear uint = extractYear(&outputFilename)
+	var outputYear int = extractYear(&outputFilename)
 
 	// Step 3: remove all double spaces due to previous steps
 	outputFilename = removeDoubleWhitespace(outputFilename)
@@ -52,7 +52,7 @@ func removeSpecialCharacters(inputFilename string) string {
 	return outputFilename
 }
 
-func extractYear(filename *string) uint {
+func extractYear(filename *string) int {
 	re, err := regexp.Compile(" ?[0-9]{4,} ?")
 	if err != nil {
 		log.Fatal("Unable to compile regular expression")
@@ -72,7 +72,7 @@ func extractYear(filename *string) uint {
 		if yearInt > 9999 {
 			yearInt = 0
 		}
-		return uint(yearInt)
+		return int(yearInt)
 	}
 	return 0
 }

@@ -8,9 +8,9 @@ import (
 	"github.com/MilindGour/jellyfin-media-renamer/models"
 )
 
-var nextFileId uint = 0
+var nextFileId int = 0
 
-func getNextFileId() uint {
+func getNextFileId() int {
 	nextFileId += 1
 	return nextFileId
 }
