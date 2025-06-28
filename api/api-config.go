@@ -4,13 +4,15 @@ package api
 import (
 	"encoding/json"
 	"fmt"
-	"github.com/MilindGour/jellyfin-media-renamer/config"
-	"github.com/MilindGour/jellyfin-media-renamer/util"
-	"github.com/gorilla/mux"
 	"log"
 	"net/http"
 	"strconv"
 	"strings"
+
+	"github.com/MilindGour/jellyfin-media-renamer/config"
+	"github.com/MilindGour/jellyfin-media-renamer/state"
+	"github.com/MilindGour/jellyfin-media-renamer/util"
+	"github.com/gorilla/mux"
 )
 
 // RegisterConfigRoutes adds all the routes related to the config apis.
@@ -117,6 +119,9 @@ func postSelectConfigSourceId(w http.ResponseWriter, r *http.Request) {
 	if err != nil {
 		util.HandleAPIError(w, http.StatusInternalServerError, "Error populating second page response", err)
 	}
+
+	// Store response so that further results can use data from it.
+	state.LastSecondPageAPIResponse = response
 
 	responseJson, err := json.Marshal(response)
 	if err != nil {

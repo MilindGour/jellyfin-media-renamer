@@ -36,6 +36,12 @@ func JoinPaths(paths ...string) string {
 	return out
 }
 
+func ExtractYearFromString(in string) (int, error) {
+	yearRe := regexp.MustCompile(`(\d{4})`)
+	match := yearRe.FindString(in)
+	return strconv.Atoi(match)
+}
+
 func removeSpecialCharacters(inputFilename string) string {
 	outputFilename := ""
 	for _, ch := range inputFilename {
