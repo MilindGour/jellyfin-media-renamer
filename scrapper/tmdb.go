@@ -66,7 +66,8 @@ func (t TmdbScrapper) SearchMovie(in models.ClearFileEntry) ([]models.MovieResul
 	})
 
 	// prepare for visiting the url
-	visitUrl := fmt.Sprintf("%s/search/movie?query=%s", t.baseUrl, url.QueryEscape(searchString))
+	pathEscape := url.PathEscape("query=" + searchString)
+	visitUrl := fmt.Sprintf("%s/search/movie?%s", t.baseUrl, pathEscape)
 
 	err := c.Visit(visitUrl)
 	c.Wait()

@@ -17,7 +17,7 @@ func RegisterScrapRoutes(r *mux.Router) {
 }
 
 func postScrapSearch(w http.ResponseWriter, r *http.Request) {
-	in := []models.ClearFileEntry{}
+	in := map[int]models.ClearFileEntry{}
 	json.NewDecoder(r.Body).Decode(&in)
 
 	if state.LastSecondPageAPIResponse == nil {
@@ -28,7 +28,7 @@ func postScrapSearch(w http.ResponseWriter, r *http.Request) {
 	// everything should be valid at this point.
 	tmdbClient := scrapper.NewTmdbScrapper()
 
-	for id, cfe := range state.LastSecondPageAPIResponse.CleanFilenameEntries {
+	for id, cfe := range in {
 		r, err := tmdbClient.SearchMovie(cfe)
 		if err != nil {
 			util.HandleAPIError(w, http.StatusInternalServerError, "Error searching movie", err)
