@@ -42,6 +42,35 @@ func ExtractYearFromString(in string) (int, error) {
 	return strconv.Atoi(match)
 }
 
+func ExtractMediaIdFromUrl(in string) string {
+	inStr := in
+	if strings.Contains(in, "/") {
+		strSplits := strings.Split(in, "/")
+		inStr = strSplits[len(strSplits)-1]
+	}
+
+	mediaIdRe := regexp.MustCompile(`(\d+).*$`)
+	match := mediaIdRe.FindStringSubmatch(inStr)
+	if len(match) > 1 {
+		return match[1]
+	}
+	return "0"
+}
+
+func ExtractTotalEpisodesFromInfoString(infoString string) int {
+	episodesRe := regexp.MustCompile(`.+ (\d+) Episodes$`)
+	matches := episodesRe.FindStringSubmatch(strings.Trim(infoString, " "))
+
+	if len(matches) > 1 {
+		matchInt, err := strconv.Atoi(matches[1])
+		if err != nil {
+			return 0
+		}
+		return matchInt
+	}
+	return 0
+}
+
 func removeSpecialCharacters(inputFilename string) string {
 	outputFilename := ""
 	for _, ch := range inputFilename {

@@ -12,7 +12,7 @@ import (
 func PopulateSecondScreenResponse(selectedIds []int) (*models.SecondScreenResponse, error) {
 	response := models.SecondScreenResponse{
 		MovieResults: map[int][]models.MovieResult{},
-		TVResults:    map[int]models.TVResult{},
+		TVResults:    map[int][]models.TVResult{},
 	}
 
 	// select all the directories using selectedIds

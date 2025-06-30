@@ -55,3 +55,29 @@ func TestCleanFilename(t *testing.T) {
 		}
 	}
 }
+
+func TestExtractMediaIdFromUrl(t *testing.T) {
+	inputs := []string{"/tv/1234-test-tv", "https://abs.com/tv/123-sdf", "/movie/1231"}
+	expectedOut := []string{"1234", "123", "1231"}
+
+	for i := range inputs {
+		in := inputs[i]
+		want := expectedOut[i]
+		actual := util.ExtractMediaIdFromUrl(in)
+
+		if want != actual {
+			t.Errorf("\nInput: %s\nWanted Id: %s\nActual Id: %s", in, want, actual)
+		}
+	}
+}
+
+func TestExtractTotalEpisodesFromInfoString(t *testing.T) {
+	// 1990 • 27 Episodes
+	input := "1990 • 27 Episodes"
+	want := 27
+	actual := util.ExtractTotalEpisodesFromInfoString(input)
+
+	if want != actual {
+		t.Errorf("\nInput: %s\nWanted Number: %d\nActual Number: %d", input, want, actual)
+	}
+}
