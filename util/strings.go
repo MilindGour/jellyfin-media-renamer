@@ -9,7 +9,6 @@ import (
 
 // This function cleans the filenames to make it searchable in scrapped sites
 func CleanFilename(inputFilename string) (string, int) {
-	// "American Sniper (2014)",
 
 	// Step 1: remove special characters from input
 	var outputFilename string = removeSpecialCharacters(inputFilename)
@@ -58,7 +57,7 @@ func ExtractMediaIdFromUrl(in string) string {
 }
 
 func ExtractTotalEpisodesFromInfoString(infoString string) int {
-	episodesRe := regexp.MustCompile(`.+ (\d+) Episodes$`)
+	episodesRe := regexp.MustCompile(`[^0-9]?(\d+) Episodes$`)
 	matches := episodesRe.FindStringSubmatch(strings.Trim(infoString, " "))
 
 	if len(matches) > 1 {
