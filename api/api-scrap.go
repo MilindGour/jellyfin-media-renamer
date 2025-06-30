@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/MilindGour/jellyfin-media-renamer/models"
 	"github.com/MilindGour/jellyfin-media-renamer/scrapper"
@@ -23,7 +24,23 @@ func postScrapSearch(w http.ResponseWriter, r *http.Request) {
 	in := models.ScrapSearchRequest{}
 	err := json.NewDecoder(r.Body).Decode(&in)
 
-	log.Println("Invoked search:", in.CleanFilenameEntries)
+	allMovies := []string{}
+	allTVs := []string{}
+	for i := range in.CleanFilenameEntries {
+		mediaName := in.CleanFilenameEntries[i].Name
+		mt, ok := in.MediaTypes[i]
+		if !ok {
+			util.HandleAPIError(w, http.StatusBadRequest, "Cannot find mediaType for "+mediaName, nil)
+		}
+		if mt == models.MediaTypeTV {
+			allTVs = append(allTVs, mediaName)
+		} else {
+			allMovies = append(allMovies, mediaName)
+		}
+	}
+
+	log.Printf("postScrapSearch for Movies: [%s] and TVs: [%s]", strings.Join(allMovies, ", "), strings.Join(allTVs, ", "))
+
 	if err != nil {
 		util.HandleAPIError(w, http.StatusBadRequest, "Invalid parameter passed.", err)
 		return

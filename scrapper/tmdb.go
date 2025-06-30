@@ -38,7 +38,9 @@ func (t TmdbScrapper) SearchTV(in models.ClearFileEntry) ([]models.TVResult, err
 
 	log.Printf("Searching for tv: %s\n", searchString)
 
-	c := colly.NewCollector()
+	c := colly.NewCollector(
+		colly.UserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"),
+	)
 
 	c.OnRequest(func(r *colly.Request) {
 		r.Headers.Add("Accept-Language", "en-US")
@@ -68,6 +70,7 @@ func (t TmdbScrapper) SearchTV(in models.ClearFileEntry) ([]models.TVResult, err
 		return nil, errors.New("Cannot visit search movie url. " + err.Error())
 	}
 
+	log.Println("Total results found for tv", in.Name, ":", len(out))
 	return out, nil
 }
 
@@ -98,7 +101,9 @@ func (t TmdbScrapper) ScrapMediaInfoListFromCollyElement(h *colly.HTMLElement) m
 
 func (t TmdbScrapper) ScrapSeasonInfoList(mediaId string) []models.SeasonInfo {
 	out := []models.SeasonInfo{}
-	cc := colly.NewCollector()
+	cc := colly.NewCollector(
+		colly.UserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"),
+	)
 
 	cc.OnRequest(func(r *colly.Request) {
 		r.Headers.Add("Accept-Language", "en-US")
@@ -125,9 +130,11 @@ func (t TmdbScrapper) ScrapSeasonInfoList(mediaId string) []models.SeasonInfo {
 
 	tvDetailUrl := fmt.Sprintf("%s/tv/%s/seasons", t.baseUrl, mediaId)
 	log.Println("Visiting season info url:", tvDetailUrl)
+
 	cc.Visit(tvDetailUrl)
 
 	cc.Wait()
+
 	return out
 }
 
@@ -137,7 +144,9 @@ func (t TmdbScrapper) SearchMovie(in models.ClearFileEntry) ([]models.MovieResul
 
 	log.Printf("Searching for movie: %s\n", searchString)
 
-	c := colly.NewCollector()
+	c := colly.NewCollector(
+		colly.UserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"),
+	)
 
 	c.OnRequest(func(r *colly.Request) {
 		r.Headers.Add("Accept-Language", "en-US")
@@ -145,6 +154,8 @@ func (t TmdbScrapper) SearchMovie(in models.ClearFileEntry) ([]models.MovieResul
 
 	c.OnHTML(".search_results.movie div.card.v4", func(h *colly.HTMLElement) {
 		mediaInfo := t.ScrapMediaInfoListFromCollyElement(h)
+		log.Println("MediaInfo:", mediaInfo)
+
 		result := models.MovieResult{
 			MediaInfo: mediaInfo,
 		}
@@ -162,5 +173,6 @@ func (t TmdbScrapper) SearchMovie(in models.ClearFileEntry) ([]models.MovieResul
 		return nil, errors.New("Cannot visit search movie url. " + err.Error())
 	}
 
+	log.Println("Total results found for movie", in.Name, ":", len(out))
 	return out, nil
 }
