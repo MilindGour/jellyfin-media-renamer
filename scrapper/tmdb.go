@@ -14,12 +14,12 @@ import (
 )
 
 type TmdbScrapper struct {
-	baseUrl string
+	baseURL string
 }
 
 func NewTmdbScrapper() *TmdbScrapper {
 	out := TmdbScrapper{
-		baseUrl: "https://www.themoviedb.org",
+		baseURL: "https://www.themoviedb.org",
 	}
 	return &out
 }
@@ -61,9 +61,9 @@ func (t TmdbScrapper) SearchTV(in models.ClearFileEntry) ([]models.TVResult, err
 
 	// prepare for visiting the url
 	pathEscape := url.PathEscape("query=" + searchString)
-	visitUrl := fmt.Sprintf("%s/search/movie?%s", t.baseUrl, pathEscape)
+	visitURL := fmt.Sprintf("%s/search/movie?%s", t.baseURL, pathEscape)
 
-	err := c.Visit(visitUrl)
+	err := c.Visit(visitURL)
 	c.Wait()
 
 	if err != nil {
@@ -82,7 +82,7 @@ func (t TmdbScrapper) ScrapMediaInfoListFromCollyElement(h *colly.HTMLElement) m
 	}
 	nameNodeString = strings.Trim(nameNodeString, " ")
 	mediaLink := h.ChildAttr(".details .title a.result", "href")
-	mediaId := util.ExtractMediaIdFromUrl(mediaLink)
+	mediaID := util.ExtractMediaIDFromURL(mediaLink)
 	releaseDateStr := h.ChildText(".release_date")
 	releaseYear, err := util.ExtractYearFromString(releaseDateStr)
 	if err != nil {
@@ -93,13 +93,13 @@ func (t TmdbScrapper) ScrapMediaInfoListFromCollyElement(h *colly.HTMLElement) m
 		Name:          nameNodeString,
 		Description:   h.ChildText(".overview"),
 		ThumbnailUrl:  h.ChildAttr(".poster img", "src"),
-		MediaId:       mediaId,
+		MediaId:       mediaID,
 		YearOfRelease: releaseYear,
 	}
 	return result
 }
 
-func (t TmdbScrapper) ScrapSeasonInfoList(mediaId string) []models.SeasonInfo {
+func (t TmdbScrapper) ScrapSeasonInfoList(mediaID string) []models.SeasonInfo {
 	out := []models.SeasonInfo{}
 	cc := colly.NewCollector(
 		colly.UserAgent("Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/136.0.0.0 Safari/537.36"),
@@ -110,7 +110,7 @@ func (t TmdbScrapper) ScrapSeasonInfoList(mediaId string) []models.SeasonInfo {
 	})
 	cc.OnHTML(".media.tv_v4 .season_wrapper", func(h *colly.HTMLElement) {
 		seasonLink := h.ChildAttr(".season .content h2 a", "href")
-		seasonNumberString := util.ExtractMediaIdFromUrl(seasonLink)
+		seasonNumberString := util.ExtractMediaIDFromURL(seasonLink)
 		seasonNumber, err := strconv.Atoi(seasonNumberString)
 		if err != nil {
 			log.Println("Cannot extract season number. Defaulting to -1")
@@ -128,10 +128,10 @@ func (t TmdbScrapper) ScrapSeasonInfoList(mediaId string) []models.SeasonInfo {
 		log.Println("Error collecting searson info list.", err.Error())
 	})
 
-	tvDetailUrl := fmt.Sprintf("%s/tv/%s/seasons", t.baseUrl, mediaId)
-	log.Println("Visiting season info url:", tvDetailUrl)
+	tvDetailURL := fmt.Sprintf("%s/tv/%s/seasons", t.baseURL, mediaID)
+	log.Println("Visiting season info url:", tvDetailURL)
 
-	cc.Visit(tvDetailUrl)
+	cc.Visit(tvDetailURL)
 
 	cc.Wait()
 
@@ -164,9 +164,9 @@ func (t TmdbScrapper) SearchMovie(in models.ClearFileEntry) ([]models.MovieResul
 
 	// prepare for visiting the url
 	pathEscape := url.PathEscape("query=" + searchString)
-	visitUrl := fmt.Sprintf("%s/search/movie?%s", t.baseUrl, pathEscape)
+	visitURL := fmt.Sprintf("%s/search/movie?%s", t.baseURL, pathEscape)
 
-	err := c.Visit(visitUrl)
+	err := c.Visit(visitURL)
 	c.Wait()
 
 	if err != nil {

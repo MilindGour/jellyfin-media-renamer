@@ -7,15 +7,14 @@ import (
 	"strings"
 )
 
-// This function cleans the filenames to make it searchable in scrapped sites
+// CleanFilename cleans the filenames to make it searchable in scrapped sites
 func CleanFilename(inputFilename string) (string, int) {
-
 	// Step 1: remove special characters from input
-	var outputFilename string = removeSpecialCharacters(inputFilename)
+	outputFilename := removeSpecialCharacters(inputFilename)
 
 	// Step 2: extract year from input, if present otherwise 0
 	// also remove all string after the year (including year)
-	var outputYear int = extractYear(&outputFilename)
+	outputYear := extractYear(&outputFilename)
 
 	// Step 3: remove all double spaces due to previous steps
 	outputFilename = removeDoubleWhitespace(outputFilename)
@@ -41,15 +40,15 @@ func ExtractYearFromString(in string) (int, error) {
 	return strconv.Atoi(match)
 }
 
-func ExtractMediaIdFromUrl(in string) string {
+func ExtractMediaIDFromURL(in string) string {
 	inStr := in
 	if strings.Contains(in, "/") {
 		strSplits := strings.Split(in, "/")
 		inStr = strSplits[len(strSplits)-1]
 	}
 
-	mediaIdRe := regexp.MustCompile(`(\d+).*$`)
-	match := mediaIdRe.FindStringSubmatch(inStr)
+	mediaIDRe := regexp.MustCompile(`(\d+).*$`)
+	match := mediaIDRe.FindStringSubmatch(inStr)
 	if len(match) > 1 {
 		return match[1]
 	}

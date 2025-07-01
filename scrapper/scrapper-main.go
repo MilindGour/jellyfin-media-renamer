@@ -1,3 +1,4 @@
+// Package scrapper contains functions that deals with web scrapping.
 package scrapper
 
 import (

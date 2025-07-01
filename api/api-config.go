@@ -19,8 +19,8 @@ import (
 func RegisterConfigRoutes(r *mux.Router) {
 	r.HandleFunc("", getConfig).Methods("GET")
 	r.HandleFunc("/source", getConfigSource).Methods("GET")
-	r.HandleFunc("/source/{id}", getConfigSourceById).Methods("GET")
-	r.HandleFunc("/source/select", postSelectConfigSourceId).Methods("POST").Headers("Content-Type", "text/plain")
+	r.HandleFunc("/source/{id}", getConfigSourceByID).Methods("GET")
+	r.HandleFunc("/source/select", postSelectConfigSourceID).Methods("POST").Headers("Content-Type", "text/plain")
 }
 
 func getConfig(w http.ResponseWriter, _ *http.Request) {
@@ -58,8 +58,8 @@ func getConfigSource(w http.ResponseWriter, r *http.Request) {
 	w.Write(cfgjson)
 }
 
-// getConfigSourceById GET /api/config/source/:id
-func getConfigSourceById(w http.ResponseWriter, r *http.Request) {
+// getConfigSourceByID GET /api/config/source/:id
+func getConfigSourceByID(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, ok := vars["id"]
 	if ok {
@@ -68,7 +68,7 @@ func getConfigSourceById(w http.ResponseWriter, r *http.Request) {
 			util.HandleAPIError(w, http.StatusInternalServerError, "Cannot convert id to integer", err)
 			return
 		}
-		dirEntries, err := config.GetConfigSourceById(idInt)
+		dirEntries, err := config.GetConfigSourceByID(idInt)
 		if err != nil {
 			util.HandleAPIError(w, http.StatusInternalServerError, "Cannot get config by id", err)
 			return
@@ -84,10 +84,10 @@ func getConfigSourceById(w http.ResponseWriter, r *http.Request) {
 	}
 }
 
-// postSelectConfigSourceId POST /api/config/source/select.
+// postSelectConfigSourceID POST /api/config/source/select.
 // This api is used to confirm the selected directory Ids by user for processing
 // in the next screen (Page 2).
-func postSelectConfigSourceId(w http.ResponseWriter, r *http.Request) {
+func postSelectConfigSourceID(w http.ResponseWriter, r *http.Request) {
 	// parse the request body
 	var selectedIds string
 	_, err := fmt.Fscanf(r.Body, "%s", &selectedIds)
@@ -106,8 +106,8 @@ func postSelectConfigSourceId(w http.ResponseWriter, r *http.Request) {
 	var selectedIdsInt []int
 
 	// change to int and raise if not convertible
-	for _, theId := range selectedIdsArray {
-		idInt, err := strconv.Atoi(theId)
+	for _, theID := range selectedIdsArray {
+		idInt, err := strconv.Atoi(theID)
 		if err != nil {
 			util.HandleAPIError(w, http.StatusBadRequest, "Only comma separated integers are allowed", err)
 			return
@@ -123,11 +123,11 @@ func postSelectConfigSourceId(w http.ResponseWriter, r *http.Request) {
 	// Store response so that further results can use data from it.
 	state.LastSecondPageAPIResponse = response
 
-	responseJson, err := json.Marshal(response)
+	responseJSON, err := json.Marshal(response)
 	if err != nil {
 		util.HandleAPIError(w, http.StatusInternalServerError, "Cannot marshal page response", err)
 	}
 
 	w.Header().Add("Content-Type", "application/json")
-	w.Write(responseJson)
+	w.Write(responseJSON)
 }

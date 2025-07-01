@@ -41,3 +41,8 @@ type ScrapSearchRequest struct {
 	CleanFilenameEntries map[int]ClearFileEntry `json:"cleanFilenameEntries"`
 	MediaTypes           map[int]MediaType      `json:"mediaTypes"`
 }
+
+type ScrapSearchConfirmRequest struct {
+	MoviesInfo map[int]MovieResult `json:"moviesInfo"`
+	TVsInfo    map[int]TVResult    `json:"tvsInfo"`
+}

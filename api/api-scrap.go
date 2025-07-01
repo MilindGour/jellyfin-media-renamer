@@ -82,20 +82,20 @@ func postScrapSearch(w http.ResponseWriter, r *http.Request) {
 
 	}
 
-	responseJson, err := json.Marshal(state.LastSecondPageAPIResponse)
+	responseJSON, err := json.Marshal(state.LastSecondPageAPIResponse)
 	if err != nil {
 		util.HandleAPIError(w, http.StatusInternalServerError, "Cannot marshal page response", err)
 	}
 
 	w.Header().Add("Content-Type", "application/json")
-	w.Write(responseJson)
+	w.Write(responseJSON)
 }
 
 // postScrapConfirmIds POST /api/scrap/confirm api
 // this api is used to confirm the tmdbids of the selected directories.
 func postScrapConfirmIds(w http.ResponseWriter, r *http.Request) {
-	// map[int]string
-	var in map[int]string = map[int]string{}
+	// ScrapSearchConfirmRequest
+	in := models.ScrapSearchConfirmRequest{}
 	err := json.NewDecoder(r.Body).Decode(&in)
 	if err != nil {
 		util.HandleAPIError(w, http.StatusBadRequest, "Invalid argument passed.", err)
