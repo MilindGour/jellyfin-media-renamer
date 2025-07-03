@@ -62,6 +62,7 @@ func postScrapSearch(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		// TODO: Implement following logic using goroutines for better performance.
 		if mediaType == models.MediaTypeTV {
 			// TV processing
 			r, err := scrapClient.SearchTV(cfe)
