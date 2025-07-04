@@ -11,3 +11,6 @@ build:
 
 test:
 	go test ./...
+
+deploy:
+	/home/jenkins/scripts/deploy-jmr.sh dist
