@@ -14,4 +14,8 @@ func RegisterAPIRoutes(muxRouter *mux.Router) {
 	// /api/config
 	configRouter := muxRouter.PathPrefix("/config").Subrouter()
 	RegisterConfigRoutes(configRouter)
+
+	// /api/scrap
+	scrapRouter := muxRouter.PathPrefix("/scrap").Subrouter()
+	RegisterScrapRoutes(scrapRouter)
 }

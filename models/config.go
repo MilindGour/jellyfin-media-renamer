@@ -20,4 +20,6 @@ type SecondScreenResponse struct {
 	Success              bool                   `json:"success"`
 	SelectedDirEntries   []DirectoryEntry       `json:"selectedDirEntries"`
 	CleanFilenameEntries map[int]ClearFileEntry `json:"cleanFilenameEntries"`
+	MovieResults         map[int][]MovieResult  `json:"movieResults"`
+	TVResults            map[int][]TVResult     `json:"tvResults"`
 }

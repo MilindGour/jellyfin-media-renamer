@@ -10,17 +10,20 @@ import (
 )
 
 func PopulateSecondScreenResponse(selectedIds []int) (*models.SecondScreenResponse, error) {
-	response := models.SecondScreenResponse{}
+	response := models.SecondScreenResponse{
+		MovieResults: map[int][]models.MovieResult{},
+		TVResults:    map[int][]models.TVResult{},
+	}
 
 	// select all the directories using selectedIds
-	for _, selectedId := range selectedIds {
-		entry := util.Filter(state.LastConfigSourceById, func(x models.DirectoryEntry) bool {
-			return x.Id == int(selectedId)
+	for _, selectedID := range selectedIds {
+		entry := util.Filter(state.LastConfigSourceByID, func(x models.DirectoryEntry) bool {
+			return x.Id == int(selectedID)
 		})
 		if len(entry) > 0 {
 			response.SelectedDirEntries = append(response.SelectedDirEntries, entry[0])
 		} else {
-			errmsg := fmt.Sprintf("Cannot find entry with id: %d. Probably you need to call the config/source/:id api first.", selectedId)
+			errmsg := fmt.Sprintf("Cannot find entry with id: %d. Probably you need to call the config/source/:id api first.", selectedID)
 			return nil, errors.New(errmsg)
 		}
 	}

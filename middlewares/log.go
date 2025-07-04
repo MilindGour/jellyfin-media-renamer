@@ -1,3 +1,5 @@
+// Package middlewares contains all the middlewares
+// used in this project.
 package middlewares
 
 import (

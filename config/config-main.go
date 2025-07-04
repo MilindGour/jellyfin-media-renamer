@@ -1,3 +1,5 @@
+// Package config contains all the functions
+// that deal with the config file.
 package config
 
 import (
@@ -11,18 +13,18 @@ import (
 )
 
 func GetConfig() (*models.Config, error) {
-	return readConfigJson()
+	return readConfigJSON()
 }
 
 func GetConfigSource() ([]models.ConfigSource, error) {
-	theConfig, err := readConfigJson()
+	theConfig, err := readConfigJSON()
 	if err != nil {
 		return nil, err
 	}
 	return theConfig.Source, nil
 }
 
-func GetConfigSourceById(id int) ([]models.DirectoryEntry, error) {
+func GetConfigSourceByID(id int) ([]models.DirectoryEntry, error) {
 	cfg, err := GetConfig()
 	if err != nil {
 		return nil, err
@@ -35,13 +37,13 @@ func GetConfigSourceById(id int) ([]models.DirectoryEntry, error) {
 	if len(result) > 0 {
 		dirPath := result[0].Path
 		// Storing in LastConfigSourceById for next api call
-		state.LastConfigSourceById, err = util.GetDirectoryEntries(dirPath)
-		return state.LastConfigSourceById, err
+		state.LastConfigSourceByID, err = util.GetDirectoryEntries(dirPath)
+		return state.LastConfigSourceByID, err
 	}
-	return nil, errors.New(fmt.Sprintf("Cannot find the id: %d of the config", id))
+	return nil, fmt.Errorf("cannot find the id: %d of the config", id)
 }
 
-func readConfigJson() (*models.Config, error) {
+func readConfigJSON() (*models.Config, error) {
 	theConfig := models.Config{}
 	configFileContents, err := util.GetConfigFileContents()
 	if err != nil {

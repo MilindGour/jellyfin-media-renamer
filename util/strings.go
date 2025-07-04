@@ -7,16 +7,14 @@ import (
 	"strings"
 )
 
-// This function cleans the filenames to make it searchable in scrapped sites
+// CleanFilename cleans the filenames to make it searchable in scrapped sites
 func CleanFilename(inputFilename string) (string, int) {
-	// "American Sniper (2014)",
-
 	// Step 1: remove special characters from input
-	var outputFilename string = removeSpecialCharacters(inputFilename)
+	outputFilename := removeSpecialCharacters(inputFilename)
 
 	// Step 2: extract year from input, if present otherwise 0
 	// also remove all string after the year (including year)
-	var outputYear int = extractYear(&outputFilename)
+	outputYear := extractYear(&outputFilename)
 
 	// Step 3: remove all double spaces due to previous steps
 	outputFilename = removeDoubleWhitespace(outputFilename)
@@ -34,6 +32,41 @@ func JoinPaths(paths ...string) string {
 		out += trimmedPath
 	}
 	return out
+}
+
+func ExtractYearFromString(in string) (int, error) {
+	yearRe := regexp.MustCompile(`(\d{4})`)
+	match := yearRe.FindString(in)
+	return strconv.Atoi(match)
+}
+
+func ExtractMediaIDFromURL(in string) string {
+	inStr := in
+	if strings.Contains(in, "/") {
+		strSplits := strings.Split(in, "/")
+		inStr = strSplits[len(strSplits)-1]
+	}
+
+	mediaIDRe := regexp.MustCompile(`(\d+).*$`)
+	match := mediaIDRe.FindStringSubmatch(inStr)
+	if len(match) > 1 {
+		return match[1]
+	}
+	return "0"
+}
+
+func ExtractTotalEpisodesFromInfoString(infoString string) int {
+	episodesRe := regexp.MustCompile(`[^0-9]?(\d+) Episodes$`)
+	matches := episodesRe.FindStringSubmatch(strings.Trim(infoString, " "))
+
+	if len(matches) > 1 {
+		matchInt, err := strconv.Atoi(matches[1])
+		if err != nil {
+			return 0
+		}
+		return matchInt
+	}
+	return 0
 }
 
 func removeSpecialCharacters(inputFilename string) string {

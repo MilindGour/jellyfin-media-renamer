@@ -1,0 +1,9 @@
+[Unit]
+Description=Jellyfin Media Renamer
+
+[Service]
+ExecStart=/usr/local/bin/jmr
+
+[Install]
+WantedBy=multi-user.target
+
