@@ -13,4 +13,4 @@ test:
 	go test ./...
 
 deploy:
-	/home/jenkins/scripts/deploy-jmr.sh dist
+	/var/lib/jenkins/scripts/deploy-jmr.sh dist
