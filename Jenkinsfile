@@ -5,25 +5,25 @@ pipeline {
         stage("Test") {
             steps {
                 echo 'Testing project...'
-                make test
+                sh 'make test'
               }
           }
         stage("Clean") {
             steps {
                 echo 'Testing project...'
-                make clean
+                sh 'make clean'
               }
           }
         stage("Build") {
             steps {
                 echo 'Building project...'
-                make build
+                sh 'make build'
               }
           }
         stage("Deploy") {
             steps {
                 echo 'Deploying project...'
-                make deploy
+                sh 'make deploy'
               }
           }
       }
