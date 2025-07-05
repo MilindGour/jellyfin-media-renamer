@@ -33,8 +33,12 @@ func main() {
 	log.Println("Server starting on", applicationPort)
 
 	r := mux.NewRouter()
+
 	// API subrouter
 	apiSubrouter := r.PathPrefix("/api").Subrouter()
 	api.RegisterAPIRoutes(apiSubrouter)
+
+	// ping route
+	r.HandleFunc("/ping", api.HandlePingRequest)
 	http.ListenAndServe(applicationPort, r)
 }
