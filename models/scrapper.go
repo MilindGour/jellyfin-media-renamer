@@ -47,3 +47,23 @@ type ScrapSearchConfirmRequest struct {
 	MoviesInfo map[int]MovieResult `json:"moviesInfo"`
 	TVsInfo    map[int]TVResult    `json:"tvsInfo"`
 }
+
+type ScrapSearchRenameResult struct {
+	MovieRenameResults []MovieRenameResult `json:"movieRenameResults"`
+	TVRenameResults    []TVRenameResult    `json:"tvRenameResults"`
+}
+
+type MovieRenameResult struct {
+	MovieResult      MovieResult       `json:"movieResult"`
+	MediaPathRenames []MediaPathRename `json:"mediaPathRenames"`
+}
+
+type TVRenameResult struct {
+	TVResult         TVResult          `json:"tvResult"`
+	MediaPathRenames []MediaPathRename `json:"mediaPathRenames"`
+}
+
+type MediaPathRename struct {
+	OldPath string `json:"oldPath"`
+	NewPath string `json:"newPath"`
+}

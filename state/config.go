@@ -11,3 +11,5 @@ var LastConfigSourceByID []models.DirectoryEntry = nil
 var LastSecondPageAPIResponse *models.SecondScreenResponse = nil
 
 var LastConfirmedMediaIds *models.ScrapSearchRequest = nil
+
+var LastScrapConfirmRequest *models.ScrapSearchConfirmRequest = nil
