@@ -176,3 +176,7 @@ func (t TmdbScrapper) SearchMovie(in models.ClearFileEntry) ([]models.MovieResul
 	log.Println("Total results found for movie", in.Name, ":", len(out))
 	return out, nil
 }
+
+func (t TmdbScrapper) GetRenameString(mediaName string, year int, mediaID string) string {
+	return fmt.Sprintf("%s (%d) [tmdbid-%s]", mediaName, year, mediaID)
+}
