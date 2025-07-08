@@ -18,7 +18,7 @@ func PopulateSecondScreenResponse(selectedIds []int) (*models.SecondScreenRespon
 	// select all the directories using selectedIds
 	for _, selectedID := range selectedIds {
 		entry := util.Filter(state.LastConfigSourceByID, func(x models.DirectoryEntry) bool {
-			return x.Id == int(selectedID)
+			return x.ID == int(selectedID)
 		})
 		if len(entry) > 0 {
 			response.SelectedDirEntries = append(response.SelectedDirEntries, entry[0])
@@ -37,7 +37,7 @@ func populateCleanFilenames(in *models.SecondScreenResponse) {
 	in.CleanFilenameEntries = map[int]models.ClearFileEntry{}
 	for _, dirEntry := range in.SelectedDirEntries {
 		cleanName, year := util.CleanFilename(dirEntry.Name)
-		in.CleanFilenameEntries[dirEntry.Id] = models.ClearFileEntry{
+		in.CleanFilenameEntries[dirEntry.ID] = models.ClearFileEntry{
 			Name: cleanName,
 			Year: year,
 		}

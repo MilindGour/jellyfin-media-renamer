@@ -49,7 +49,7 @@ func (t TmdbScrapper) SearchTV(in models.ClearFileEntry) ([]models.TVResult, err
 	c.OnHTML(".search_results.tv div.card.v4", func(h *colly.HTMLElement) {
 		mediaInfo := t.ScrapMediaInfoListFromCollyElement(h)
 		log.Println("MediaInfo:", mediaInfo)
-		seasons := t.ScrapSeasonInfoList(mediaInfo.MediaId)
+		seasons := t.ScrapSeasonInfoList(mediaInfo.MediaID)
 
 		result := models.TVResult{
 			MediaInfo:    mediaInfo,
@@ -92,8 +92,8 @@ func (t TmdbScrapper) ScrapMediaInfoListFromCollyElement(h *colly.HTMLElement) m
 	result := models.MediaInfo{
 		Name:          nameNodeString,
 		Description:   h.ChildText(".overview"),
-		ThumbnailUrl:  h.ChildAttr(".poster img", "src"),
-		MediaId:       mediaID,
+		ThumbnailURL:  h.ChildAttr(".poster img", "src"),
+		MediaID:       mediaID,
 		YearOfRelease: releaseYear,
 	}
 	return result

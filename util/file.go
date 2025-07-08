@@ -15,6 +15,10 @@ func getNextFileID() int {
 	return nextFileID
 }
 
+func ResetNextFileID() {
+	nextFileID = 0
+}
+
 func GetConfigFileContents() ([]byte, error) {
 	data, err := os.ReadFile(GetConfigFilename())
 	return data, err
@@ -36,7 +40,7 @@ func GetDirectoryEntries(path string) ([]models.DirectoryEntry, error) {
 			return nil, errors.New(fmt.Sprint("Error reading entry info. ", err))
 		}
 
-		curEntry.Id = getNextFileID()
+		curEntry.ID = getNextFileID()
 		curEntry.Name = eInfo.Name()
 		curEntry.Size = eInfo.Size()
 		curEntry.IsDirectory = eInfo.IsDir()

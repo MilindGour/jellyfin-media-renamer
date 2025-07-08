@@ -1,3 +1,4 @@
+// Package models contains all the data structures used in the app.
 package models
 
 import "fmt"
@@ -9,17 +10,17 @@ const (
 	MediaTypeTV    MediaType = "TV"
 )
 
-// Provides common fields between movie and tv
+// MediaInfo provides common fields between movie and tv
 type MediaInfo struct {
 	Name          string `json:"name"`
 	Description   string `json:"description"`
 	YearOfRelease int    `json:"yearOfRelease"`
-	ThumbnailUrl  string `json:"thumbnailUrl"`
-	MediaId       string `json:"mediaId"`
+	ThumbnailURL  string `json:"thumbnailUrl"`
+	MediaID       string `json:"mediaId"`
 }
 
 func (m MediaInfo) String() string {
-	return fmt.Sprintf("%s(%d) tmdbid-%s", m.Name, m.YearOfRelease, m.MediaId)
+	return fmt.Sprintf("%s(%d) tmdbid-%s", m.Name, m.YearOfRelease, m.MediaID)
 }
 
 type MovieResult struct {

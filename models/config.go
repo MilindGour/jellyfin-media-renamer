@@ -6,7 +6,7 @@ type Config struct {
 }
 
 type ConfigSource struct {
-	Id   int    `json:"id"`
+	ID   int    `json:"id"`
 	Name string `json:"name"`
 	Path string `json:"path"`
 }

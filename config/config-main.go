@@ -31,7 +31,7 @@ func GetConfigSourceByID(id int) ([]models.DirectoryEntry, error) {
 	}
 
 	result := util.Filter(cfg.Source, func(x models.ConfigSource) bool {
-		return x.Id == id
+		return x.ID == id
 	})
 
 	if len(result) > 0 {

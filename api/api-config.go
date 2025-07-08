@@ -68,9 +68,11 @@ func getConfigSourceByID(w http.ResponseWriter, r *http.Request) {
 			util.HandleAPIError(w, http.StatusInternalServerError, "Cannot convert id to integer", err)
 			return
 		}
+		// reset fileID to enable predictive ids
+		util.ResetNextFileID()
 		dirEntries, err := config.GetConfigSourceByID(idInt)
 		if err != nil {
-			util.HandleAPIError(w, http.StatusInternalServerError, "Cannot get config by id", err)
+			util.HandleAPIError(w, http.StatusNotFound, "Cannot find the specified ID", err)
 			return
 		}
 		jsonResult, err := json.Marshal(dirEntries)
@@ -80,7 +82,7 @@ func getConfigSourceByID(w http.ResponseWriter, r *http.Request) {
 		w.Header().Add("Content-Type", "application/json")
 		w.Write(jsonResult)
 	} else {
-		util.HandleAPIError(w, http.StatusInternalServerError, "Cannot read id param from url", nil)
+		util.HandleAPIError(w, http.StatusBadRequest, "id param not found in the path.", nil)
 	}
 }
 
