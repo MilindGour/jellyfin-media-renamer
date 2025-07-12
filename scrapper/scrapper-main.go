@@ -3,6 +3,7 @@ package scrapper
 
 import (
 	"fmt"
+	"slices"
 
 	"github.com/MilindGour/jellyfin-media-renamer/models"
 	"github.com/MilindGour/jellyfin-media-renamer/state"
@@ -46,15 +47,14 @@ func GetMediaRenames(in models.ScrapSearchConfirmRequest, selectedDirectoryEntri
 
 func getSingleMovieRenames(id int, movieResult models.MovieResult) *models.MovieRenameResult {
 	oldBase := state.LastConfigSourceByID.BasePath
-	newBase := fmt.Sprintf("%s/%s", oldBase, "__jmr_temp_renames")
+	newBase := fmt.Sprintf("%s/%s", oldBase, "jmr_renames")
 
 	// TODO: Once new scrap client is implemented, add a logic to select appropriate client.
 	var scrapperClient Scrapper = NewTmdbScrapper()
 	renameString := scrapperClient.GetRenameString(movieResult.Name, movieResult.YearOfRelease, movieResult.MediaID)
 
 	out := &models.MovieRenameResult{
-		MovieResult:      movieResult,
-		MediaPathRenames: []models.MediaPathRename{},
+		MovieResult: movieResult,
 	}
 
 	// Get the selectedDirectoryEntry by id
@@ -69,7 +69,31 @@ func getSingleMovieRenames(id int, movieResult models.MovieResult) *models.Movie
 	// Change the name of parentDirectory
 	movieRootOld := fmt.Sprintf("%s/%s", oldBase, targetDirEntry.Name)
 	movieRootNew := fmt.Sprintf("%s/%s", newBase, renameString)
-	out.MediaPathRenames = append(out.MediaPathRenames, *NewPathRename(movieRootOld, movieRootNew))
+	out.RootRenames = append(out.RootRenames, *NewPathRename(movieRootOld, movieRootNew))
+
+	// Get main video file
+	videoEntries := util.FilterVideoFileEntries(targetDirEntry)
+	if len(videoEntries) > 0 {
+		slices.SortFunc(videoEntries, util.SortByFileSizeDescending)
+		for _, ve := range videoEntries {
+			movieFileOld := ve.Path
+			movieFileExt := util.GetFileExtension(ve.Name)
+			movieFilenameNew := fmt.Sprintf("%s%s", renameString, movieFileExt)
+			movieFileNew := util.JoinPaths(movieRootNew, movieFilenameNew)
+			out.MediaRenames = append(out.MediaRenames, *NewPathRename(movieFileOld, movieFileNew))
+		}
+	}
+
+	// Get subtitle
+	subtitleEntries := util.FilterSubtitleFileEntries(targetDirEntry)
+	if len(subtitleEntries) > 0 {
+		slices.SortFunc(subtitleEntries, util.SortByFileSizeDescending)
+		subtitleFileOld := subtitleEntries[0].Path
+		subtitleFileExt := util.GetFileExtension(subtitleEntries[0].Name)
+		subtitleFilenameNew := fmt.Sprintf("%s%s", renameString, subtitleFileExt)
+		subtitleFileNew := util.JoinPaths(movieRootNew, subtitleFilenameNew)
+		out.SubtitleRenames = append(out.SubtitleRenames, *NewPathRename(subtitleFileOld, subtitleFileNew))
+	}
 
 	return out
 }

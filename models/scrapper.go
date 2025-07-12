@@ -54,8 +54,10 @@ type ScrapSearchRenameResult struct {
 }
 
 type MovieRenameResult struct {
-	MovieResult      MovieResult       `json:"movieResult"`
-	MediaPathRenames []MediaPathRename `json:"mediaPathRenames"`
+	MovieResult     MovieResult       `json:"movieResult"`
+	RootRenames     []MediaPathRename `json:"rootRenames"`
+	MediaRenames    []MediaPathRename `json:"mediaRenames"`
+	SubtitleRenames []MediaPathRename `json:"subtitleRenames"`
 }
 
 type TVRenameResult struct {

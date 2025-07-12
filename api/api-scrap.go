@@ -114,5 +114,6 @@ func postScrapConfirmIds(w http.ResponseWriter, r *http.Request) {
 		util.HandleAPIError(w, http.StatusInternalServerError, "Unable to marshal renameResult", err)
 	}
 
+	w.Header().Add("Content-Type", "application/json")
 	w.Write(jsonRenameResult)
 }
