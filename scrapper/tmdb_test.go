@@ -1,8 +1,10 @@
 package scrapper_test
 
 import (
+	"log"
 	"testing"
 
+	"github.com/MilindGour/jellyfin-media-renamer/mock"
 	"github.com/MilindGour/jellyfin-media-renamer/models"
 	"github.com/MilindGour/jellyfin-media-renamer/scrapper"
 )
@@ -34,4 +36,20 @@ func TestTmdbScrapper_GetSearchableString(t *testing.T) {
 			}
 		})
 	}
+}
+
+func TestMockServer(t *testing.T) {
+	tmdbClient, mockServer := mock.NewMockTmdbClient()
+	defer mockServer.Close()
+
+	log.Println("Mock TMDB server url:", tmdbClient.BaseURL)
+	result, err := tmdbClient.SearchMovie(models.ClearFileEntry{
+		Name: "Airplane",
+		Year: 1980,
+	})
+	if err != nil {
+		t.Error("Cannot call SearchMovie. Err =", err.Error())
+	}
+
+	log.Println("Total results for Airplane:", len(result))
 }

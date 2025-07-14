@@ -14,12 +14,12 @@ import (
 )
 
 type TmdbScrapper struct {
-	baseURL string
+	BaseURL string
 }
 
 func NewTmdbScrapper() *TmdbScrapper {
 	out := TmdbScrapper{
-		baseURL: "https://www.themoviedb.org",
+		BaseURL: "https://www.themoviedb.org",
 	}
 	return &out
 }
@@ -61,7 +61,7 @@ func (t TmdbScrapper) SearchTV(in models.ClearFileEntry) ([]models.TVResult, err
 
 	// prepare for visiting the url
 	pathEscape := url.PathEscape("query=" + searchString)
-	visitURL := fmt.Sprintf("%s/search/movie?%s", t.baseURL, pathEscape)
+	visitURL := fmt.Sprintf("%s/search/movie?%s", t.BaseURL, pathEscape)
 
 	err := c.Visit(visitURL)
 	c.Wait()
@@ -128,7 +128,7 @@ func (t TmdbScrapper) ScrapSeasonInfoList(mediaID string) []models.SeasonInfo {
 		log.Println("Error collecting searson info list.", err.Error())
 	})
 
-	tvDetailURL := fmt.Sprintf("%s/tv/%s/seasons", t.baseURL, mediaID)
+	tvDetailURL := fmt.Sprintf("%s/tv/%s/seasons", t.BaseURL, mediaID)
 	log.Println("Visiting season info url:", tvDetailURL)
 
 	cc.Visit(tvDetailURL)
@@ -164,8 +164,9 @@ func (t TmdbScrapper) SearchMovie(in models.ClearFileEntry) ([]models.MovieResul
 
 	// prepare for visiting the url
 	pathEscape := url.PathEscape("query=" + searchString)
-	visitURL := fmt.Sprintf("%s/search/movie?%s", t.baseURL, pathEscape)
+	visitURL := fmt.Sprintf("%s/search/movie?%s", t.BaseURL, pathEscape)
 
+	log.Println("Visiting URL:", visitURL)
 	err := c.Visit(visitURL)
 	c.Wait()
 
