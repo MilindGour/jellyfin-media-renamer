@@ -684,11 +684,11 @@
     },
     "34": {
       "name": "Tonari no Seki kun",
-      "year": 1080
+      "year": 0
     },
     "46": {
       "name": "Judas Shingeki no Kyojin Attack on Titan Season 1 BD",
-      "year": 1080
+      "year": 0
     },
     "7": {
       "name": "Andaz Apna Apna",
@@ -696,7 +696,7 @@
     },
     "72": {
       "name": "RH Shingeki no Kyojin Season 2 English Dubbed",
-      "year": 1080
+      "year": 0
     },
     "9": {
       "name": "Attack on Titan",
@@ -724,10 +724,178 @@
     ]
   },
   "tvResults": {
-    "21": [],
-    "34": [],
-    "46": [],
-    "72": [],
+    "21": [
+      {
+        "name": "Attack on Titan",
+        "description": "Many years ago, the last remnants of humanity were forced to retreat behind the towering walls of a fortified city to escape the massive, man-eating Titans that roamed the land outside their fortress. Only the heroic members of the Scouting Legion dared to stray beyond the safety of the walls – but even those brave warriors seldom returned alive. Those within the city clung to the illusion of a peaceful existence until the day that dream was shattered, and their slim chance at survival was reduced to one horrifying choice: kill – or be devoured!",
+        "yearOfRelease": 2013,
+        "thumbnailUrl": "https://media.themoviedb.org/t/p/w94_and_h141_bestv2/hTP1DtLGFamjfu8WqjnuQdP1n4i.jpg",
+        "mediaId": "1429",
+        "totalSeasons": 5,
+        "seasons": [
+          {
+            "number": 0,
+            "totalEpisodes": 37
+          },
+          {
+            "number": 1,
+            "totalEpisodes": 25
+          },
+          {
+            "number": 2,
+            "totalEpisodes": 12
+          },
+          {
+            "number": 3,
+            "totalEpisodes": 22
+          },
+          {
+            "number": 4,
+            "totalEpisodes": 28
+          }
+        ]
+      },
+      {
+        "name": "Attack on Titan Picture Drama",
+        "description": "Shingeki no Kyojin Picture Drama is a series of Flash animation shorts included in the Blu-ray Disc/DVD releases, featuring the characters in chibi format. Each episode depicts their training days to become humanity's hope in the war against the Titans.",
+        "yearOfRelease": 2013,
+        "thumbnailUrl": "https://media.themoviedb.org/t/p/w94_and_h141_bestv2/wyFtcneTysf7dd3ZqFnDPL0EZYN.jpg",
+        "mediaId": "233735",
+        "totalSeasons": 1,
+        "seasons": [
+          {
+            "number": 1,
+            "totalEpisodes": 9
+          }
+        ]
+      }
+    ],
+    "34": [
+      {
+        "name": "Tonari no Seki-kun: The Master of Killing Time",
+        "description": "In the middle of class at a certain school, Rumi Yokoi, a diligent student, has her in-class life turned upside down when her desk mate Toshinari Seki begins to play by himself at his desk in class. Although Rumi is irked by Toshinari's distracting yet intricate playtime, she finds herself being drawn into his interesting hobby. Never being able to focus, Rumi observes Seki's stunning ways of slacking off in class.",
+        "yearOfRelease": 2014,
+        "thumbnailUrl": "https://media.themoviedb.org/t/p/w94_and_h141_bestv2/1972unB06y8eHC05byFIrOt8aA8.jpg",
+        "mediaId": "70036",
+        "totalSeasons": 2,
+        "seasons": [
+          {
+            "number": 0,
+            "totalEpisodes": 3
+          },
+          {
+            "number": 1,
+            "totalEpisodes": 21
+          }
+        ]
+      },
+      {
+        "name": "My Neighbor Seki and Rumi's Phenomenon",
+        "description": "The boy who sits next to Yokoi in class, Seki-kun, is always up to something at his desk. He manages to somehow play very elaborate games without attracting the teacher's attention. From dominos, to shogi, to go, to mecha models, to playing with cats and more, he always has something new to do. Yokoi often finds herself getting reluctantly interested in his games, even though they always seem to end up getting HER in trouble with the teacher!",
+        "yearOfRelease": 2015,
+        "thumbnailUrl": "https://media.themoviedb.org/t/p/w94_and_h141_bestv2/ysAdEQKFKszhiefKsrtuqh3l4h9.jpg",
+        "mediaId": "87903",
+        "totalSeasons": 1,
+        "seasons": [
+          {
+            "number": 1,
+            "totalEpisodes": 8
+          }
+        ]
+      }
+    ],
+    "46": [
+      {
+        "name": "Attack on Titan",
+        "description": "Many years ago, the last remnants of humanity were forced to retreat behind the towering walls of a fortified city to escape the massive, man-eating Titans that roamed the land outside their fortress. Only the heroic members of the Scouting Legion dared to stray beyond the safety of the walls – but even those brave warriors seldom returned alive. Those within the city clung to the illusion of a peaceful existence until the day that dream was shattered, and their slim chance at survival was reduced to one horrifying choice: kill – or be devoured!",
+        "yearOfRelease": 2013,
+        "thumbnailUrl": "https://media.themoviedb.org/t/p/w94_and_h141_bestv2/hTP1DtLGFamjfu8WqjnuQdP1n4i.jpg",
+        "mediaId": "1429",
+        "totalSeasons": 5,
+        "seasons": [
+          {
+            "number": 0,
+            "totalEpisodes": 37
+          },
+          {
+            "number": 1,
+            "totalEpisodes": 25
+          },
+          {
+            "number": 2,
+            "totalEpisodes": 12
+          },
+          {
+            "number": 3,
+            "totalEpisodes": 22
+          },
+          {
+            "number": 4,
+            "totalEpisodes": 28
+          }
+        ]
+      },
+      {
+        "name": "Attack on Titan Picture Drama",
+        "description": "Shingeki no Kyojin Picture Drama is a series of Flash animation shorts included in the Blu-ray Disc/DVD releases, featuring the characters in chibi format. Each episode depicts their training days to become humanity's hope in the war against the Titans.",
+        "yearOfRelease": 2013,
+        "thumbnailUrl": "https://media.themoviedb.org/t/p/w94_and_h141_bestv2/wyFtcneTysf7dd3ZqFnDPL0EZYN.jpg",
+        "mediaId": "233735",
+        "totalSeasons": 1,
+        "seasons": [
+          {
+            "number": 1,
+            "totalEpisodes": 9
+          }
+        ]
+      }
+    ],
+    "72": [
+      {
+        "name": "Attack on Titan",
+        "description": "Many years ago, the last remnants of humanity were forced to retreat behind the towering walls of a fortified city to escape the massive, man-eating Titans that roamed the land outside their fortress. Only the heroic members of the Scouting Legion dared to stray beyond the safety of the walls – but even those brave warriors seldom returned alive. Those within the city clung to the illusion of a peaceful existence until the day that dream was shattered, and their slim chance at survival was reduced to one horrifying choice: kill – or be devoured!",
+        "yearOfRelease": 2013,
+        "thumbnailUrl": "https://media.themoviedb.org/t/p/w94_and_h141_bestv2/hTP1DtLGFamjfu8WqjnuQdP1n4i.jpg",
+        "mediaId": "1429",
+        "totalSeasons": 5,
+        "seasons": [
+          {
+            "number": 0,
+            "totalEpisodes": 37
+          },
+          {
+            "number": 1,
+            "totalEpisodes": 25
+          },
+          {
+            "number": 2,
+            "totalEpisodes": 12
+          },
+          {
+            "number": 3,
+            "totalEpisodes": 22
+          },
+          {
+            "number": 4,
+            "totalEpisodes": 28
+          }
+        ]
+      },
+      {
+        "name": "Attack on Titan Picture Drama",
+        "description": "Shingeki no Kyojin Picture Drama is a series of Flash animation shorts included in the Blu-ray Disc/DVD releases, featuring the characters in chibi format. Each episode depicts their training days to become humanity's hope in the war against the Titans.",
+        "yearOfRelease": 2013,
+        "thumbnailUrl": "https://media.themoviedb.org/t/p/w94_and_h141_bestv2/wyFtcneTysf7dd3ZqFnDPL0EZYN.jpg",
+        "mediaId": "233735",
+        "totalSeasons": 1,
+        "seasons": [
+          {
+            "number": 1,
+            "totalEpisodes": 9
+          }
+        ]
+      }
+    ],
     "9": [
       {
         "name": "Attack on Titan",

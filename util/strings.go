@@ -102,7 +102,7 @@ func extractYear(filename *string) int {
 		}
 		*filename = (*filename)[0:matchedYearIndex[0]]
 
-		if yearInt > 9999 {
+		if yearInt > 9999 || yearInt < 1900 {
 			yearInt = 0
 		}
 		return int(yearInt)
