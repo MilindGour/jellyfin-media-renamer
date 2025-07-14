@@ -174,7 +174,7 @@ func (t TmdbScrapper) SearchMovie(in models.ClearFileEntry) ([]models.MovieResul
 		return nil, errors.New("Cannot visit search movie url. " + err.Error())
 	}
 
-	log.Println("Total results found for movie", in.Name, ":", len(out))
+	log.Printf("Total results found for movie %s: %d\n", in.Name, len(out))
 	return out, nil
 }
 

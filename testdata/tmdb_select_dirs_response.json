@@ -1,0 +1,708 @@
+{
+  "success": true,
+  "selectedDirEntries": [
+    {
+      "id": 2,
+      "name": "Airplane! (1980) [BluRay] [1080p] [YTS.LT]",
+      "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Airplane! (1980) [BluRay] [1080p] [YTS.LT]",
+      "size": 51,
+      "isDirectory": true,
+      "children": [
+        {
+          "id": 3,
+          "name": "Airplane!.1980.1080p.BluRay.x264-[YTS.LT].srt",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Airplane! (1980) [BluRay] [1080p] [YTS.LT]/Airplane!.1980.1080p.BluRay.x264-[YTS.LT].srt",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 4,
+          "name": "_Airplane!.1980.1080p.BluRay.x264-[YTS.LT] pickthis.mp4",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Airplane! (1980) [BluRay] [1080p] [YTS.LT]/_Airplane!.1980.1080p.BluRay.x264-[YTS.LT] pickthis.mp4",
+          "size": 51,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 5,
+          "name": "_Airplane!.1980.1080p.BluRay.x264-[YTS.LT]notthis.mp4",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Airplane! (1980) [BluRay] [1080p] [YTS.LT]/_Airplane!.1980.1080p.BluRay.x264-[YTS.LT]notthis.mp4",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 6,
+          "name": "www.YTS.LT.jpg",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Airplane! (1980) [BluRay] [1080p] [YTS.LT]/www.YTS.LT.jpg",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        }
+      ]
+    },
+    {
+      "id": 7,
+      "name": "Andaz Apna Apna 1994 1080p BluRay x265 Hindi DDP5.1 ESub - SP3LL",
+      "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Andaz Apna Apna 1994 1080p BluRay x265 Hindi DDP5.1 ESub - SP3LL",
+      "size": 0,
+      "isDirectory": true,
+      "children": [
+        {
+          "id": 8,
+          "name": "Andaz Apna Apna 1994 1080p BluRay x265 Hindi DDP5.1 ESub - SP3LL.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Andaz Apna Apna 1994 1080p BluRay x265 Hindi DDP5.1 ESub - SP3LL/Andaz Apna Apna 1994 1080p BluRay x265 Hindi DDP5.1 ESub - SP3LL.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        }
+      ]
+    },
+    {
+      "id": 9,
+      "name": "Attack.on.Titan.2013.S01.1080p.Hindi.Dual.WEB.HDRip.DDP.2.0.x264.ESubs.Full4Movies",
+      "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Attack.on.Titan.2013.S01.1080p.Hindi.Dual.WEB.HDRip.DDP.2.0.x264.ESubs.Full4Movies",
+      "size": 6148,
+      "isDirectory": true,
+      "children": [
+        {
+          "id": 10,
+          "name": ".DS_Store",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Attack.on.Titan.2013.S01.1080p.Hindi.Dual.WEB.HDRip.DDP.2.0.x264.ESubs.Full4Movies/.DS_Store",
+          "size": 6148,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 11,
+          "name": "Attack.on.titan.s01e01.1080p.amzn.web-dl.ddp2.0.h.264-Full4Movies.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Attack.on.Titan.2013.S01.1080p.Hindi.Dual.WEB.HDRip.DDP.2.0.x264.ESubs.Full4Movies/Attack.on.titan.s01e01.1080p.amzn.web-dl.ddp2.0.h.264-Full4Movies.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 12,
+          "name": "Attack.on.titan.s01e02.1080p.amzn.web-dl.ddp2.0.h.264-Full4Movies.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Attack.on.Titan.2013.S01.1080p.Hindi.Dual.WEB.HDRip.DDP.2.0.x264.ESubs.Full4Movies/Attack.on.titan.s01e02.1080p.amzn.web-dl.ddp2.0.h.264-Full4Movies.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 13,
+          "name": "Attack.on.titan.s01e03.1080p.amzn.web-dl.ddp2.0.h.264-Full4Movies.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Attack.on.Titan.2013.S01.1080p.Hindi.Dual.WEB.HDRip.DDP.2.0.x264.ESubs.Full4Movies/Attack.on.titan.s01e03.1080p.amzn.web-dl.ddp2.0.h.264-Full4Movies.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 14,
+          "name": "Attack.on.titan.s01e04.1080p.amzn.web-dl.ddp2.0.h.264-Full4Movies.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Attack.on.Titan.2013.S01.1080p.Hindi.Dual.WEB.HDRip.DDP.2.0.x264.ESubs.Full4Movies/Attack.on.titan.s01e04.1080p.amzn.web-dl.ddp2.0.h.264-Full4Movies.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 15,
+          "name": "Attack.on.titan.s01e05.1080p.amzn.web-dl.ddp2.0.h.264-Full4Movies.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Attack.on.Titan.2013.S01.1080p.Hindi.Dual.WEB.HDRip.DDP.2.0.x264.ESubs.Full4Movies/Attack.on.titan.s01e05.1080p.amzn.web-dl.ddp2.0.h.264-Full4Movies.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 16,
+          "name": "Attack.on.titan.s01e06.1080p.amzn.web-dl.ddp2.0.h.264-Full4Movies.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Attack.on.Titan.2013.S01.1080p.Hindi.Dual.WEB.HDRip.DDP.2.0.x264.ESubs.Full4Movies/Attack.on.titan.s01e06.1080p.amzn.web-dl.ddp2.0.h.264-Full4Movies.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 17,
+          "name": "Attack.on.titan.s01e07.1080p.amzn.web-dl.ddp2.0.h.264-Full4Movies.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Attack.on.Titan.2013.S01.1080p.Hindi.Dual.WEB.HDRip.DDP.2.0.x264.ESubs.Full4Movies/Attack.on.titan.s01e07.1080p.amzn.web-dl.ddp2.0.h.264-Full4Movies.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 18,
+          "name": "Attack.on.titan.s01e08.1080p.amzn.web-dl.ddp2.0.h.264-Full4Movies.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Attack.on.Titan.2013.S01.1080p.Hindi.Dual.WEB.HDRip.DDP.2.0.x264.ESubs.Full4Movies/Attack.on.titan.s01e08.1080p.amzn.web-dl.ddp2.0.h.264-Full4Movies.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 19,
+          "name": "Attack.on.titan.s01e09.1080p.amzn.web-dl.ddp2.0.h.264-Full4Movies.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Attack.on.Titan.2013.S01.1080p.Hindi.Dual.WEB.HDRip.DDP.2.0.x264.ESubs.Full4Movies/Attack.on.titan.s01e09.1080p.amzn.web-dl.ddp2.0.h.264-Full4Movies.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 20,
+          "name": "Attack.on.titan.s01e10.1080p.amzn.web-dl.ddp2.0.h.264-Full4Movies.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Attack.on.Titan.2013.S01.1080p.Hindi.Dual.WEB.HDRip.DDP.2.0.x264.ESubs.Full4Movies/Attack.on.titan.s01e10.1080p.amzn.web-dl.ddp2.0.h.264-Full4Movies.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        }
+      ]
+    },
+    {
+      "id": 21,
+      "name": "Shingeki no Kyojin Season 3",
+      "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Shingeki no Kyojin Season 3",
+      "size": 0,
+      "isDirectory": true,
+      "children": [
+        {
+          "id": 22,
+          "name": "[Cleo]Shingeki_no_Kyojin_Season_3_-_01_(Dual Audio_10bit_720p_x265).mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Shingeki no Kyojin Season 3/[Cleo]Shingeki_no_Kyojin_Season_3_-_01_(Dual Audio_10bit_720p_x265).mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 23,
+          "name": "[Cleo]Shingeki_no_Kyojin_Season_3_-_02_(Dual Audio_10bit_720p_x265).mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Shingeki no Kyojin Season 3/[Cleo]Shingeki_no_Kyojin_Season_3_-_02_(Dual Audio_10bit_720p_x265).mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 24,
+          "name": "[Cleo]Shingeki_no_Kyojin_Season_3_-_03_(Dual Audio_10bit_720p_x265).mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Shingeki no Kyojin Season 3/[Cleo]Shingeki_no_Kyojin_Season_3_-_03_(Dual Audio_10bit_720p_x265).mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 25,
+          "name": "[Cleo]Shingeki_no_Kyojin_Season_3_-_04_(Dual Audio_10bit_720p_x265).mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Shingeki no Kyojin Season 3/[Cleo]Shingeki_no_Kyojin_Season_3_-_04_(Dual Audio_10bit_720p_x265).mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 26,
+          "name": "[Cleo]Shingeki_no_Kyojin_Season_3_-_05_(Dual Audio_10bit_720p_x265).mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Shingeki no Kyojin Season 3/[Cleo]Shingeki_no_Kyojin_Season_3_-_05_(Dual Audio_10bit_720p_x265).mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 27,
+          "name": "[Cleo]Shingeki_no_Kyojin_Season_3_-_06_(Dual Audio_10bit_720p_x265).mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Shingeki no Kyojin Season 3/[Cleo]Shingeki_no_Kyojin_Season_3_-_06_(Dual Audio_10bit_720p_x265).mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 28,
+          "name": "[Cleo]Shingeki_no_Kyojin_Season_3_-_07_(Dual Audio_10bit_720p_x265).mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Shingeki no Kyojin Season 3/[Cleo]Shingeki_no_Kyojin_Season_3_-_07_(Dual Audio_10bit_720p_x265).mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 29,
+          "name": "[Cleo]Shingeki_no_Kyojin_Season_3_-_08_(Dual Audio_10bit_720p_x265).mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Shingeki no Kyojin Season 3/[Cleo]Shingeki_no_Kyojin_Season_3_-_08_(Dual Audio_10bit_720p_x265).mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 30,
+          "name": "[Cleo]Shingeki_no_Kyojin_Season_3_-_09_(Dual Audio_10bit_720p_x265).mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Shingeki no Kyojin Season 3/[Cleo]Shingeki_no_Kyojin_Season_3_-_09_(Dual Audio_10bit_720p_x265).mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 31,
+          "name": "[Cleo]Shingeki_no_Kyojin_Season_3_-_10_(Dual Audio_10bit_720p_x265).mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Shingeki no Kyojin Season 3/[Cleo]Shingeki_no_Kyojin_Season_3_-_10_(Dual Audio_10bit_720p_x265).mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 32,
+          "name": "[Cleo]Shingeki_no_Kyojin_Season_3_-_11_(Dual Audio_10bit_720p_x265).mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Shingeki no Kyojin Season 3/[Cleo]Shingeki_no_Kyojin_Season_3_-_11_(Dual Audio_10bit_720p_x265).mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 33,
+          "name": "[Cleo]Shingeki_no_Kyojin_Season_3_-_12_(Dual Audio_10bit_720p_x265).mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Shingeki no Kyojin Season 3/[Cleo]Shingeki_no_Kyojin_Season_3_-_12_(Dual Audio_10bit_720p_x265).mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        }
+      ]
+    },
+    {
+      "id": 34,
+      "name": "Tonari no Seki-kun [1080]",
+      "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Tonari no Seki-kun [1080]",
+      "size": 6148,
+      "isDirectory": true,
+      "children": [
+        {
+          "id": 35,
+          "name": ".DS_Store",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Tonari no Seki-kun [1080]/.DS_Store",
+          "size": 6148,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 36,
+          "name": "[Cleo]Tonari_no_Seki-kun_-_01_(Dual Audio_10bit_BD1080p_x265).mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Tonari no Seki-kun [1080]/[Cleo]Tonari_no_Seki-kun_-_01_(Dual Audio_10bit_BD1080p_x265).mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 37,
+          "name": "[Cleo]Tonari_no_Seki-kun_-_02_(Dual Audio_10bit_BD1080p_x265).mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Tonari no Seki-kun [1080]/[Cleo]Tonari_no_Seki-kun_-_02_(Dual Audio_10bit_BD1080p_x265).mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 38,
+          "name": "[Cleo]Tonari_no_Seki-kun_-_03_(Dual Audio_10bit_BD1080p_x265).mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Tonari no Seki-kun [1080]/[Cleo]Tonari_no_Seki-kun_-_03_(Dual Audio_10bit_BD1080p_x265).mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 39,
+          "name": "[Cleo]Tonari_no_Seki-kun_-_04_(Dual Audio_10bit_BD1080p_x265).mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Tonari no Seki-kun [1080]/[Cleo]Tonari_no_Seki-kun_-_04_(Dual Audio_10bit_BD1080p_x265).mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 40,
+          "name": "[Cleo]Tonari_no_Seki-kun_-_05_(Dual Audio_10bit_BD1080p_x265).mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Tonari no Seki-kun [1080]/[Cleo]Tonari_no_Seki-kun_-_05_(Dual Audio_10bit_BD1080p_x265).mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 41,
+          "name": "[Cleo]Tonari_no_Seki-kun_-_06_(Dual Audio_10bit_BD1080p_x265).mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Tonari no Seki-kun [1080]/[Cleo]Tonari_no_Seki-kun_-_06_(Dual Audio_10bit_BD1080p_x265).mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 42,
+          "name": "[Cleo]Tonari_no_Seki-kun_-_07_(Dual Audio_10bit_BD1080p_x265).mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Tonari no Seki-kun [1080]/[Cleo]Tonari_no_Seki-kun_-_07_(Dual Audio_10bit_BD1080p_x265).mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 43,
+          "name": "[Cleo]Tonari_no_Seki-kun_-_08_(Dual Audio_10bit_BD1080p_x265).mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Tonari no Seki-kun [1080]/[Cleo]Tonari_no_Seki-kun_-_08_(Dual Audio_10bit_BD1080p_x265).mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 44,
+          "name": "[Cleo]Tonari_no_Seki-kun_-_09_(Dual Audio_10bit_BD1080p_x265).mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Tonari no Seki-kun [1080]/[Cleo]Tonari_no_Seki-kun_-_09_(Dual Audio_10bit_BD1080p_x265).mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 45,
+          "name": "[Cleo]Tonari_no_Seki-kun_-_10_(Dual Audio_10bit_BD1080p_x265).mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/Tonari no Seki-kun [1080]/[Cleo]Tonari_no_Seki-kun_-_10_(Dual Audio_10bit_BD1080p_x265).mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        }
+      ]
+    },
+    {
+      "id": 46,
+      "name": "[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]",
+      "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]",
+      "size": 0,
+      "isDirectory": true,
+      "children": [
+        {
+          "id": 47,
+          "name": "[Judas] Shingeki no Kyojin S1 - 01.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 01.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 48,
+          "name": "[Judas] Shingeki no Kyojin S1 - 02.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 02.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 49,
+          "name": "[Judas] Shingeki no Kyojin S1 - 03.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 03.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 50,
+          "name": "[Judas] Shingeki no Kyojin S1 - 04.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 04.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 51,
+          "name": "[Judas] Shingeki no Kyojin S1 - 05.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 05.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 52,
+          "name": "[Judas] Shingeki no Kyojin S1 - 06.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 06.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 53,
+          "name": "[Judas] Shingeki no Kyojin S1 - 07.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 07.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 54,
+          "name": "[Judas] Shingeki no Kyojin S1 - 08.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 08.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 55,
+          "name": "[Judas] Shingeki no Kyojin S1 - 09.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 09.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 56,
+          "name": "[Judas] Shingeki no Kyojin S1 - 10.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 10.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 57,
+          "name": "[Judas] Shingeki no Kyojin S1 - 11.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 11.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 58,
+          "name": "[Judas] Shingeki no Kyojin S1 - 12.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 12.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 59,
+          "name": "[Judas] Shingeki no Kyojin S1 - 13.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 13.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 60,
+          "name": "[Judas] Shingeki no Kyojin S1 - 14.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 14.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 61,
+          "name": "[Judas] Shingeki no Kyojin S1 - 15.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 15.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 62,
+          "name": "[Judas] Shingeki no Kyojin S1 - 16.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 16.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 63,
+          "name": "[Judas] Shingeki no Kyojin S1 - 17.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 17.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 64,
+          "name": "[Judas] Shingeki no Kyojin S1 - 18.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 18.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 65,
+          "name": "[Judas] Shingeki no Kyojin S1 - 19.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 19.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 66,
+          "name": "[Judas] Shingeki no Kyojin S1 - 20.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 20.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 67,
+          "name": "[Judas] Shingeki no Kyojin S1 - 21.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 21.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 68,
+          "name": "[Judas] Shingeki no Kyojin S1 - 22.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 22.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 69,
+          "name": "[Judas] Shingeki no Kyojin S1 - 23.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 23.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 70,
+          "name": "[Judas] Shingeki no Kyojin S1 - 24.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 24.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 71,
+          "name": "[Judas] Shingeki no Kyojin S1 - 25.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[Judas] Shingeki no Kyojin (Attack on Titan) (Season 1) [BD 1080p][HEVC x265 10bit][Dual-Audio][Eng-Subs]/[Judas] Shingeki no Kyojin S1 - 25.mkv",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        }
+      ]
+    },
+    {
+      "id": 72,
+      "name": "[RH] Shingeki no Kyojin Season 2 [English Dubbed] [1080p]",
+      "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[RH] Shingeki no Kyojin Season 2 [English Dubbed] [1080p]",
+      "size": 0,
+      "isDirectory": true,
+      "children": [
+        {
+          "id": 73,
+          "name": "[RH] Shingeki no Kyojin Season 2 - 01v2 [2946BD36].mp4",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[RH] Shingeki no Kyojin Season 2 [English Dubbed] [1080p]/[RH] Shingeki no Kyojin Season 2 - 01v2 [2946BD36].mp4",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 74,
+          "name": "[RH] Shingeki no Kyojin Season 2 - 02v2 [8D5B799C].mp4",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[RH] Shingeki no Kyojin Season 2 [English Dubbed] [1080p]/[RH] Shingeki no Kyojin Season 2 - 02v2 [8D5B799C].mp4",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 75,
+          "name": "[RH] Shingeki no Kyojin Season 2 - 03v2 [FEAA915D].mp4",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[RH] Shingeki no Kyojin Season 2 [English Dubbed] [1080p]/[RH] Shingeki no Kyojin Season 2 - 03v2 [FEAA915D].mp4",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 76,
+          "name": "[RH] Shingeki no Kyojin Season 2 - 04 [B3D4021B].mp4",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[RH] Shingeki no Kyojin Season 2 [English Dubbed] [1080p]/[RH] Shingeki no Kyojin Season 2 - 04 [B3D4021B].mp4",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 77,
+          "name": "[RH] Shingeki no Kyojin Season 2 - 05 [C6D4A045].mp4",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[RH] Shingeki no Kyojin Season 2 [English Dubbed] [1080p]/[RH] Shingeki no Kyojin Season 2 - 05 [C6D4A045].mp4",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 78,
+          "name": "[RH] Shingeki no Kyojin Season 2 - 06 [02BD8DC7].mp4",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[RH] Shingeki no Kyojin Season 2 [English Dubbed] [1080p]/[RH] Shingeki no Kyojin Season 2 - 06 [02BD8DC7].mp4",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 79,
+          "name": "[RH] Shingeki no Kyojin Season 2 - 07 [D434733C].mp4",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[RH] Shingeki no Kyojin Season 2 [English Dubbed] [1080p]/[RH] Shingeki no Kyojin Season 2 - 07 [D434733C].mp4",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 80,
+          "name": "[RH] Shingeki no Kyojin Season 2 - 08 [8C7FB0E3].mp4",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[RH] Shingeki no Kyojin Season 2 [English Dubbed] [1080p]/[RH] Shingeki no Kyojin Season 2 - 08 [8C7FB0E3].mp4",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 81,
+          "name": "[RH] Shingeki no Kyojin Season 2 - 09 [63E028C5].mp4",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[RH] Shingeki no Kyojin Season 2 [English Dubbed] [1080p]/[RH] Shingeki no Kyojin Season 2 - 09 [63E028C5].mp4",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 82,
+          "name": "[RH] Shingeki no Kyojin Season 2 - 10 [29FC3A39].mp4",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[RH] Shingeki no Kyojin Season 2 [English Dubbed] [1080p]/[RH] Shingeki no Kyojin Season 2 - 10 [29FC3A39].mp4",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 83,
+          "name": "[RH] Shingeki no Kyojin Season 2 - 11 [44801E9D].mp4",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[RH] Shingeki no Kyojin Season 2 [English Dubbed] [1080p]/[RH] Shingeki no Kyojin Season 2 - 11 [44801E9D].mp4",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "id": 84,
+          "name": "[RH] Shingeki no Kyojin Season 2 - 12 [862A9B84].mp4",
+          "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure/[RH] Shingeki no Kyojin Season 2 [English Dubbed] [1080p]/[RH] Shingeki no Kyojin Season 2 - 12 [862A9B84].mp4",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        }
+      ]
+    }
+  ],
+  "cleanFilenameEntries": {
+    "2": {
+      "name": "Airplane",
+      "year": 1980
+    },
+    "21": {
+      "name": "Shingeki no Kyojin Season 3",
+      "year": 0
+    },
+    "34": {
+      "name": "Tonari no Seki kun",
+      "year": 1080
+    },
+    "46": {
+      "name": "Judas Shingeki no Kyojin Attack on Titan Season 1 BD",
+      "year": 1080
+    },
+    "7": {
+      "name": "Andaz Apna Apna",
+      "year": 1994
+    },
+    "72": {
+      "name": "RH Shingeki no Kyojin Season 2 English Dubbed",
+      "year": 1080
+    },
+    "9": {
+      "name": "Attack on Titan",
+      "year": 2013
+    }
+  },
+  "movieResults": {},
+  "tvResults": {}
+}
