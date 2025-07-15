@@ -178,6 +178,21 @@ func (t TmdbScrapper) SearchMovie(in models.ClearFileEntry) ([]models.MovieResul
 	return out, nil
 }
 
-func (t TmdbScrapper) GetRenameString(mediaName string, year int, mediaID string) string {
-	return fmt.Sprintf("%s (%d) [tmdbid-%s]", mediaName, year, mediaID)
+func (t TmdbScrapper) GetProperMediaName(mediaName string, year int, mediaID string) string {
+	out := mediaName
+	if year > 0 {
+		out += fmt.Sprintf(" (%d)", year)
+	}
+	if len(mediaID) > 0 {
+		out += fmt.Sprintf(" [tmdbid-%s]", mediaID)
+	}
+	return out
+}
+
+func (t TmdbScrapper) GetProperEpisodeName(mediaName string, season, episode int) string {
+	// returns "Season XX/mediaName SXXEYY"
+	if season == -1 || episode == -1 {
+		return ""
+	}
+	return fmt.Sprintf("Season %02d/%s S%02dE%02d", season, mediaName, season, episode)
 }

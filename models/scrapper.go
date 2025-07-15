@@ -54,15 +54,41 @@ type ScrapSearchRenameResult struct {
 }
 
 type MovieRenameResult struct {
-	MovieResult     MovieResult       `json:"movieResult"`
-	RootRenames     []MediaPathRename `json:"rootRenames"`
-	MediaRenames    []MediaPathRename `json:"mediaRenames"`
-	SubtitleRenames []MediaPathRename `json:"subtitleRenames"`
+	MovieResult       MovieResult       `json:"movieResult"`
+	RootRenames       []MediaPathRename `json:"rootRenames"`
+	MediaRenames      []MediaPathRename `json:"mediaRenames"`
+	SubtitleRenames   []MediaPathRename `json:"subtitleRenames"`
+	IgnoredMediaPaths []string          `json:"ignoredMediaPaths"`
 }
 
 type TVRenameResult struct {
-	TVResult         TVResult          `json:"tvResult"`
-	MediaPathRenames []MediaPathRename `json:"mediaPathRenames"`
+	TVResult          TVResult          `json:"tvResult"`
+	RootRenames       []MediaPathRename `json:"rootRenames"`
+	MediaRenames      []MediaPathRename `json:"mediaRenames"`
+	SubtitleRenames   []MediaPathRename `json:"subtitleRenames"`
+	IgnoredMediaPaths []string          `json:"ignoredMediaPaths"`
+}
+
+func (r TVRenameResult) String() string {
+	out := ""
+	out += fmt.Sprintf("TV: %s\nMedia Renames:\n", r.TVResult.Name)
+	for _, mediaRename := range r.MediaRenames {
+		out += fmt.Sprintf("\nOLD: %s\nNEW: %s\n", mediaRename.OldPath, mediaRename.NewPath)
+	}
+	if len(r.SubtitleRenames) > 0 {
+		out += "\n\nSubtitles:\n"
+		for _, srt := range r.SubtitleRenames {
+			out += fmt.Sprintf("\nOLD: %s\nNEW: %s\n", srt.OldPath, srt.NewPath)
+		}
+	}
+	if len(r.IgnoredMediaPaths) > 0 {
+		out += "\n\nIgnored files:\n"
+		for _, ignoredFilepath := range r.IgnoredMediaPaths {
+			out += fmt.Sprintf("\n-> %s", ignoredFilepath)
+		}
+		out += "\n"
+	}
+	return out
 }
 
 type MediaPathRename struct {
