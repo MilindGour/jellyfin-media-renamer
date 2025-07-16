@@ -357,6 +357,14 @@
           "children": null
         },
         {
+          "id": 7748,
+          "name": "[Cleo]TV_Show_C_-_10_(Dual Audio_10bit_BD1080p_x265).mkv",
+          "path": "test-location/testdata/fs-structure/TV Show C [1080]/[Cleo]TV_Show_C_-S2_10_HINDI_(Dual Audio_10bit_BD1080p_x265).mkv",
+          "size": 80,
+          "isDirectory": false,
+          "children": null
+        },
+        {
           "id": 7749,
           "name": "[Cleo]TV_Show_C_-_10_(Dual Audio_10bit_BD1080p_x265).mkv",
           "path": "test-location/testdata/fs-structure/TV Show C [1080]/[Cleo]TV_Show_C_-_10_HINDI_(Dual Audio_10bit_BD1080p_x265).mkv",

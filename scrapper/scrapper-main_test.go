@@ -198,7 +198,7 @@ func Test_getSingleTVRenames(t *testing.T) {
 			name:           "Test TV 3",
 			id:             34,
 			tvResult:       models.TVResult{MediaInfo: models.MediaInfo{Name: "Test C", Description: "Test description", YearOfRelease: 2017, MediaID: "789"}},
-			wantTotalMedia: 10,
+			wantTotalMedia: 11,
 			wantTotalSrt:   0,
 			wantNilResult:  false,
 		},

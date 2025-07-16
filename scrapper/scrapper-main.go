@@ -156,6 +156,9 @@ func getSingleTVRenames(id int, tvResult models.TVResult) *models.TVRenameResult
 			tvFileNew := util.JoinPaths(tvRootNew, tvFilenameNew)
 			out.MediaRenames = append(out.MediaRenames, *NewPathRename(tvFileOld, tvFileNew))
 		}
+
+		// sort the media files by season and episodes.
+		slices.SortFunc(out.MediaRenames, util.SortBySeasonAndEpisodeNumbers)
 	}
 
 	// Get srt files
@@ -174,6 +177,9 @@ func getSingleTVRenames(id int, tvResult models.TVResult) *models.TVRenameResult
 			srtFileNew := util.JoinPaths(tvRootNew, srtFilenameNew)
 			out.SubtitleRenames = append(out.SubtitleRenames, *NewPathRename(srtFileOld, srtFileNew))
 		}
+
+		// sort the srt files by season and episodes.
+		slices.SortFunc(out.SubtitleRenames, util.SortBySeasonAndEpisodeNumbers)
 	}
 
 	return out
