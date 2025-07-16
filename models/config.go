@@ -11,6 +11,11 @@ type ConfigSource struct {
 	Path string `json:"path"`
 }
 
+type ConfigSourceByIDResponse struct {
+	BasePath         string           `json:"basePath"`
+	DirectoryEntries []DirectoryEntry `json:"directoryEntries"`
+}
+
 type ClearFileEntry struct {
 	Name string `json:"name"`
 	Year int    `json:"year"`

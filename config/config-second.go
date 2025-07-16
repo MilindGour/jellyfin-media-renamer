@@ -17,7 +17,7 @@ func PopulateSecondScreenResponse(selectedIds []int) (*models.SecondScreenRespon
 
 	// select all the directories using selectedIds
 	for _, selectedID := range selectedIds {
-		entry := util.Filter(state.LastConfigSourceByID, func(x models.DirectoryEntry) bool {
+		entry := util.Filter(state.LastConfigSourceByID.DirectoryEntries, func(x models.DirectoryEntry) bool {
 			return x.ID == int(selectedID)
 		})
 		if len(entry) > 0 {

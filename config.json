@@ -20,6 +20,11 @@
       "id": 1003,
       "name": "Transmission Downloads",
       "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/transmission_downloads"
+    },
+    {
+      "id": 1004,
+      "name": "Test data",
+      "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure"
     }
   ]
 }

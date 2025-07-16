@@ -102,4 +102,18 @@ func postScrapConfirmIds(w http.ResponseWriter, r *http.Request) {
 		util.HandleAPIError(w, http.StatusBadRequest, "Invalid argument passed.", err)
 		return
 	}
+
+	if isValidRequest := scrapper.ValidateScrapConfirmRequest(in); !isValidRequest {
+		util.HandleAPIError(w, http.StatusBadRequest, "Atleast one of movie / tv details is required.", nil)
+		return
+	}
+
+	renameResult := scrapper.GetMediaRenames(in, state.LastSecondPageAPIResponse.SelectedDirEntries)
+	jsonRenameResult, err := json.Marshal(renameResult)
+	if err != nil {
+		util.HandleAPIError(w, http.StatusInternalServerError, "Unable to marshal renameResult", err)
+	}
+
+	w.Header().Add("Content-Type", "application/json")
+	w.Write(jsonRenameResult)
 }

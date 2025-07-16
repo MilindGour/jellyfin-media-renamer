@@ -8,7 +8,6 @@ import (
 	"fmt"
 
 	"github.com/MilindGour/jellyfin-media-renamer/models"
-	"github.com/MilindGour/jellyfin-media-renamer/state"
 	"github.com/MilindGour/jellyfin-media-renamer/util"
 )
 
@@ -24,7 +23,7 @@ func GetConfigSource() ([]models.ConfigSource, error) {
 	return theConfig.Source, nil
 }
 
-func GetConfigSourceByID(id int) ([]models.DirectoryEntry, error) {
+func GetConfigSourceByID(id int) (*models.ConfigSourceByIDResponse, error) {
 	cfg, err := GetConfig()
 	if err != nil {
 		return nil, err
@@ -36,9 +35,18 @@ func GetConfigSourceByID(id int) ([]models.DirectoryEntry, error) {
 
 	if len(result) > 0 {
 		dirPath := result[0].Path
-		// Storing in LastConfigSourceById for next api call
-		state.LastConfigSourceByID, err = util.GetDirectoryEntries(dirPath)
-		return state.LastConfigSourceByID, err
+
+		res, err := util.GetDirectoryEntries(dirPath)
+		if err != nil {
+			return nil, err
+		}
+
+		out := &models.ConfigSourceByIDResponse{
+			BasePath:         dirPath,
+			DirectoryEntries: res,
+		}
+
+		return out, err
 	}
 	return nil, fmt.Errorf("cannot find the id: %d of the config", id)
 }

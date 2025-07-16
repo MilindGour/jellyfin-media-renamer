@@ -1,0 +1,8 @@
+package testdata
+
+import (
+	_ "embed"
+)
+
+//go:embed tmdb_scrap_search_response.json
+var ScrapSearchResponseMock []byte

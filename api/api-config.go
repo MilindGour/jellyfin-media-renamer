@@ -70,12 +70,14 @@ func getConfigSourceByID(w http.ResponseWriter, r *http.Request) {
 		}
 		// reset fileID to enable predictive ids
 		util.ResetNextFileID()
-		dirEntries, err := config.GetConfigSourceByID(idInt)
+		res, err := config.GetConfigSourceByID(idInt)
 		if err != nil {
+			state.LastConfigSourceByID = nil
 			util.HandleAPIError(w, http.StatusNotFound, "Cannot find the specified ID", err)
 			return
 		}
-		jsonResult, err := json.Marshal(dirEntries)
+		state.LastConfigSourceByID = res
+		jsonResult, err := json.Marshal(res)
 		if err != nil {
 			util.HandleAPIError(w, http.StatusInternalServerError, "Cannot marshal directory entries", err)
 		}
