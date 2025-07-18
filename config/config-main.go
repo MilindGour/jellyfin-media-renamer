@@ -51,6 +51,7 @@ func GetConfigSourceByID(id int) (*models.ConfigSourceByIDResponse, error) {
 	return nil, fmt.Errorf("cannot find the id: %d of the config", id)
 }
 
+// readConfigJSON function read the config.json file according to appropriate environment.
 func readConfigJSON() (*models.Config, error) {
 	theConfig := models.Config{}
 	configFileContents, err := util.GetConfigFileContents()

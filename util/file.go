@@ -148,14 +148,11 @@ func SortBySeasonAndEpisodeNumbers(a, b models.MediaPathRename) int {
 	} else if seasonA < seasonB {
 		return -1
 	}
-	return episodeA - episodeB
-}
-
-func GetFileExtension(filename string) string {
-	re := regexp.MustCompile(`.*(\.[A-Za-z0-9]+)$`)
-	extMatch := re.FindStringSubmatch(filename)
-	if extMatch == nil || extMatch[1] == filename {
-		return ""
+	if episodeA > episodeB {
+		return 1
 	}
-	return extMatch[1]
+	if episodeB > episodeA {
+		return -1
+	}
+	return 0
 }
