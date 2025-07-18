@@ -3,7 +3,7 @@ Description=Jellyfin Media Renamer
 
 [Service]
 ExecStart=/usr/local/bin/jmr
-User=jenkins
+User=jellyfin-media-renamer
 
 [Install]
 WantedBy=multi-user.target

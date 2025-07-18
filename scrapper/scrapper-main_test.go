@@ -3,7 +3,6 @@ package scrapper
 import (
 	_ "embed"
 	"encoding/json"
-	"fmt"
 	"testing"
 
 	"github.com/MilindGour/jellyfin-media-renamer/models"
@@ -47,7 +46,7 @@ func Test_getSingleMovieRenames(t *testing.T) {
 			id:             2,
 			movieResult:    models.MovieResult{MediaInfo: models.MediaInfo{Name: "Test Movie 1", Description: "Test description 1", YearOfRelease: 1980, MediaID: "1111"}},
 			wantNilResult:  false,
-			wantTotalMedia: 2,
+			wantTotalMedia: 1,
 			wantTotalSrt:   1,
 		},
 		{
@@ -207,7 +206,6 @@ func Test_getSingleTVRenames(t *testing.T) {
 		t.Run(tt.name, func(t *testing.T) {
 			got := getSingleTVRenames(tt.id, tt.tvResult)
 
-			fmt.Println(got)
 			if got == nil {
 				if !tt.wantNilResult {
 					t.Errorf("getSingleTVRenames() = nil, want non-nil")

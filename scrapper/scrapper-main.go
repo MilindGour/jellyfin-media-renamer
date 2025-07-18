@@ -190,7 +190,7 @@ func getSingleTVRenames(id int, tvResult models.TVResult) *models.TVRenameResult
 func parseSeasonAndEpisodeNumberFromFilepath(filepath string) (int, int) {
 	filepathWithoutExtension, _ := strings.CutSuffix(filepath, path.Ext(filepath))
 	in := strings.ToLower(filepathWithoutExtension)
-	in += "_"
+	in += "_" // added to pass the last two regexps
 
 	testREs := []*regexp.Regexp{
 		regexp.MustCompile(`s(\d{2})e(\d{2})`),                     // SXXEXX
