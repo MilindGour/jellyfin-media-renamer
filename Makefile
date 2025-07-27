@@ -26,7 +26,7 @@ buildbe:
 buildfe:
 	@echo
 	@echo "[MAKEFILE] Building frontend"
-	cd frontend && npm run build
+	cd frontend && npm install && npm run build
 
 test:
 	@echo
