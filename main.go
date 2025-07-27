@@ -12,6 +12,7 @@ import (
 
 func main() {
 	applicationPort := ":7749"
+	log.SetFlags(0)
 
 	// get command line args
 	args := os.Args

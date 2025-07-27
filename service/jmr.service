@@ -2,7 +2,7 @@
 Description=Jellyfin Media Renamer
 
 [Service]
-ExecStart=/usr/local/bin/jmr
+ExecStart=/var/lib/jellfin-media-renamer/jmr-app/jmr
 User=jellyfin-media-renamer
 
 [Install]
