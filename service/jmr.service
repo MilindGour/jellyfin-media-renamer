@@ -2,8 +2,9 @@
 Description=Jellyfin Media Renamer
 
 [Service]
-ExecStart=/var/lib/jellyfin-media-renamer/jmr-app/jmr
 User=jellyfin-media-renamer
+WorkingDirectory=$HOME/jmr-app
+ExecStart=$HOME/jmr-app/start-all.sh
 
 [Install]
 WantedBy=multi-user.target
