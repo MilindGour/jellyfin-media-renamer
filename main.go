@@ -39,7 +39,5 @@ func main() {
 	apiSubrouter := r.PathPrefix("/api").Subrouter()
 	api.RegisterAPIRoutes(apiSubrouter)
 
-	// ping route
-	r.HandleFunc("/ping", api.HandlePingRequest)
 	http.ListenAndServe(applicationPort, r)
 }

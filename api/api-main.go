@@ -7,7 +7,6 @@ import (
 
 // RegisterAPIRoutes adds /api routes to the given router.
 func RegisterAPIRoutes(muxRouter *mux.Router) {
-
 	// logging middleware
 	muxRouter.Use(middlewares.LogMW)
 
@@ -18,4 +17,7 @@ func RegisterAPIRoutes(muxRouter *mux.Router) {
 	// /api/scrap
 	scrapRouter := muxRouter.PathPrefix("/scrap").Subrouter()
 	RegisterScrapRoutes(scrapRouter)
+
+	// ping route
+	muxRouter.HandleFunc("/ping", HandlePingRequest)
 }
