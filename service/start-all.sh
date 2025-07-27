@@ -8,7 +8,8 @@
 BACKEND_PID=$!
 
 # Start frontend
-PORT=7750 $(which node) ./frontend &
+source ~/.bashrc
+PORT=7750 node ./frontend &
 FRONTEND_PID=$!
 
 trap "kill $BACKEND_PID $FRONTEND_PID" SIGINT SIGTERM
