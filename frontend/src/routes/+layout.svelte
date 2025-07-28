@@ -5,7 +5,7 @@
 	let { children } = $props();
 </script>
 
-<div class="page-container mx-auto max-w-5xl">
+<div class="page-container mx-auto max-w-5xl px-4">
 	<JmrHeader />
 	{@render children()}
 </div>

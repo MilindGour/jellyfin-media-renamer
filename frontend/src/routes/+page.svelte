@@ -1,13 +1,6 @@
 <script lang="ts">
-	import { Dropdown, DropdownService } from '$lib/dropdown';
-
-	const items = [
-		{ label: 'Media TV', path: '/mnt/media/tv' },
-		{ label: 'Media Movies', path: '/mnt/media/movies' },
-		{ label: 'Transmission Downloads', path: '/var/lib/transmission-daemon/downloads' },
-		{ label: 'Data TV', path: '/mnt/data/tv' },
-		{ label: 'Data Movie', path: '/mnt/data/movie' }
-	];
+	import { Dropdown, DropdownService } from '$lib/components/dropdown';
+	import { Button } from '$lib/components/button';
 
 	function formatPath(path: string): string {
 		if (path.startsWith('/')) {
@@ -16,16 +9,23 @@
 		return path.split('/').join(' > ');
 	}
 
-	function getSelectedItemFromDropdown() {
+	function handleScanDirClick() {
 		// This method will get the selected item from the dropdown
 		const value = DropdownService.getValueOf('dropdown1');
 		console.log('Dropdown1 value =', $state.snapshot(value));
 	}
 </script>
 
-<Dropdown id="dropdown1" options={items} itemTemplate={dropdownTemplate} initialValue={items[2]} />
-
-<button onclick={getSelectedItemFromDropdown} class="cursor-pointer">Get Selected Item</button>
+<section class="page flex flex-col gap-8">
+	<section
+		class="form-section flex flex-col flex-wrap items-stretch gap-2 sm:flex-row sm:items-start"
+	>
+		<label class="basis-full" for="dropdown1">Please select media source directory</label>
+		<Dropdown id="dropdown1" options={[]} itemTemplate={dropdownTemplate} />
+		<Button type="primary" onclick={handleScanDirClick}>Scan Directory</Button>
+	</section>
+	<section class="list-section">This is list section.</section>
+</section>
 
 {#snippet dropdownTemplate(item: any)}
 	<div class="item-instance">

@@ -59,7 +59,11 @@
 	}
 </script>
 
-<div bind:this={dd.el} class="jmr-dropdown relative inline-block min-w-xs" class:open={dd.open}>
+<div
+	bind:this={dd.el}
+	class="jmr-dropdown relative inline-block min-w-full sm:min-w-sm"
+	class:open={dd.open}
+>
 	<button
 		type="button"
 		class="dropdown-head inline-flex w-full cursor-pointer items-center gap-3 rounded-md border border-gray-400 p-2 text-start"

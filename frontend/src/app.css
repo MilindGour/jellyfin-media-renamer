@@ -1,3 +1,8 @@
 @import 'tailwindcss';
 @plugin '@tailwindcss/forms';
 @plugin '@tailwindcss/typography';
+
+@theme {
+  --color-primary-bg: hsl(220 25% 50%);
+  --color-primary-fg: hsl(220 25% 90%);
+}
