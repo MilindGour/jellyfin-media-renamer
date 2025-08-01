@@ -27,7 +27,7 @@
 	<section class="list-section">This is list section.</section>
 </section>
 
-{#snippet dropdownTemplate(item: any)}
+{#snippet dropdownTemplate(item: { label: string; path: string })}
 	<div class="item-instance">
 		<div class="font-semibold">{item.label}</div>
 		<div class="text-sm text-gray-500">{formatPath(item.path)}</div>
