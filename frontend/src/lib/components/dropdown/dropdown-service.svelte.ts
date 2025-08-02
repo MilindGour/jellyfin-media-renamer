@@ -18,14 +18,14 @@ export class DropdownService {
     DropdownService.dropdowns[id] = dropdownData;
     return true;
   }
-  static getValueOf(id: string): any {
+  static getValueOf<T>(id: string): T | null {
     if (id in DropdownService.dropdowns) {
       return DropdownService.dropdowns[id].value;
     }
     return null;
   }
 
-  static unregister(id: any) {
+  static unregister(id: string) {
     if (id in DropdownService.dropdowns) {
       delete DropdownService.dropdowns[id];
     }

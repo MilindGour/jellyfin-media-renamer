@@ -6,6 +6,7 @@ import (
 	"os"
 
 	"github.com/MilindGour/jellyfin-media-renamer/api"
+	"github.com/MilindGour/jellyfin-media-renamer/middlewares"
 	"github.com/MilindGour/jellyfin-media-renamer/util"
 	"github.com/gorilla/mux"
 )
@@ -34,10 +35,17 @@ func main() {
 	log.Println("Server starting on", applicationPort)
 
 	r := mux.NewRouter()
+	r.Use(middlewares.CorsMW)
 
 	// API subrouter
 	apiSubrouter := r.PathPrefix("/api").Subrouter()
 	api.RegisterAPIRoutes(apiSubrouter)
 
-	http.ListenAndServe(applicationPort, r)
+	if !util.IsProduction() {
+		corsed := middlewares.CorsMW(r)
+		http.ListenAndServe(applicationPort, corsed)
+	} else {
+		http.ListenAndServe(applicationPort, r)
+	}
+
 }
