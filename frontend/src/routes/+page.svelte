@@ -1,26 +1,16 @@
 <script lang="ts">
-	import { Dropdown, DropdownService } from '$lib/components/dropdown';
 	import { Button } from '$lib/components/button';
-	import type { PageProps } from './$types';
-	import { onMount } from 'svelte';
-	import type { ConfigSource, DirEntry } from '$lib/models/config-models';
+	import { Dropdown, DropdownService } from '$lib/components/dropdown';
+	import type { ConfigSource } from '$lib/models/config-models';
 	import { JNetworkClient } from '$lib/services/network';
 	import { JmrStore } from '$lib/stores/app-store.svelte';
+	import type { PageProps } from './$types';
+	import { formatPathString } from '$lib/stores/util';
+	import { ConfigSourceDetailList } from '$lib/components/configSourceDetailList';
 
 	const { data }: PageProps = $props();
 	const netClient: JNetworkClient = new JNetworkClient();
-
 	const jmrStore = new JmrStore(netClient);
-
-	onMount(() => {
-		console.log('[dbg] load data:', data);
-	});
-	function formatPath(path: string): string {
-		if (path.startsWith('/')) {
-			path = path.substring(1);
-		}
-		return path.split('/').join(' > ');
-	}
 
 	async function handleScanDirClick() {
 		const cs = DropdownService.getValueOf<ConfigSource>('cfgSourceDD');
@@ -45,13 +35,7 @@
 		{#await jmrStore.configSourceDetails}
 			Loading subdirectories of selected source...
 		{:then cfd}
-			{#if cfd !== null}
-				{#each cfd.directoryEntries as cfdItem (cfdItem.id)}
-					{@render configSourceDetailListItem(cfdItem)}
-				{/each}
-			{:else}
-				Please select a media source directory.
-			{/if}
+			<ConfigSourceDetailList id="directoryList" data={cfd} />
 		{/await}
 	</section>
 </section>
@@ -59,12 +43,6 @@
 {#snippet dropdownTemplate(item: ConfigSource)}
 	<div class="item-instance">
 		<div class="font-semibold">{item.name}</div>
-		<div class="text-sm text-gray-500">{formatPath(item.path)}</div>
-	</div>
-{/snippet}
-
-{#snippet configSourceDetailListItem(item: DirEntry)}
-	<div class="config-source-details-item">
-		{item.name}, {item.size}, {item.path}
+		<div class="text-sm text-gray-500">{formatPathString(item.path)}</div>
 	</div>
 {/snippet}

@@ -79,7 +79,7 @@
 			transition:slideDown
 			class="dropdown-list absolute mt-px flex w-full flex-col overflow-hidden rounded-md border border-gray-400 bg-white"
 		>
-			{#each dd.options as option}
+			{#each dd.options as option (option)}
 				<button
 					onclick={() => handleItemSelect(option)}
 					class="item block cursor-pointer p-2 text-left"
