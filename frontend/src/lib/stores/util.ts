@@ -23,9 +23,7 @@ export function convertToSizeString(totalBytes: number): string {
     }
   }
 
-  // rounding off logic
-  const roundedOutTotal = Math.round(outTotal * 100) / 100;
-  return `${Math.round(roundedOutTotal)} ${allUnits[outUnitIndex]}`;
+  return `${outTotal.toFixed(2)} ${allUnits[outUnitIndex]}`;
 }
 
 export function joinStrings(...parts: string[]): string {
