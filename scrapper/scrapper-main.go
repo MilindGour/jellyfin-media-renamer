@@ -78,7 +78,7 @@ func getSingleMovieRenames(id int, movieResult models.MovieResult) *models.Movie
 	out.RootRenames = append(out.RootRenames, *NewPathRename(movieRootOld, movieRootNew))
 
 	// Get main video file
-	videoExts := config.GetAllowedMediaExtensions()
+	videoExts := config.NewJmrConfig().GetMediaExtensions()
 	videoEntries := util.FilterVideoFileEntries(targetDirEntry, videoExts)
 	if len(videoEntries) > 0 {
 		slices.SortFunc(videoEntries, util.SortByFileSizeDescending)
@@ -99,7 +99,7 @@ func getSingleMovieRenames(id int, movieResult models.MovieResult) *models.Movie
 	}
 
 	// Get subtitle
-	subTitleExts := config.GetAllowedSubtitleExtensions()
+	subTitleExts := config.NewJmrConfig().GetSubtitleExtensions()
 	subtitleEntries := util.FilterSubtitleFileEntries(targetDirEntry, subTitleExts)
 	if len(subtitleEntries) > 0 {
 		slices.SortFunc(subtitleEntries, util.SortByFileSizeDescending)
@@ -142,7 +142,7 @@ func getSingleTVRenames(id int, tvResult models.TVResult) *models.TVRenameResult
 	out.RootRenames = append(out.RootRenames, *NewPathRename(tvRootOld, tvRootNew))
 
 	// Get video files
-	videoExts := config.GetAllowedSubtitleExtensions()
+	videoExts := (config.NewJmrConfig()).GetMediaExtensions()
 	videoEntries := util.FilterVideoFileEntries(targetDirEntry, videoExts)
 	seasonMap := map[int][]int{}
 	if len(videoEntries) > 0 {
@@ -166,7 +166,7 @@ func getSingleTVRenames(id int, tvResult models.TVResult) *models.TVRenameResult
 	}
 
 	// Get srt files
-	srtExts := config.GetAllowedSubtitleExtensions()
+	srtExts := config.NewJmrConfig().GetSubtitleExtensions()
 	srtEntries := util.FilterSubtitleFileEntries(targetDirEntry, srtExts)
 	if len(srtEntries) > 0 {
 		slices.SortFunc(srtEntries, util.SortByFileSizeDescending)

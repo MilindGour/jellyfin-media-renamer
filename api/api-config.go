@@ -24,13 +24,9 @@ func RegisterConfigRoutes(r *mux.Router) {
 }
 
 func getConfig(w http.ResponseWriter, _ *http.Request) {
-	cfg, err := config.GetConfig()
-	if err != nil {
-		util.HandleAPIError(w, http.StatusInternalServerError, "Cannot get config", err)
-		return
-	}
+	jmrConfig := config.NewJmrConfig()
 
-	cfgjson, err := json.Marshal(cfg)
+	cfgjson, err := json.Marshal(jmrConfig)
 	if err != nil {
 		util.HandleAPIError(w, http.StatusInternalServerError, "Cannot marshal config", err)
 		return
@@ -42,13 +38,9 @@ func getConfig(w http.ResponseWriter, _ *http.Request) {
 
 // getConfigSource GET /api/config/source.
 func getConfigSource(w http.ResponseWriter, r *http.Request) {
-	cfg, err := config.GetConfigSource()
-	if err != nil {
-		util.HandleAPIError(w, http.StatusInternalServerError, "Cannot get config source", err)
-		return
-	}
+	sourceList := config.NewJmrConfig().GetSourceList()
 
-	cfgjson, err := json.Marshal(cfg)
+	cfgjson, err := json.Marshal(sourceList)
 	if err != nil {
 		util.HandleAPIError(w, http.StatusInternalServerError, "Cannot marshal config source", err)
 		return
@@ -70,7 +62,8 @@ func getConfigSourceByID(w http.ResponseWriter, r *http.Request) {
 		}
 		// reset fileID to enable predictive ids
 		util.ResetNextFileID()
-		res, err := config.GetConfigSourceByID(idInt)
+		jmrConfig := config.NewJmrConfig()
+		res, err := jmrConfig.GetSourceByID(idInt)
 		if err != nil {
 			state.LastConfigSourceByID = nil
 			util.HandleAPIError(w, http.StatusNotFound, "Cannot find the specified ID", err)

@@ -101,7 +101,7 @@ func FilterVideoFileEntries(in models.DirectoryEntry, videoExtensions []string) 
 func fileExtensionFilterFunction(extensions []string) func(models.DirectoryEntry) bool {
 	return func(de models.DirectoryEntry) bool {
 		for _, ext := range extensions {
-			if strings.HasSuffix(de.Name, ext) {
+			if strings.HasSuffix(de.Path, ext) {
 				return true
 			}
 		}
