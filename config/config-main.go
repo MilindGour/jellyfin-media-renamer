@@ -11,8 +11,6 @@ import (
 	"github.com/MilindGour/jellyfin-media-renamer/util"
 )
 
-var jmrConfigInstance *JmrConfig = nil
-
 type JmrConfig struct {
 	config *models.Config
 }
