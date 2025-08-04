@@ -15,6 +15,37 @@ func GetConfig() (*models.Config, error) {
 	return readConfigJSON()
 }
 
+func getConfigAllowedExtensions() (*models.AllowedExtensions, error) {
+	theConfig, err := readConfigJSON()
+	if err != nil {
+		return nil, err
+	}
+	return &theConfig.AllowedExtensions, nil
+}
+
+// GetAllowedAllExtensions method returns the list of
+// all the extensions allowed to be listed in frontend.
+func GetAllowedAllExtensions() []string {
+	allExt := GetAllowedMediaExtensions()
+	allExt = append(allExt, GetAllowedSubtitleExtensions()...)
+
+	return allExt
+}
+func GetAllowedMediaExtensions() []string {
+	allowedExtensions, err := getConfigAllowedExtensions()
+	if err != nil {
+		return []string{".mp4", ".avi", ".mkv", ".m4v"}
+	}
+	return allowedExtensions.Media
+}
+func GetAllowedSubtitleExtensions() []string {
+	allowedExtensions, err := getConfigAllowedExtensions()
+	if err != nil {
+		return []string{".srt"}
+	}
+	return allowedExtensions.Subtitle
+}
+
 func GetConfigSource() ([]models.ConfigSource, error) {
 	theConfig, err := readConfigJSON()
 	if err != nil {
@@ -36,7 +67,8 @@ func GetConfigSourceByID(id int) (*models.ConfigSourceByIDResponse, error) {
 	if len(result) > 0 {
 		dirPath := result[0].Path
 
-		res, err := util.GetDirectoryEntries(dirPath)
+		allExts := GetAllowedAllExtensions()
+		res, err := util.GetDirectoryEntries(dirPath, allExts)
 		if err != nil {
 			return nil, err
 		}

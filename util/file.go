@@ -4,6 +4,7 @@ import (
 	"errors"
 	"fmt"
 	"os"
+	"path/filepath"
 	"regexp"
 	"strconv"
 	"strings"
@@ -27,7 +28,7 @@ func GetConfigFileContents() ([]byte, error) {
 	return data, err
 }
 
-func GetDirectoryEntries(path string) ([]models.DirectoryEntry, error) {
+func GetDirectoryEntries(path string, allowedExtensions []string) ([]models.DirectoryEntry, error) {
 	dirEntries, err := os.ReadDir(path)
 	if err != nil {
 		return nil, errors.New(fmt.Sprint("Cannot read directory. ", err))
@@ -50,7 +51,7 @@ func GetDirectoryEntries(path string) ([]models.DirectoryEntry, error) {
 		curEntry.IsDirectory = eInfo.IsDir()
 
 		if curEntry.IsDirectory {
-			childEntries, err := GetDirectoryEntries(JoinPaths(path, curEntry.Name))
+			childEntries, err := GetDirectoryEntries(JoinPaths(path, curEntry.Name), allowedExtensions)
 			if err != nil {
 				return nil, err
 			}
@@ -63,6 +64,14 @@ func GetDirectoryEntries(path string) ([]models.DirectoryEntry, error) {
 			curEntry.Children = childEntries
 		} else {
 			curEntry.Children = nil
+
+			// if the file is neither media nor subtitle, skip it
+			fileExtension := filepath.Ext(curEntry.Path)
+			if !HasItem(allowedExtensions, func(x string) bool {
+				return fileExtension == x
+			}) {
+				continue
+			}
 		}
 
 		out = append(out, curEntry)
@@ -80,13 +89,13 @@ func GetConfigFilename() string {
 }
 
 // FilterSubtitleFileEntries recursively filters the subtitle file child entries from a given directory.
-func FilterSubtitleFileEntries(in models.DirectoryEntry) []models.DirectoryEntry {
-	return FilterDirectoryEntries(in, fileExtensionFilterFunction([]string{".srt"}))
+func FilterSubtitleFileEntries(in models.DirectoryEntry, subtitleExtensions []string) []models.DirectoryEntry {
+	return FilterDirectoryEntries(in, fileExtensionFilterFunction(subtitleExtensions))
 }
 
 // FilterVideoFileEntries recursively filters the video file child entries from a given directory.
-func FilterVideoFileEntries(in models.DirectoryEntry) []models.DirectoryEntry {
-	return FilterDirectoryEntries(in, fileExtensionFilterFunction([]string{".mp4", ".avi", ".mkv", ".m4v"}))
+func FilterVideoFileEntries(in models.DirectoryEntry, videoExtensions []string) []models.DirectoryEntry {
+	return FilterDirectoryEntries(in, fileExtensionFilterFunction(videoExtensions))
 }
 
 func fileExtensionFilterFunction(extensions []string) func(models.DirectoryEntry) bool {

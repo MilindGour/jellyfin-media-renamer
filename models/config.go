@@ -1,10 +1,15 @@
 package models
 
 type Config struct {
-	Version string         `json:"version"`
-	Source  []ConfigSource `json:"source"`
+	Version           string            `json:"version"`
+	AllowedExtensions AllowedExtensions `json:"allowedExtensions"`
+	Source            []ConfigSource    `json:"source"`
 }
 
+type AllowedExtensions struct {
+	Media    []string `json:"media"`
+	Subtitle []string `json:"subtitle"`
+}
 type ConfigSource struct {
 	ID   int    `json:"id"`
 	Name string `json:"name"`
