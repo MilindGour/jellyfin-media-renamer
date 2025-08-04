@@ -23,11 +23,6 @@ func ResetNextFileID() {
 	nextFileID = 0
 }
 
-func GetConfigFileContents() ([]byte, error) {
-	data, err := os.ReadFile(GetConfigFilename())
-	return data, err
-}
-
 func GetDirectoryEntries(path string, allowedExtensions []string) ([]models.DirectoryEntry, error) {
 	dirEntries, err := os.ReadDir(path)
 	if err != nil {
@@ -101,7 +96,7 @@ func FilterVideoFileEntries(in models.DirectoryEntry, videoExtensions []string) 
 func fileExtensionFilterFunction(extensions []string) func(models.DirectoryEntry) bool {
 	return func(de models.DirectoryEntry) bool {
 		for _, ext := range extensions {
-			if strings.HasSuffix(de.Name, ext) {
+			if strings.HasSuffix(de.Path, ext) {
 				return true
 			}
 		}

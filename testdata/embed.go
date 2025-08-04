@@ -6,3 +6,6 @@ import (
 
 //go:embed tmdb_scrap_search_response.json
 var ScrapSearchResponseMock []byte
+
+//go:embed config.test.json
+var ConfigJsonMock []byte
