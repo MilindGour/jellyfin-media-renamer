@@ -1,5 +1,9 @@
 {
   "version": "0.0.1",
+  "allowedExtensions": {
+    "subtitle": [ ".srt" ],
+    "media": [ ".mp4", ".avi", ".mkv", ".m4v" ]
+  },
   "source": [
     {
       "id": 1000,

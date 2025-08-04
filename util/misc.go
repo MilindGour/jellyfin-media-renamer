@@ -12,6 +12,17 @@ func Filter[T any](in []T, predicate func(T) bool) []T {
 	return out
 }
 
+func HasItem[T any](in []T, predicate func(T) bool) bool {
+	out := false
+	for _, item := range in {
+		result := predicate(item)
+		if result {
+			out = true
+		}
+	}
+	return out
+}
+
 // Environment related code
 type Environment int
 

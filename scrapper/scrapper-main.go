@@ -9,6 +9,7 @@ import (
 	"strconv"
 	"strings"
 
+	"github.com/MilindGour/jellyfin-media-renamer/config"
 	"github.com/MilindGour/jellyfin-media-renamer/models"
 	"github.com/MilindGour/jellyfin-media-renamer/state"
 	"github.com/MilindGour/jellyfin-media-renamer/util"
@@ -77,7 +78,8 @@ func getSingleMovieRenames(id int, movieResult models.MovieResult) *models.Movie
 	out.RootRenames = append(out.RootRenames, *NewPathRename(movieRootOld, movieRootNew))
 
 	// Get main video file
-	videoEntries := util.FilterVideoFileEntries(targetDirEntry)
+	videoExts := config.GetAllowedMediaExtensions()
+	videoEntries := util.FilterVideoFileEntries(targetDirEntry, videoExts)
 	if len(videoEntries) > 0 {
 		slices.SortFunc(videoEntries, util.SortByFileSizeDescending)
 
@@ -97,7 +99,8 @@ func getSingleMovieRenames(id int, movieResult models.MovieResult) *models.Movie
 	}
 
 	// Get subtitle
-	subtitleEntries := util.FilterSubtitleFileEntries(targetDirEntry)
+	subTitleExts := config.GetAllowedSubtitleExtensions()
+	subtitleEntries := util.FilterSubtitleFileEntries(targetDirEntry, subTitleExts)
 	if len(subtitleEntries) > 0 {
 		slices.SortFunc(subtitleEntries, util.SortByFileSizeDescending)
 		subtitleFileOld := subtitleEntries[0].Path
@@ -139,7 +142,8 @@ func getSingleTVRenames(id int, tvResult models.TVResult) *models.TVRenameResult
 	out.RootRenames = append(out.RootRenames, *NewPathRename(tvRootOld, tvRootNew))
 
 	// Get video files
-	videoEntries := util.FilterVideoFileEntries(targetDirEntry)
+	videoExts := config.GetAllowedSubtitleExtensions()
+	videoEntries := util.FilterVideoFileEntries(targetDirEntry, videoExts)
 	seasonMap := map[int][]int{}
 	if len(videoEntries) > 0 {
 		slices.SortFunc(videoEntries, util.SortByFileSizeDescending)
@@ -162,7 +166,8 @@ func getSingleTVRenames(id int, tvResult models.TVResult) *models.TVRenameResult
 	}
 
 	// Get srt files
-	srtEntries := util.FilterSubtitleFileEntries(targetDirEntry)
+	srtExts := config.GetAllowedSubtitleExtensions()
+	srtEntries := util.FilterSubtitleFileEntries(targetDirEntry, srtExts)
 	if len(srtEntries) > 0 {
 		slices.SortFunc(srtEntries, util.SortByFileSizeDescending)
 		for _, ve := range srtEntries {
