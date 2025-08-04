@@ -59,7 +59,7 @@
 						/>
 					</div>
 					<div class="title-wrapper">
-						<p class="text-lg">{item.name}</p>
+						<p class="break-all text-lg">{item.name}</p>
 						<p class="text-sm text-gray-500">{convertToSizeString(item.size)}</p>
 					</div>
 				</label>
