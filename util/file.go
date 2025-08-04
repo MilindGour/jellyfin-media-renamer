@@ -23,11 +23,6 @@ func ResetNextFileID() {
 	nextFileID = 0
 }
 
-func GetConfigFileContents() ([]byte, error) {
-	data, err := os.ReadFile(GetConfigFilename())
-	return data, err
-}
-
 func GetDirectoryEntries(path string, allowedExtensions []string) ([]models.DirectoryEntry, error) {
 	dirEntries, err := os.ReadDir(path)
 	if err != nil {

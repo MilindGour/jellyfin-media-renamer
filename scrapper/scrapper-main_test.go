@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"testing"
 
+	"github.com/MilindGour/jellyfin-media-renamer/config"
 	"github.com/MilindGour/jellyfin-media-renamer/models"
 	"github.com/MilindGour/jellyfin-media-renamer/state"
 	"github.com/MilindGour/jellyfin-media-renamer/testdata"
@@ -59,7 +60,7 @@ func Test_getSingleMovieRenames(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := NewScrapperClient()
+			s := getMockScrapperClient()
 			got := s.getSingleMovieRenames(tt.id, tt.movieResult)
 
 			if got == nil {
@@ -205,7 +206,7 @@ func Test_getSingleTVRenames(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			s := NewScrapperClient()
+			s := getMockScrapperClient()
 			got := s.getSingleTVRenames(tt.id, tt.tvResult)
 
 			if got == nil {
@@ -225,4 +226,13 @@ func Test_getSingleTVRenames(t *testing.T) {
 			}
 		})
 	}
+}
+
+func getMockScrapperClient() *ScrapperClient {
+	s := NewScrapperClient()
+	mockConfig := config.NewJmrConfig()
+	mockConfig.ParseFromJsonBytes(testdata.ConfigJsonMock)
+	s.config = mockConfig
+
+	return s
 }
