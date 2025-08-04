@@ -1,7 +1,6 @@
 package scrapper
 
 import (
-	_ "embed"
 	"encoding/json"
 	"testing"
 
@@ -60,7 +59,8 @@ func Test_getSingleMovieRenames(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := getSingleMovieRenames(tt.id, tt.movieResult)
+			s := NewScrapperClient()
+			got := s.getSingleMovieRenames(tt.id, tt.movieResult)
 
 			if got == nil {
 				if !tt.wantNilResult {
@@ -150,7 +150,8 @@ func Test_parseSeasonAndEpisodeNumberFromFilepath(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got, got2 := parseSeasonAndEpisodeNumberFromFilepath(tt.filename)
+			s := NewScrapperClient()
+			got, got2 := s.parseSeasonAndEpisodeNumberFromFilepath(tt.filename)
 
 			if got != tt.want {
 				t.Errorf("season parseSeasonAndEpisodeNumberFromFilename() = %v, want %v", got, tt.want)
@@ -204,7 +205,8 @@ func Test_getSingleTVRenames(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			got := getSingleTVRenames(tt.id, tt.tvResult)
+			s := NewScrapperClient()
+			got := s.getSingleTVRenames(tt.id, tt.tvResult)
 
 			if got == nil {
 				if !tt.wantNilResult {

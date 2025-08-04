@@ -23,35 +23,33 @@ type Scrapper interface {
 	GetProperEpisodeName(mediaName string, season, episode int) string
 }
 
-func NewPathRename(oldPath, newPath string) *models.MediaPathRename {
-	return &models.MediaPathRename{
-		OldPath: oldPath,
-		NewPath: newPath,
-	}
+type ScrapperClient struct {
+	scrapper *Scrapper
+	config   *config.JmrConfig
 }
 
-func ValidateScrapConfirmRequest(in models.ScrapSearchConfirmRequest) bool {
-	return len(in.MoviesInfo) > 0 || len(in.TVsInfo) > 0
+func NewScrapperClient() *ScrapperClient {
+	return &ScrapperClient{}
 }
 
-func GetMediaRenames(in models.ScrapSearchConfirmRequest, selectedDirectoryEntries []models.DirectoryEntry) *models.ScrapSearchRenameResult {
+func (s *ScrapperClient) GetMediaRenames(in models.ScrapSearchConfirmRequest, selectedDirectoryEntries []models.DirectoryEntry) *models.ScrapSearchRenameResult {
 	out := &models.ScrapSearchRenameResult{}
 	// process movies
 	for movieDirID, movieResult := range in.MoviesInfo {
-		movieRenameResult := getSingleMovieRenames(movieDirID, movieResult)
+		movieRenameResult := s.getSingleMovieRenames(movieDirID, movieResult)
 		out.MovieRenameResults = append(out.MovieRenameResults, *movieRenameResult)
 	}
 
 	// process tvs
 	for tvDirID, tvResult := range in.TVsInfo {
-		tvRenameResult := getSingleTVRenames(tvDirID, tvResult)
+		tvRenameResult := s.getSingleTVRenames(tvDirID, tvResult)
 		out.TVRenameResults = append(out.TVRenameResults, *tvRenameResult)
 	}
 
 	return out
 }
 
-func getSingleMovieRenames(id int, movieResult models.MovieResult) *models.MovieRenameResult {
+func (s *ScrapperClient) getSingleMovieRenames(id int, movieResult models.MovieResult) *models.MovieRenameResult {
 	oldBase := state.LastConfigSourceByID.BasePath
 	newBase := fmt.Sprintf("%s/%s", oldBase, "jmr_renames")
 
@@ -78,7 +76,7 @@ func getSingleMovieRenames(id int, movieResult models.MovieResult) *models.Movie
 	out.RootRenames = append(out.RootRenames, *NewPathRename(movieRootOld, movieRootNew))
 
 	// Get main video file
-	videoExts := config.NewJmrConfig().GetMediaExtensions()
+	videoExts := s.config.GetMediaExtensions()
 	videoEntries := util.FilterVideoFileEntries(targetDirEntry, videoExts)
 	if len(videoEntries) > 0 {
 		slices.SortFunc(videoEntries, util.SortByFileSizeDescending)
@@ -99,7 +97,7 @@ func getSingleMovieRenames(id int, movieResult models.MovieResult) *models.Movie
 	}
 
 	// Get subtitle
-	subTitleExts := config.NewJmrConfig().GetSubtitleExtensions()
+	subTitleExts := s.config.GetSubtitleExtensions()
 	subtitleEntries := util.FilterSubtitleFileEntries(targetDirEntry, subTitleExts)
 	if len(subtitleEntries) > 0 {
 		slices.SortFunc(subtitleEntries, util.SortByFileSizeDescending)
@@ -112,8 +110,7 @@ func getSingleMovieRenames(id int, movieResult models.MovieResult) *models.Movie
 
 	return out
 }
-
-func getSingleTVRenames(id int, tvResult models.TVResult) *models.TVRenameResult {
+func (s *ScrapperClient) getSingleTVRenames(id int, tvResult models.TVResult) *models.TVRenameResult {
 	oldBase := state.LastConfigSourceByID.BasePath
 	newBase := fmt.Sprintf("%s/%s", oldBase, "jmr_renames")
 
@@ -142,7 +139,7 @@ func getSingleTVRenames(id int, tvResult models.TVResult) *models.TVRenameResult
 	out.RootRenames = append(out.RootRenames, *NewPathRename(tvRootOld, tvRootNew))
 
 	// Get video files
-	videoExts := (config.NewJmrConfig()).GetMediaExtensions()
+	videoExts := s.config.GetMediaExtensions()
 	videoEntries := util.FilterVideoFileEntries(targetDirEntry, videoExts)
 	seasonMap := map[int][]int{}
 	if len(videoEntries) > 0 {
@@ -150,8 +147,8 @@ func getSingleTVRenames(id int, tvResult models.TVResult) *models.TVRenameResult
 		for _, ve := range videoEntries {
 			tvFileOld := ve.Path
 			tvFileExt := path.Ext(ve.Name)
-			season, episode := parseSeasonAndEpisodeNumberFromFilepath(ve.Path)
-			if (season == -1 && episode == -1) || isSeasonEpisodeAlreadyPresent(seasonMap, season, episode) {
+			season, episode := s.parseSeasonAndEpisodeNumberFromFilepath(ve.Path)
+			if (season == -1 && episode == -1) || s.isSeasonEpisodeAlreadyPresent(seasonMap, season, episode) {
 				out.IgnoredMediaPaths = append(out.IgnoredMediaPaths, ve.Path)
 				continue
 			}
@@ -166,14 +163,14 @@ func getSingleTVRenames(id int, tvResult models.TVResult) *models.TVRenameResult
 	}
 
 	// Get srt files
-	srtExts := config.NewJmrConfig().GetSubtitleExtensions()
+	srtExts := s.config.GetSubtitleExtensions()
 	srtEntries := util.FilterSubtitleFileEntries(targetDirEntry, srtExts)
 	if len(srtEntries) > 0 {
 		slices.SortFunc(srtEntries, util.SortByFileSizeDescending)
 		for _, ve := range srtEntries {
 			srtFileOld := ve.Path
 			srtFileExt := path.Ext(ve.Name)
-			season, episode := parseSeasonAndEpisodeNumberFromFilepath(ve.Path)
+			season, episode := s.parseSeasonAndEpisodeNumberFromFilepath(ve.Path)
 			if season == -1 && episode == -1 {
 				continue
 			}
@@ -192,7 +189,7 @@ func getSingleTVRenames(id int, tvResult models.TVResult) *models.TVRenameResult
 
 // parseSeasonAndEpisodeNumberFromFilepath returns season and episode numbers with the given filename.
 // It returns -1, -1 if cannot find any pattern.
-func parseSeasonAndEpisodeNumberFromFilepath(filepath string) (int, int) {
+func (s *ScrapperClient) parseSeasonAndEpisodeNumberFromFilepath(filepath string) (int, int) {
 	filepathWithoutExtension, _ := strings.CutSuffix(filepath, path.Ext(filepath))
 	in := strings.ToLower(filepathWithoutExtension)
 	in += "_" // added to pass the last two regexps
@@ -236,7 +233,7 @@ func parseSeasonAndEpisodeNumberFromFilepath(filepath string) (int, int) {
 	return -1, -1
 }
 
-func isSeasonEpisodeAlreadyPresent(seasonMap map[int][]int, season, episode int) bool {
+func (s *ScrapperClient) isSeasonEpisodeAlreadyPresent(seasonMap map[int][]int, season, episode int) bool {
 	_, seasonFound := seasonMap[season]
 	if !seasonFound {
 		seasonMap[season] = []int{episode}
@@ -250,4 +247,15 @@ func isSeasonEpisodeAlreadyPresent(seasonMap map[int][]int, season, episode int)
 
 	seasonMap[season] = append(seasonMap[season], episode)
 	return false
+}
+
+func NewPathRename(oldPath, newPath string) *models.MediaPathRename {
+	return &models.MediaPathRename{
+		OldPath: oldPath,
+		NewPath: newPath,
+	}
+}
+
+func (s *ScrapperClient) ValidateScrapConfirmRequest(in models.ScrapSearchConfirmRequest) bool {
+	return len(in.MoviesInfo) > 0 || len(in.TVsInfo) > 0
 }
