@@ -24,7 +24,7 @@ func RegisterConfigRoutes(r *mux.Router) {
 }
 
 func getConfig(w http.ResponseWriter, _ *http.Request) {
-	jmrConfig := config.NewJmrConfig()
+	jmrConfig := config.NewJmrConfigByFilename(util.GetConfigFilename())
 
 	cfgjson, err := json.Marshal(jmrConfig)
 	if err != nil {
@@ -38,7 +38,7 @@ func getConfig(w http.ResponseWriter, _ *http.Request) {
 
 // getConfigSource GET /api/config/source.
 func getConfigSource(w http.ResponseWriter, r *http.Request) {
-	sourceList := config.NewJmrConfig().GetSourceList()
+	sourceList := config.NewJmrConfigByFilename(util.GetConfigFilename()).GetSourceList()
 
 	cfgjson, err := json.Marshal(sourceList)
 	if err != nil {
@@ -62,7 +62,7 @@ func getConfigSourceByID(w http.ResponseWriter, r *http.Request) {
 		}
 		// reset fileID to enable predictive ids
 		util.ResetNextFileID()
-		jmrConfig := config.NewJmrConfig()
+		jmrConfig := config.NewJmrConfigByFilename(util.GetConfigFilename())
 		res, err := jmrConfig.GetSourceByID(idInt)
 		if err != nil {
 			state.LastConfigSourceByID = nil

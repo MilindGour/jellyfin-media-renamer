@@ -76,9 +76,23 @@ func (j *JmrConfig) GetSourceByID(id int) (*models.ConfigSourceByIDResponse, err
 	panic("Cannot find the config source")
 }
 
-func NewJmrConfig() *JmrConfig {
-	if jmrConfigInstance == nil {
-		jmrConfigInstance = &JmrConfig{}
+//	func NewJmrConfig() *JmrConfig {
+//		if jmrConfigInstance == nil {
+//			jmrConfigInstance = &JmrConfig{}
+//		}
+//		return jmrConfigInstance
+//	}
+func NewJmrConfigByFilename(filename string) *JmrConfig {
+	data, err := os.ReadFile(filename)
+	if err != nil {
+		panic("Error reading config file. " + err.Error())
 	}
-	return jmrConfigInstance
+	return NewJmrConfigByData(data)
+}
+
+func NewJmrConfigByData(data []byte) *JmrConfig {
+	jConfig := &JmrConfig{}
+	jConfig.ParseFromJsonBytes(data)
+
+	return jConfig
 }

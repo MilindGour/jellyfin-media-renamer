@@ -230,8 +230,7 @@ func Test_getSingleTVRenames(t *testing.T) {
 
 func getMockScrapperClient() *ScrapperClient {
 	s := NewScrapperClient()
-	mockConfig := config.NewJmrConfig()
-	mockConfig.ParseFromJsonBytes(testdata.ConfigJsonMock)
+	mockConfig := config.NewJmrConfigByData(testdata.ConfigJsonMock)
 	s.config = mockConfig
 
 	return s
