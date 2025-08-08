@@ -1,4 +1,4 @@
-package scrapper_test
+package scrapper_old_test
 
 import (
 	"log"
@@ -6,7 +6,7 @@ import (
 
 	"github.com/MilindGour/jellyfin-media-renamer/mock"
 	"github.com/MilindGour/jellyfin-media-renamer/models"
-	"github.com/MilindGour/jellyfin-media-renamer/scrapper"
+	"github.com/MilindGour/jellyfin-media-renamer/scrapper_old"
 )
 
 func TestTmdbScrapper_GetSearchableString(t *testing.T) {
@@ -29,7 +29,7 @@ func TestTmdbScrapper_GetSearchableString(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			tm := scrapper.NewTmdbScrapper()
+			tm := scrapper_old.NewTmdbScrapper()
 			got := tm.GetSearchableString(tt.in)
 			if got != tt.want {
 				t.Errorf("GetSearchableString() = %v, want %v", got, tt.want)
@@ -87,7 +87,7 @@ func TestTmdbScrapper_GetProperEpisodeName(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			tm := scrapper.NewTmdbScrapper()
+			tm := scrapper_old.NewTmdbScrapper()
 			got := tm.GetProperEpisodeName(tt.mediaName, tt.season, tt.episode)
 
 			if got != tt.want {
@@ -137,7 +137,7 @@ func TestTmdbScrapper_GetProperMediaName(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			tm := scrapper.NewTmdbScrapper()
+			tm := scrapper_old.NewTmdbScrapper()
 			got := tm.GetProperMediaName(tt.mediaName, tt.year, tt.mediaID)
 
 			if got != tt.want {

@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"strings"
 
-	"github.com/MilindGour/jellyfin-media-renamer/scrapper"
+	"github.com/MilindGour/jellyfin-media-renamer/scrapper_old"
 )
 
 type MockTMDBServer struct {
@@ -15,8 +15,8 @@ type MockTMDBServer struct {
 	baseURL string
 }
 
-func NewMockTmdbClient() (*scrapper.TmdbScrapper, *httptest.Server) {
-	client := scrapper.NewTmdbScrapper()
+func NewMockTmdbClient() (*scrapper_old.TmdbScrapper, *httptest.Server) {
+	client := scrapper_old.NewTmdbScrapper()
 	mockServer := newMockTmdbServer()
 	client.BaseURL = mockServer.URL
 

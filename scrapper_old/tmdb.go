@@ -1,4 +1,4 @@
-package scrapper
+package scrapper_old
 
 import (
 	"errors"
