@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/MilindGour/jellyfin-media-renamer/models"
-	scrapper "github.com/MilindGour/jellyfin-media-renamer/scrapperold"
+	"github.com/MilindGour/jellyfin-media-renamer/scrapper"
 	"github.com/MilindGour/jellyfin-media-renamer/state"
 	"github.com/MilindGour/jellyfin-media-renamer/util"
 	"github.com/gorilla/mux"

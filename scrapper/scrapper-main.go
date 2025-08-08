@@ -1,5 +1,5 @@
 // Package scrapper contains functions that deals with web scrapping.
-package scrapperold
+package scrapper
 
 import (
 	"fmt"

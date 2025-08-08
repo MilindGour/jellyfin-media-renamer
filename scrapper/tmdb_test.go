@@ -1,4 +1,4 @@
-package scrapperold_test
+package scrapper_test
 
 import (
 	"log"
@@ -6,7 +6,7 @@ import (
 
 	"github.com/MilindGour/jellyfin-media-renamer/mock"
 	"github.com/MilindGour/jellyfin-media-renamer/models"
-	scrapper "github.com/MilindGour/jellyfin-media-renamer/scrapperold"
+	"github.com/MilindGour/jellyfin-media-renamer/scrapper"
 )
 
 func TestTmdbScrapper_GetSearchableString(t *testing.T) {

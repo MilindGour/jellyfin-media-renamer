@@ -7,7 +7,7 @@ import (
 	"net/http/httptest"
 	"strings"
 
-	scrapper "github.com/MilindGour/jellyfin-media-renamer/scrapperold"
+	"github.com/MilindGour/jellyfin-media-renamer/scrapper"
 )
 
 type MockTMDBServer struct {
