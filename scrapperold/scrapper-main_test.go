@@ -1,4 +1,4 @@
-package scrapper
+package scrapperold
 
 import (
 	"encoding/json"
