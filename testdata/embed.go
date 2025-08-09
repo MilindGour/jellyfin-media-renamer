@@ -9,3 +9,8 @@ var ScrapSearchResponseMock []byte
 
 //go:embed config.test.json
 var ConfigJsonMock []byte
+
+// New refactored things go below
+
+//go:embed html/mock-scrap-html.html
+var MockScrapHtml []byte
