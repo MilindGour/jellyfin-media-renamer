@@ -14,3 +14,6 @@ var ConfigJsonMock []byte
 
 //go:embed html/mock-scrap-html.html
 var MockScrapHtml []byte
+
+//go:embed html/mock-tmdb-movie-search.html
+var MockTmdbMovieSearch []byte

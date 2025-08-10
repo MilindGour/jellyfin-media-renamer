@@ -93,6 +93,7 @@ func TestGoQuery_Scrap(t *testing.T) {
 			// make sure they are same size
 			if len(tt.want) != len(got) {
 				t.Errorf("Scrap() = %d items, wanted %d items", len(got), len(tt.want))
+				return
 			}
 			for i, ttWant := range tt.want {
 				// compare input and output maps

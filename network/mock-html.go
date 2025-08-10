@@ -1,8 +1,10 @@
 package network
 
 import (
+	"fmt"
 	"net/http"
 	"net/http/httptest"
+	"strconv"
 
 	"github.com/MilindGour/jellyfin-media-renamer/testdata"
 )
@@ -14,18 +16,25 @@ type MockHtml struct {
 func NewMockHtml() *MockHtml {
 	return &MockHtml{
 		mockHtmlMap: map[string][]byte{
-			"mock-scrap-html": testdata.MockScrapHtml,
+			"mock-scrap-html":                      testdata.MockScrapHtml,
+			"tmdb/search/movie?query=test%20movie": testdata.MockTmdbMovieSearch,
+			"not-found":                            []byte(""),
 		},
 	}
 }
 
 func (h *MockHtml) GetHTML(url string) (*http.Response, error) {
-	var resBytes []byte
-	if url == "mock-scrap-html" {
-		resBytes = testdata.MockScrapHtml
+	resBytes, hasMock := h.mockHtmlMap[url]
+	if !hasMock {
+		resBytes, _ = h.mockHtmlMap["not-found"]
+		fmt.Println("No mock found for url:", url)
+	}
+	if hasMock {
+		fmt.Println("Mock Available URL:", url)
 	}
 
 	w := httptest.NewRecorder()
+	w.Header().Add("Content-Length", strconv.Itoa(len(resBytes)))
 	w.Write(resBytes)
 	return w.Result(), nil
 }

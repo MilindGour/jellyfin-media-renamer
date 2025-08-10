@@ -11,6 +11,17 @@ type GoQuery struct {
 	htmlProvider network.HtmlProvider
 }
 
+func NewGoQuery() *GoQuery {
+	return &GoQuery{
+		htmlProvider: network.NewHttpHtml(),
+	}
+}
+func NewMockGoQuery() *GoQuery {
+	return &GoQuery{
+		htmlProvider: network.NewMockHtml(),
+	}
+}
+
 func (g *GoQuery) Scrap(url string, itemSel string, fieldMap map[string]string) (ScrapResultList, error) {
 	res, err := g.htmlProvider.GetHTML(url)
 	if err != nil {
