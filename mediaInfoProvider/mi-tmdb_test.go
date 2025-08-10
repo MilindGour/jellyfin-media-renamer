@@ -56,8 +56,8 @@ func TestTmdbMIProvider_parseScrapResultListToMediaInfo(t *testing.T) {
 				{"name": "\n\t    Movie 2\n\n", "description": "\n\n\t\tComplex description", "yearOfRelease": "", "thumbnailUrl": "https://mock.url/2.png", "mediaId": "https://mock-url.net/tv/12345"},
 			},
 			want: []MediaInfo{
-				MediaInfo{Name: "Movie 1", Description: "Description 1", YearOfRelease: 2011, ThumbnailURL: "https://mock.url/1.png", MediaID: "335984"},
-				MediaInfo{Name: "Movie 2", Description: "Complex description", YearOfRelease: 0, ThumbnailURL: "https://mock.url/2.png", MediaID: "12345"},
+				{Name: "Movie 1", Description: "Description 1", YearOfRelease: 2011, ThumbnailURL: "https://mock.url/1.png", MediaID: "335984"},
+				{Name: "Movie 2", Description: "Complex description", YearOfRelease: 0, ThumbnailURL: "https://mock.url/2.png", MediaID: "12345"},
 			},
 		},
 	}
