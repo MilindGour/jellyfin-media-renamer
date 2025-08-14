@@ -26,7 +26,7 @@ func TestTmdbMIProvider_SearchMovies(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			tm := NewMockTmdbMIProvider()
-			got := tm.SearchMovies(tt.term)
+			got := tm.SearchMovies(tt.term, 0)
 
 			if len(got) != len(tt.want) {
 				t.Errorf("SearchMovies() = len %d, want %d", len(got), len(tt.want))
@@ -253,7 +253,7 @@ func TestTmdbMIProvider_getParsedMediaInfoListFromUrl(t *testing.T) {
 				scrapper: scrapper.NewMockGoQueryScrapper(),
 			},
 			args: args{
-				url:          "tmdb/search/movie?query=test%20movie",
+				url:          "tmdb/search/movie?query=test+movie",
 				itemSelector: ".search_results.movie .card",
 			},
 			want: []MediaInfo{
@@ -316,7 +316,7 @@ func TestTmdbMIProvider_SearchTVShows(t *testing.T) {
 				baseUrl:  tt.fields.baseUrl,
 				scrapper: tt.fields.scrapper,
 			}
-			if got := tr.SearchTVShows(tt.args.term); !reflect.DeepEqual(got, tt.want) {
+			if got := tr.SearchTVShows(tt.args.term, 0); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("TmdbMIProvider.SearchTVShows() = %v, want %v", got, tt.want)
 			}
 		})
@@ -487,6 +487,110 @@ func TestTmdbMIProvider_extractSeasonTotalEpisodes(t *testing.T) {
 			}
 			if got := tr.extractSeasonTotalEpisodes(tt.args.in); got != tt.want {
 				t.Errorf("TmdbMIProvider.extractSeasonTotalEpisodes() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestTmdbMIProvider_GetProperDirectoryName(t *testing.T) {
+	type args struct {
+		mediaInfo MediaInfo
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			name: "Simple media",
+			args: args{mediaInfo: MediaInfo{Name: "Simple media", YearOfRelease: 2023, MediaID: "12345"}},
+			want: "Simple media (2023) [tmdbid-12345]",
+		},
+		{
+			name: "Media without year",
+			args: args{mediaInfo: MediaInfo{Name: "Simple media", YearOfRelease: -1, MediaID: "12345"}},
+			want: "Simple media [tmdbid-12345]",
+		},
+		{
+			name: "Media without mediaID",
+			args: args{mediaInfo: MediaInfo{Name: "Simple media", YearOfRelease: 2000, MediaID: ""}},
+			want: "Simple media (2000)",
+		},
+		{
+			name: "Media without mediaID and year",
+			args: args{mediaInfo: MediaInfo{Name: "Simple media", YearOfRelease: -1, MediaID: ""}},
+			want: "Simple media",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tr := NewMockTmdbMIProvider()
+			if got := tr.GetProperDirectoryName(tt.args.mediaInfo); got != tt.want {
+				t.Errorf("TmdbMIProvider.GetProperDirectoryName() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestTmdbMIProvider_GetProperTVShowFilename(t *testing.T) {
+	type args struct {
+		filename string
+		showName string
+		season   int
+		episode  int
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			"Simple tvshow name",
+			args{"simple filename.mp4", "TV Show Name", 1, 2},
+			"TV Show Name S01E02.mp4",
+		},
+		{
+			"tv show without extension",
+			args{"simple filename", "Show", 2, 3},
+			"Show S02E03",
+		},
+		{
+			"Show without season info",
+			args{"simple filename.mkv", "Show", -1, 3},
+			"Show S01E03.mkv",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tr := NewTmdbMIProvider()
+			if got := tr.GetProperTVShowFilename(tt.args.filename, tt.args.showName, tt.args.season, tt.args.episode); got != tt.want {
+				t.Errorf("TmdbMIProvider.GetProperTVShowFilename() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestTmdbMIProvider_getSearchString(t *testing.T) {
+	type args struct {
+		name string
+		year int
+	}
+	tests := []struct {
+		name string
+		args args
+		want string
+	}{
+		{
+			"With year",
+			args{"Test Name", 2034},
+			"Test+Name%20y:2034",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tr := NewMockTmdbMIProvider()
+			if got := tr.getSearchString(tt.args.name, tt.args.year); got != tt.want {
+				t.Errorf("TmdbMIProvider.getSearchString() = %v, want %v", got, tt.want)
 			}
 		})
 	}

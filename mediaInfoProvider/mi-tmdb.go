@@ -3,6 +3,7 @@ package mediainfoprovider
 import (
 	"fmt"
 	"net/url"
+	"path"
 	"regexp"
 	"strconv"
 	"strings"
@@ -28,8 +29,8 @@ func NewMockTmdbMIProvider() *TmdbMIProvider {
 	}
 }
 
-func (t *TmdbMIProvider) SearchMovies(term string) []MovieResult {
-	url := fmt.Sprintf("%s/search/movie?query=%s", t.baseUrl, url.PathEscape(term))
+func (t *TmdbMIProvider) SearchMovies(term string, year int) []MovieResult {
+	url := fmt.Sprintf("%s/search/movie?query=%s", t.baseUrl, t.getSearchString(term, year))
 	mediaInfoList := t.getParsedMediaInfoListFromUrl(url, ".search_results.movie .card")
 
 	out := []MovieResult{}
@@ -41,16 +42,8 @@ func (t *TmdbMIProvider) SearchMovies(term string) []MovieResult {
 	return out
 }
 
-func (t *TmdbMIProvider) getParsedMediaInfoListFromUrl(url string, itemSelector string) []MediaInfo {
-	scrapResult, err := t.scrapper.Scrap(url, itemSelector, t.getSearchItemFieldmap())
-	if err != nil {
-		return []MediaInfo{}
-	}
-	return t.parseScrapResultListToMediaInfo(scrapResult)
-}
-
-func (t *TmdbMIProvider) SearchTVShows(term string) []TVResult {
-	url := fmt.Sprintf("%s/search/tv?query=%s", t.baseUrl, url.PathEscape(term))
+func (t *TmdbMIProvider) SearchTVShows(term string, year int) []TVResult {
+	url := fmt.Sprintf("%s/search/tv?query=%s", t.baseUrl, t.getSearchString(term, year))
 	mediaInfoList := t.getParsedMediaInfoListFromUrl(url, ".search_results.tv .card")
 
 	out := []TVResult{}
@@ -64,6 +57,40 @@ func (t *TmdbMIProvider) SearchTVShows(term string) []TVResult {
 	}
 
 	return out
+}
+
+func (t *TmdbMIProvider) GetProperDirectoryName(mediaInfo MediaInfo) string {
+	out := ""
+
+	if len(mediaInfo.Name) == 0 {
+		panic("Media name should not be empty")
+	}
+	out += mediaInfo.Name
+
+	if mediaInfo.YearOfRelease > 0 {
+		out += fmt.Sprintf(" (%d)", mediaInfo.YearOfRelease)
+	}
+	if len(mediaInfo.MediaID) > 0 {
+		out += fmt.Sprintf(" [tmdbid-%s]", mediaInfo.MediaID)
+	}
+
+	return out
+}
+
+func (t *TmdbMIProvider) GetProperTVShowFilename(filename, showName string, season, episode int) string {
+	extension := path.Ext(filename)
+	if season < 0 {
+		season = 1
+	}
+	return fmt.Sprintf("%s S%02dE%02d%s", showName, season, episode, extension)
+}
+
+func (t *TmdbMIProvider) getParsedMediaInfoListFromUrl(url string, itemSelector string) []MediaInfo {
+	scrapResult, err := t.scrapper.Scrap(url, itemSelector, t.getSearchItemFieldmap())
+	if err != nil {
+		return []MediaInfo{}
+	}
+	return t.parseScrapResultListToMediaInfo(scrapResult)
 }
 
 func (t *TmdbMIProvider) getSeasonInformation(mediaID string) []SeasonInfo {
@@ -135,7 +162,6 @@ func (t *TmdbMIProvider) parseScrapResultListToMediaInfo(in scrapper.ScrapResult
 
 		out = append(out, m)
 	}
-	fmt.Println("Parsed ScrapResultList:\n", out, "Total length:", len(out))
 	return out
 }
 func (t *TmdbMIProvider) trimString(in string) string {
@@ -195,6 +221,15 @@ func (t *TmdbMIProvider) extractSeasonTotalEpisodes(in string) int {
 			return out
 		}
 		out = totalEpisodes
+	}
+
+	return out
+}
+
+func (t *TmdbMIProvider) getSearchString(name string, year int) string {
+	out := url.QueryEscape(name)
+	if year > 0 {
+		out += fmt.Sprintf("%%20y:%d", year)
 	}
 
 	return out

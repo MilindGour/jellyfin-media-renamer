@@ -16,11 +16,11 @@ type MockHtml struct {
 func NewMockHtml() *MockHtml {
 	return &MockHtml{
 		mockHtmlMap: map[string][]byte{
-			"mock-scrap-html":                      testdata.MockScrapHtml,
-			"tmdb/search/movie?query=test%20movie": testdata.MockTmdbMovieSearch,
-			"tmdb/search/tv?query=Test%20TV":       testdata.MockTmdbTVShowSearch,
-			"tmdb/tv/1396/seasons":                 testdata.MockTmdbTVShowSeasons,
-			"not-found":                            []byte(""),
+			"mock-scrap-html":                    testdata.MockScrapHtml,
+			"tmdb/search/movie?query=test+movie": testdata.MockTmdbMovieSearch,
+			"tmdb/search/tv?query=Test+TV":       testdata.MockTmdbTVShowSearch,
+			"tmdb/tv/1396/seasons":               testdata.MockTmdbTVShowSeasons,
+			"not-found":                          []byte(""),
 		},
 	}
 }
