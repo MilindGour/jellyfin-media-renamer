@@ -1,6 +1,7 @@
 package mediainfoprovider
 
 import (
+	"reflect"
 	"testing"
 
 	"github.com/MilindGour/jellyfin-media-renamer/scrapper"
@@ -82,7 +83,7 @@ func TestTmdbMIProvider_parseScrapResultListToMediaInfo(t *testing.T) {
 	}
 }
 
-func TestTmdbMIProvider_extraMediaId(t *testing.T) {
+func TestTmdbMIProvider_extractMediaId(t *testing.T) {
 	tests := []struct {
 		name string // description of this test case
 		// Named input parameters for target function.
@@ -108,7 +109,7 @@ func TestTmdbMIProvider_extraMediaId(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			tm := NewTmdbMIProvider()
-			got := tm.extraMediaId(tt.in)
+			got := tm.extractMediaId(tt.in)
 
 			if got != tt.want {
 				t.Errorf("extraMediaId() = %v, want %v", got, tt.want)
@@ -181,6 +182,162 @@ func TestTmdbMIProvider_trimString(t *testing.T) {
 
 			if got != tt.want {
 				t.Errorf("trimString() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestNewTmdbMIProvider(t *testing.T) {
+	tests := []struct {
+		name string
+		want *TmdbMIProvider
+	}{
+		{
+			name: "Normal instance create",
+			want: &TmdbMIProvider{
+				baseUrl:  "https://www.themoviedb.org",
+				scrapper: scrapper.NewGoQueryScrapper(),
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := NewTmdbMIProvider(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("NewTmdbMIProvider() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestNewMockTmdbMIProvider(t *testing.T) {
+	tests := []struct {
+		name string
+		want *TmdbMIProvider
+	}{
+		{
+			name: "Test mock instance create",
+			want: &TmdbMIProvider{
+				baseUrl:  "tmdb",
+				scrapper: scrapper.NewMockGoQueryScrapper(),
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			if got := NewMockTmdbMIProvider(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("NewMockTmdbMIProvider() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestTmdbMIProvider_getParsedMediaInfoListFromUrl(t *testing.T) {
+	type fields struct {
+		baseUrl  string
+		scrapper scrapper.Scrapper
+	}
+	type args struct {
+		url          string
+		itemSelector string
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   []MediaInfo
+	}{
+		{
+			name: "Parse mock url to mediaInfo",
+			fields: fields{
+				baseUrl:  "tmdb",
+				scrapper: scrapper.NewMockGoQueryScrapper(),
+			},
+			args: args{
+				url:          "tmdb/search/movie?query=test%20movie",
+				itemSelector: ".search_results.movie .card",
+			},
+			want: []MediaInfo{
+				{Name: "Blade Runner 2049", Description: "Test content of movie 1", YearOfRelease: 2017, ThumbnailURL: "https://www.test.com/pic/1.jpg", MediaID: "335984"},
+				{Name: "Test Movie 2", Description: "Test content for movie 2", YearOfRelease: 2022, ThumbnailURL: "https://www.test.com/pic/2.jpg", MediaID: "954126"},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tr := &TmdbMIProvider{
+				baseUrl:  tt.fields.baseUrl,
+				scrapper: tt.fields.scrapper,
+			}
+			if got := tr.getParsedMediaInfoListFromUrl(tt.args.url, tt.args.itemSelector); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("TmdbMIProvider.getParsedMediaInfoListFromUrl() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestTmdbMIProvider_SearchTVShows(t *testing.T) {
+	type fields struct {
+		baseUrl  string
+		scrapper scrapper.Scrapper
+	}
+	type args struct {
+		term string
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   []TVResult
+	}{
+		// TODO: Add test cases.
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tr := &TmdbMIProvider{
+				baseUrl:  tt.fields.baseUrl,
+				scrapper: tt.fields.scrapper,
+			}
+			if got := tr.SearchTVShows(tt.args.term); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("TmdbMIProvider.SearchTVShows() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestTmdbMIProvider_getSearchItemFieldmap(t *testing.T) {
+	type fields struct {
+		baseUrl  string
+		scrapper scrapper.Scrapper
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		want   map[string]string
+	}{
+		{
+			name: "Should return tmdb specific fields",
+			fields: fields{
+				baseUrl:  "tmdb",
+				scrapper: scrapper.NewMockGoQueryScrapper(),
+			},
+			want: map[string]string{
+				"name":          ".title h2",
+				"subname":       ".title h2 span.title",
+				"description":   ".overview",
+				"yearOfRelease": ".title .release_date",
+				"thumbnailUrl":  ".image img.poster[src]",
+				"mediaId":       ".title a.result[href]",
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tr := &TmdbMIProvider{
+				baseUrl:  tt.fields.baseUrl,
+				scrapper: tt.fields.scrapper,
+			}
+			if got := tr.getSearchItemFieldmap(); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("TmdbMIProvider.getSearchItemFieldmap() = %v, want %v", got, tt.want)
 			}
 		})
 	}

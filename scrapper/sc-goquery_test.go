@@ -35,7 +35,7 @@ func TestGoQuery_splitAttribute(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var g GoQuery
+			var g GoQueryScrapper
 			got, got2 := g.splitAttribute(tt.selector)
 			if got != tt.want {
 				t.Errorf("element splitAttribute() = <%v>, want <%v>", got, tt.want)
@@ -76,7 +76,7 @@ func TestGoQuery_Scrap(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			var g GoQuery = GoQuery{
+			var g GoQueryScrapper = GoQueryScrapper{
 				htmlProvider: network.NewMockHtml(),
 			}
 			got, gotErr := g.Scrap(tt.url, tt.itemSel, tt.fieldMap)

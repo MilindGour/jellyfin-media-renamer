@@ -18,13 +18,13 @@ type TmdbMIProvider struct {
 func NewTmdbMIProvider() *TmdbMIProvider {
 	return &TmdbMIProvider{
 		baseUrl:  "https://www.themoviedb.org",
-		scrapper: scrapper.NewGoQuery(),
+		scrapper: scrapper.NewGoQueryScrapper(),
 	}
 }
 func NewMockTmdbMIProvider() *TmdbMIProvider {
 	return &TmdbMIProvider{
 		baseUrl:  "tmdb",
-		scrapper: scrapper.NewMockGoQuery(),
+		scrapper: scrapper.NewMockGoQueryScrapper(),
 	}
 }
 
@@ -86,10 +86,11 @@ func (t *TmdbMIProvider) parseScrapResultListToMediaInfo(in scrapper.ScrapResult
 		m.ThumbnailURL = t.trimString(thumbnailUrl)
 
 		mediaId, _ := scrapResult["mediaId"]
-		m.MediaID = t.extraMediaId(mediaId)
+		m.MediaID = t.extractMediaId(mediaId)
 
 		out = append(out, m)
 	}
+	fmt.Println("Parsed ScrapResultList:\n", out, "Total length:", len(out))
 	return out
 }
 func (t *TmdbMIProvider) trimString(in string) string {
@@ -105,7 +106,7 @@ func (t *TmdbMIProvider) extractYear(in string) int {
 	}
 	return out
 }
-func (t *TmdbMIProvider) extraMediaId(in string) string {
+func (t *TmdbMIProvider) extractMediaId(in string) string {
 	// /movie/12345-movie-name-2344
 	out := ""
 	if strings.Contains(in, "/") {

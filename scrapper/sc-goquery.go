@@ -7,22 +7,22 @@ import (
 	"github.com/PuerkitoBio/goquery"
 )
 
-type GoQuery struct {
+type GoQueryScrapper struct {
 	htmlProvider network.HtmlProvider
 }
 
-func NewGoQuery() *GoQuery {
-	return &GoQuery{
+func NewGoQueryScrapper() *GoQueryScrapper {
+	return &GoQueryScrapper{
 		htmlProvider: network.NewHttpHtml(),
 	}
 }
-func NewMockGoQuery() *GoQuery {
-	return &GoQuery{
+func NewMockGoQueryScrapper() *GoQueryScrapper {
+	return &GoQueryScrapper{
 		htmlProvider: network.NewMockHtml(),
 	}
 }
 
-func (g *GoQuery) Scrap(url string, itemSel string, fieldMap map[string]string) (ScrapResultList, error) {
+func (g *GoQueryScrapper) Scrap(url string, itemSel string, fieldMap map[string]string) (ScrapResultList, error) {
 	res, err := g.htmlProvider.GetHTML(url)
 	if err != nil {
 		// Unable to get html
@@ -59,7 +59,7 @@ func (g *GoQuery) Scrap(url string, itemSel string, fieldMap map[string]string) 
 
 // splitAttribute function splits attribute from selector if present.
 // Otherwise it will return empty attribute name.
-func (g *GoQuery) splitAttribute(selector string) (string, string) {
+func (g *GoQueryScrapper) splitAttribute(selector string) (string, string) {
 	outElement := selector
 	outAttribute := ""
 
