@@ -289,7 +289,26 @@ func TestTmdbMIProvider_SearchTVShows(t *testing.T) {
 		args   args
 		want   []TVResult
 	}{
-		// TODO: Add test cases.
+		{
+			name: "Parse TV Show",
+			fields: fields{
+				baseUrl:  "tmdb",
+				scrapper: scrapper.NewMockGoQueryScrapper(),
+			},
+			args: args{
+				term: "Test TV",
+			},
+			want: []TVResult{
+				{
+					MediaInfo:    MediaInfo{Name: "Test TV 1", Description: "Test show 1 description", YearOfRelease: 2012, ThumbnailURL: "test_poster_1", MediaID: "1396"},
+					TotalSeasons: 2,
+					Seasons: []SeasonInfo{
+						{1, 9},
+						{2, 18},
+					},
+				},
+			},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -338,6 +357,136 @@ func TestTmdbMIProvider_getSearchItemFieldmap(t *testing.T) {
 			}
 			if got := tr.getSearchItemFieldmap(); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("TmdbMIProvider.getSearchItemFieldmap() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestTmdbMIProvider_getSeasonInformation(t *testing.T) {
+	type fields struct {
+		baseUrl  string
+		scrapper scrapper.Scrapper
+	}
+	type args struct {
+		mediaID string
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   []SeasonInfo
+	}{
+		{
+			"Get season information from mock",
+			fields{"tmdb", scrapper.NewMockGoQueryScrapper()},
+			args{"1396"},
+			[]SeasonInfo{{1, 9}, {2, 18}},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tr := &TmdbMIProvider{
+				baseUrl:  tt.fields.baseUrl,
+				scrapper: tt.fields.scrapper,
+			}
+			got := tr.getSeasonInformation(tt.args.mediaID)
+			if !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("TmdbMIProvider.getSeasonInformation() got = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestTmdbMIProvider_extractSeasonNumber(t *testing.T) {
+	type fields struct {
+		baseUrl  string
+		scrapper scrapper.Scrapper
+	}
+	type args struct {
+		in string
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   int
+	}{
+		{
+			"From custom url",
+			fields{"tmdb", scrapper.NewMockGoQueryScrapper()},
+			args{"/tv/1234-test-tv-1/season/56"},
+			56,
+		},
+		{
+			"From short url",
+			fields{"tmdb", scrapper.NewMockGoQueryScrapper()},
+			args{"/tv/8900/season/10"},
+			10,
+		},
+		{
+			"From no url",
+			fields{"tmdb", scrapper.NewMockGoQueryScrapper()},
+			args{""},
+			-1,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tr := &TmdbMIProvider{
+				baseUrl:  tt.fields.baseUrl,
+				scrapper: tt.fields.scrapper,
+			}
+			if got := tr.extractSeasonNumber(tt.args.in); got != tt.want {
+				t.Errorf("TmdbMIProvider.extractSeasonNumber() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestTmdbMIProvider_extractSeasonTotalEpisodes(t *testing.T) {
+	type fields struct {
+		baseUrl  string
+		scrapper scrapper.Scrapper
+	}
+	type args struct {
+		in string
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   int
+	}{
+		{
+			"From actual content",
+			fields{"tmdb", scrapper.NewMockGoQueryScrapper()},
+			args{`
+
+                    2008 • 7 Episodes
+                  `},
+			7,
+		},
+		{
+			"From clean content",
+			fields{"tmdb", scrapper.NewMockGoQueryScrapper()},
+			args{`2099 43 Episodes`},
+			43,
+		},
+		{
+			"From no content",
+			fields{"tmdb", scrapper.NewMockGoQueryScrapper()},
+			args{""},
+			-1,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tr := &TmdbMIProvider{
+				baseUrl:  tt.fields.baseUrl,
+				scrapper: tt.fields.scrapper,
+			}
+			if got := tr.extractSeasonTotalEpisodes(tt.args.in); got != tt.want {
+				t.Errorf("TmdbMIProvider.extractSeasonTotalEpisodes() = %v, want %v", got, tt.want)
 			}
 		})
 	}

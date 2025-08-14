@@ -50,8 +50,53 @@ func (t *TmdbMIProvider) getParsedMediaInfoListFromUrl(url string, itemSelector 
 }
 
 func (t *TmdbMIProvider) SearchTVShows(term string) []TVResult {
-	// TODO: Implement this method
-	panic("Not implemented")
+	url := fmt.Sprintf("%s/search/tv?query=%s", t.baseUrl, url.PathEscape(term))
+	mediaInfoList := t.getParsedMediaInfoListFromUrl(url, ".search_results.tv .card")
+
+	out := []TVResult{}
+	for _, info := range mediaInfoList {
+		seasonList := t.getSeasonInformation(info.MediaID)
+		out = append(out, TVResult{
+			MediaInfo:    info,
+			TotalSeasons: len(seasonList),
+			Seasons:      seasonList,
+		})
+	}
+
+	return out
+}
+
+func (t *TmdbMIProvider) getSeasonInformation(mediaID string) []SeasonInfo {
+	url := fmt.Sprintf("%s/tv/%s/seasons", t.baseUrl, mediaID)
+	// seasonList := t.getParsedSeasonListFromUrl(url, ".media .column_wrapper .season_wrapper")
+	seasonItemFieldmap := t.getSeasonItemFieldmap()
+	scrapResult, err := t.scrapper.Scrap(url, ".media .column_wrapper .season_wrapper", seasonItemFieldmap)
+
+	out := []SeasonInfo{}
+	if err != nil {
+		return out
+	}
+	for _, sr := range scrapResult {
+		si := SeasonInfo{}
+
+		// Season number
+		seasonNumber, _ := sr["seasonNumber"]
+		si.Number = t.extractSeasonNumber(seasonNumber)
+
+		// Season total episodes
+		seasonEpisodes, _ := sr["seasonTotalEpisodes"]
+		si.TotalEpisodes = t.extractSeasonTotalEpisodes(seasonEpisodes)
+
+		out = append(out, si)
+	}
+
+	return out
+}
+func (t *TmdbMIProvider) getSeasonItemFieldmap() map[string]string {
+	return map[string]string{
+		"seasonNumber":        ".panel .season a[href]",
+		"seasonTotalEpisodes": ".panel .season .content h4",
+	}
 }
 
 func (t *TmdbMIProvider) getSearchItemFieldmap() map[string]string {
@@ -117,6 +162,39 @@ func (t *TmdbMIProvider) extractMediaId(in string) string {
 	match := idRe.FindStringSubmatch(in)
 	if match != nil {
 		out = match[1]
+	}
+
+	return out
+}
+func (t *TmdbMIProvider) extractSeasonNumber(in string) int {
+	// /xxx/season/2
+	out := -1
+	if strings.Contains(in, "/season/") {
+		splits := strings.Split(in, "/season/")
+		if len(splits) == 2 {
+			str := splits[1]
+			seasonNumber, err := strconv.Atoi(str)
+			if err != nil {
+				return out
+			}
+			out = seasonNumber
+		}
+	}
+
+	return out
+}
+
+func (t *TmdbMIProvider) extractSeasonTotalEpisodes(in string) int {
+	fmt.Println("In:", in)
+	out := -1
+	re := regexp.MustCompile(`(\d+) Episodes`)
+	match := re.FindStringSubmatch(in)
+	if match != nil {
+		totalEpisodes, err := strconv.Atoi(match[1])
+		if err != nil {
+			return out
+		}
+		out = totalEpisodes
 	}
 
 	return out

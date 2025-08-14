@@ -35,7 +35,15 @@ type TVResult struct {
 	Seasons      []SeasonInfo `json:"seasons"`
 }
 
+func (t *TVResult) String() string {
+	return fmt.Sprintf("[TVResult %s, SS=%d, %v]", t.MediaInfo, t.TotalSeasons, t.Seasons)
+}
+
 type SeasonInfo struct {
 	Number        int `json:"number"`
 	TotalEpisodes int `json:"totalEpisodes"`
+}
+
+func (s *SeasonInfo) String() string {
+	return fmt.Sprintf("[SeasonInfo S=%2d, E=%2d]", s.Number, s.TotalEpisodes)
 }
