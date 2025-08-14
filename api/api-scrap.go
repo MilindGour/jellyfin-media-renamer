@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/MilindGour/jellyfin-media-renamer/models"
-	"github.com/MilindGour/jellyfin-media-renamer/scrapper"
+	"github.com/MilindGour/jellyfin-media-renamer/scrapper_old"
 	"github.com/MilindGour/jellyfin-media-renamer/state"
 	"github.com/MilindGour/jellyfin-media-renamer/util"
 	"github.com/gorilla/mux"
@@ -52,7 +52,7 @@ func postScrapSearch(w http.ResponseWriter, r *http.Request) {
 	}
 
 	// TODO: Once new scrap client is implemented, add a logic to select appropriate client.
-	var scrapClient scrapper.Scrapper = scrapper.NewTmdbScrapper()
+	var scrapClient scrapper_old.Scrapper = scrapper_old.NewTmdbScrapper()
 
 	for id, cfe := range in.CleanFilenameEntries {
 		// find the mediaType
@@ -103,7 +103,7 @@ func postScrapConfirmIds(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	scrapperClient := scrapper.NewScrapperClient()
+	scrapperClient := scrapper_old.NewScrapperClient()
 	if isValidRequest := scrapperClient.ValidateScrapConfirmRequest(in); !isValidRequest {
 		util.HandleAPIError(w, http.StatusBadRequest, "Atleast one of movie / tv details is required.", nil)
 		return

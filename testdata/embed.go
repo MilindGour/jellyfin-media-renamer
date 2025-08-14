@@ -9,3 +9,17 @@ var ScrapSearchResponseMock []byte
 
 //go:embed config.test.json
 var ConfigJsonMock []byte
+
+// New refactored things go below
+
+//go:embed html/mock-scrap-html.html
+var MockScrapHtml []byte
+
+//go:embed html/mock-tmdb-movie-search.html
+var MockTmdbMovieSearch []byte
+
+//go:embed html/mock-tmdb-tvshow-search.html
+var MockTmdbTVShowSearch []byte
+
+//go:embed html/mock-tmdb-tvshow-seasons.html
+var MockTmdbTVShowSeasons []byte
