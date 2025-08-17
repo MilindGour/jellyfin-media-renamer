@@ -1,4 +1,4 @@
-package jmrrenamer
+package renamer
 
 import (
 	"log"

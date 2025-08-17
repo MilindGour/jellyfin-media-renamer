@@ -1,6 +1,6 @@
-package jmrrenamer
+package renamer
 
-type JmrRenamer interface {
+type Renamer interface {
 	GetMediaNameAndYear(rawFilename string) MediaNameAndYear
 	GetMediaSeasonAndEpisode(filePath string) MediaSeasonAndEpisode
 }
