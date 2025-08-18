@@ -26,7 +26,7 @@
 		<Dropdown
 			id="cfgSourceDD"
 			labelProp="name"
-			options={data.configSources}
+			options={data.configSources.sources}
 			itemTemplate={dropdownTemplate}
 		/>
 		<Button type="primary" onclick={handleScanDirClick}>Scan Directory</Button>

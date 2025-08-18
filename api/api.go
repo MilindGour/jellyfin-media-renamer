@@ -4,16 +4,13 @@ import (
 	"encoding/json"
 	"log"
 	"net/http"
-
-	"github.com/gorilla/mux"
 )
 
 type APIProvider interface {
-	RegisterAPIRoutes(mux *mux.Router)
-	GetPort() string
+	Initialize(bool)
 }
 
-type APIHandlerFunction func(http.ResponseWriter, *http.Request)
+type APIHandlerFn func(http.ResponseWriter, *http.Request)
 
 func ToJSON(v any) []byte {
 	data, err := json.Marshal(v)

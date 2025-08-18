@@ -1,10 +1,9 @@
 package main
 
 import (
-	"net/http"
 	"os"
 
-	"github.com/MilindGour/jellyfin-media-renamer/api"
+	"github.com/MilindGour/jellyfin-media-renamer/app"
 )
 
 func main() {
@@ -16,6 +15,6 @@ func main() {
 		}
 	}
 
-	jmrAPI := api.NewJmrApi(isDevEnv)
-	http.ListenAndServe(":"+jmrAPI.GetPort(), jmrAPI)
+	app := app.NewJmrApplication(isDevEnv)
+	app.Run()
 }

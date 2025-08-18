@@ -11,53 +11,60 @@ import (
 	"github.com/MilindGour/jellyfin-media-renamer/filesystem"
 	"github.com/MilindGour/jellyfin-media-renamer/middlewares"
 	"github.com/MilindGour/jellyfin-media-renamer/util"
-	"github.com/gorilla/mux"
 )
 
 type JmrAPI struct {
 	// any future api keys or such will
 	// appear here
-	*mux.Router
+	serveMux           *http.ServeMux
 	configProvider     config.ConfigProvider
 	fileSystemProvider filesystem.FileSystemProvider
 
 	sourcesWithID []DirConfigWithID
 }
 
-func NewJmrApi(isDevEnv bool) *JmrAPI {
-	var targetCfg config.ConfigProvider
-	var targetFSProvider filesystem.FileSystemProvider
-
-	if isDevEnv {
-		// DEV Environment ONLY
-		log.Println("JMR API starting in DEVELOPER environment")
-		targetCfg = config.NewDevJmrConfig()
-		targetFSProvider = filesystem.NewMockJmrFS()
-
-	} else {
-		// PROD Environment ONLY
-		log.Println("JMR API starting in PRODUCTION environment")
-		targetCfg = config.NewJmrConfig()
-		targetFSProvider = filesystem.NewJmrFS()
-	}
-
+func NewJmrApi(
+	configProvider config.ConfigProvider,
+	filesystemProvider filesystem.FileSystemProvider,
+) *JmrAPI {
 	jmrApi := JmrAPI{
-		Router:             mux.NewRouter(),
-		configProvider:     targetCfg,
-		fileSystemProvider: targetFSProvider,
+		configProvider:     configProvider,
+		fileSystemProvider: filesystemProvider,
 	}
 
-	// register all the api routes
-	jmrApi.RegisterAPIRoutes()
+	return &jmrApi
+}
 
-	if jmrApi.configProvider == nil {
+func (j *JmrAPI) Initialize(enableCors bool) {
+	j.RegisterAPIRoutes()
+
+	if j.configProvider == nil {
 		log.Fatal("Please place config before running the server")
 	}
 
-	jmrApi.populateSourcesWithID()
+	j.populateSourcesWithID()
+	j.startListenAndServe(enableCors)
+}
 
-	log.Printf("Starting server on port %s", jmrApi.GetPort())
-	return &jmrApi
+func (j *JmrAPI) startListenAndServe(enableCors bool) {
+	addr := ":" + j.configProvider.GetPort()
+
+	var mwStack middlewares.Middleware
+	if enableCors {
+		mwStack = middlewares.Pipe(
+			middlewares.Cors,
+			middlewares.LogMW,
+			middlewares.Json,
+		)
+	} else {
+		mwStack = middlewares.Pipe(
+			middlewares.LogMW,
+			middlewares.Json,
+		)
+	}
+
+	log.Printf("Starting JMR on port %s\n", addr)
+	http.ListenAndServe(addr, mwStack(j.serveMux))
 }
 func (j *JmrAPI) populateSourcesWithID() {
 	// get the sources by ID and cache it in memory
@@ -73,29 +80,25 @@ func (j *JmrAPI) populateSourcesWithID() {
 	}
 
 }
-func (j *JmrAPI) GetPort() string {
-	return j.configProvider.GetPort()
-}
 
 func (j *JmrAPI) RegisterAPIRoutes() {
-	j.Use(middlewares.CorsMW)
-	j.Use(middlewares.LogMW)
-	j.Use(middlewares.Json)
+	j.serveMux = http.NewServeMux()
 
-	j.HandleFunc("/api/sources", j.Get_Sources()).Methods("GET")
-	j.HandleFunc("/api/sources/{id}", j.Get_SourceByID()).Methods("GET")
+	j.serveMux.HandleFunc("GET /api/sources", j.Get_Sources())
+	j.serveMux.HandleFunc("GET /api/sources/{id}", j.Get_SourceByID())
 }
 
-func (j *JmrAPI) Get_Sources() APIHandlerFunction {
+func (j *JmrAPI) Get_Sources() APIHandlerFn {
 	return func(w http.ResponseWriter, r *http.Request) {
 		raw := NewSourcesResponse(j.sourcesWithID)
 		w.Write(ToJSON(raw))
 	}
 }
-func (j *JmrAPI) Get_SourceByID() APIHandlerFunction {
+func (j *JmrAPI) Get_SourceByID() APIHandlerFn {
 	return func(w http.ResponseWriter, r *http.Request) {
-		vars := mux.Vars(r)
-		id, hasId := vars["id"]
+		id := r.PathValue("id")
+		hasId := len(id) > 0
+
 		if !hasId {
 			j.HandleAPIError(w, r, http.StatusBadRequest, errors.New("ID is required"))
 			return
@@ -105,7 +108,7 @@ func (j *JmrAPI) Get_SourceByID() APIHandlerFunction {
 			j.HandleAPIError(w, r, http.StatusBadRequest, err)
 			return
 		}
-		src := util.Find[DirConfigWithID](j.sourcesWithID, func(dcwi DirConfigWithID) bool {
+		src := util.Find(j.sourcesWithID, func(dcwi DirConfigWithID) bool {
 			return dcwi.ID == idInt
 		})
 		if src == nil {
@@ -122,7 +125,7 @@ func (j *JmrAPI) HandleAPIError(w http.ResponseWriter, r *http.Request, errorCod
 	if err != nil {
 		msg += fmt.Sprintf(" %s", err.Error())
 	} else {
-		msg += fmt.Sprint(" Unknown error occured.")
+		msg += " Unknown error occured."
 	}
 	log.Println(msg)
 	w.WriteHeader(errorCode)

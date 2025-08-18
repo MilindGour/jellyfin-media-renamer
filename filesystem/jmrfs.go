@@ -4,8 +4,6 @@ import (
 	"io/fs"
 	"os"
 	"path"
-
-	"github.com/MilindGour/jellyfin-media-renamer/testdata"
 )
 
 type JmrFS struct {
@@ -15,11 +13,6 @@ type JmrFS struct {
 func NewJmrFS() *JmrFS {
 	return &JmrFS{
 		fs: nil,
-	}
-}
-func NewMockJmrFS() *JmrFS {
-	return &JmrFS{
-		fs: testdata.MockFSStructure,
 	}
 }
 
