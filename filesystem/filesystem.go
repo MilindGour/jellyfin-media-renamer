@@ -1,16 +1,14 @@
 package filesystem
 
-type FileSystem interface {
+type FileSystemProvider interface {
+	GetDirectorySize(DirEntry) int64
 	ScanDirectory(path string) []DirEntry
-	FilterScan(path string, fileFn FilterFunction) []DirEntry
 }
 
 type DirEntry struct {
 	Name        string     `json:"name"`
 	Path        string     `json:"path"`
-	Size        int        `json:"size"`
+	Size        int64      `json:"size"`
 	IsDirectory bool       `json:"isDirectory"`
 	Children    []DirEntry `json:"children"`
 }
-
-type FilterFunction func(DirEntry) bool

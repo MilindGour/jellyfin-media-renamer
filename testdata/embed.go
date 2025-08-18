@@ -1,6 +1,7 @@
 package testdata
 
 import (
+	"embed"
 	_ "embed"
 )
 
@@ -23,3 +24,6 @@ var MockTmdbTVShowSearch []byte
 
 //go:embed html/mock-tmdb-tvshow-seasons.html
 var MockTmdbTVShowSeasons []byte
+
+//go:embed fs-structure/*
+var MockFSStructure embed.FS

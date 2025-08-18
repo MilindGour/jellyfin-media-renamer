@@ -1,0 +1,148 @@
+package filesystem
+
+import (
+	"io/fs"
+	"reflect"
+	"testing"
+
+	"github.com/MilindGour/jellyfin-media-renamer/testdata"
+)
+
+func TestJmrFS_ScanDirectory(t *testing.T) {
+	type fields struct {
+		fs fs.FS
+	}
+	type args struct {
+		dirpath string
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   []DirEntry
+	}{
+		{
+			name: "Mock dir scan",
+			fields: fields{
+				fs: testdata.MockFSStructure,
+			},
+			args: args{
+				dirpath: "../testdata/fs-structure",
+			},
+			want: []DirEntry{
+				{
+					Name:        "testdir",
+					Path:        "../testdata/fs-structure/testdir",
+					Size:        6144,
+					IsDirectory: true,
+					Children: []DirEntry{
+						{
+							Name:        "testfile2",
+							Path:        "../testdata/fs-structure/testdir/testfile2",
+							Size:        3072,
+							IsDirectory: false,
+							Children:    nil,
+						},
+						{
+							Name:        "testfile3",
+							Path:        "../testdata/fs-structure/testdir/testfile3",
+							Size:        3072,
+							IsDirectory: false,
+							Children:    nil,
+						},
+					},
+				},
+				{
+					Name:        "testfile",
+					Path:        "../testdata/fs-structure/testfile",
+					Size:        3072,
+					IsDirectory: false,
+					Children:    nil,
+				},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			j := &JmrFS{
+				fs: tt.fields.fs,
+			}
+			if got := j.ScanDirectory(tt.args.dirpath); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("JmrFS.ScanDirectory() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}
+
+func TestJmrFS_GetDirectorySize(t *testing.T) {
+	type fields struct {
+		fs fs.FS
+	}
+	type args struct {
+		in DirEntry
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   int64
+	}{
+		{
+			name: "Non empty directory size",
+			fields: fields{
+				fs: nil,
+			},
+			args: args{
+				in: DirEntry{
+					Name:        "Test Dir1",
+					Path:        "test/path/1",
+					Size:        0,
+					IsDirectory: true,
+					Children: []DirEntry{
+						{
+							Name:        "Test File",
+							Path:        "test/path/1/f1",
+							Size:        42,
+							IsDirectory: false,
+							Children:    nil,
+						},
+						{
+							Name:        "Test File 2",
+							Path:        "test/path/1/f2",
+							Size:        53,
+							IsDirectory: false,
+							Children:    nil,
+						},
+					},
+				},
+			},
+			want: 95,
+		},
+		{
+			name: "Empty directory size",
+			fields: fields{
+				fs: nil,
+			},
+			args: args{
+				in: DirEntry{
+					Name:        "Empty dir2",
+					Path:        "test/path/2",
+					Size:        12,
+					IsDirectory: true,
+					Children:    []DirEntry{},
+				},
+			},
+			want: 0,
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			j := &JmrFS{
+				fs: tt.fields.fs,
+			}
+			if got := j.GetDirectorySize(tt.args.in); got != tt.want {
+				t.Errorf("JmrFS.GetDirectorySize() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

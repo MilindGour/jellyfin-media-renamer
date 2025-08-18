@@ -40,7 +40,11 @@ func (j *JmrConfig) GetPort() string {
 }
 
 func (j *JmrConfig) GetSourceList() []DirConfig {
-	return j.config.Source
+	out := []DirConfig{}
+	for _, src := range j.config.Source {
+		out = append(out, src)
+	}
+	return out
 }
 func (j *JmrConfig) GetMediaExtensions() []string {
 	if len(j.config.AllowedExtensions.Media) == 0 {
