@@ -1,34 +1,18 @@
 {
-  "version": "0.0.1",
-  "allowedExtensions": {
-    "subtitle": [ ".srt" ],
-    "media": [ ".mp4", ".avi", ".mkv", ".m4v" ]
-  },
-  "source": [
-    {
-      "id": 1000,
-      "name": "Data TVs",
-      "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/data_tv"
+    "version": "1.2.3",
+    "port": "7749",
+    "allowedExtensions": {
+        "subtitle": [
+            ".srt"
+        ],
+        "media": [
+            ".mp4"
+        ]
     },
-    {
-      "id": 1001,
-      "name": "Media Movies",
-      "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/media_movies"
-    },
-    {
-      "id": 1002,
-      "name": "Media TVs",
-      "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/media_tv"
-    },
-    {
-      "id": 1003,
-      "name": "Transmission Downloads",
-      "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/transmission_downloads"
-    },
-    {
-      "id": 1004,
-      "name": "Test data",
-      "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure"
-    }
-  ]
+    "source": [
+        {
+            "name": "name1",
+            "path": "path1"
+        }
+    ]
 }

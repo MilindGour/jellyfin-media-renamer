@@ -37,3 +37,8 @@ deploy:
 	@echo
 	@echo "[MAKEFILE] Deploying"
 	/var/lib/jenkins/scripts/deploy-jmr.sh dist
+
+watch-dev:
+	@echo
+	@echo "[MAKEFILE] Starting Watch"
+	go run . --dev
