@@ -58,6 +58,11 @@ func (j *JmrConfig) GetSubtitleExtensions() []string {
 	}
 	return j.config.AllowedExtensions.Subtitle
 }
+func (j *JmrConfig) GetAllowedExtensions() []string {
+	out := j.GetMediaExtensions()
+	out = append(out, j.GetSubtitleExtensions()...)
+	return out
+}
 func (j *JmrConfig) ParseFromBytes(config []byte) *Config {
 	out := &Config{}
 	err := json.Unmarshal(config, out)

@@ -5,6 +5,7 @@ package config
 type ConfigProvider interface {
 	GetSourceList() []DirConfig
 	GetPort() string
+	GetAllowedExtensions() []string
 	GetMediaExtensions() []string
 	GetSubtitleExtensions() []string
 	ParseFromBytes(config []byte) *Config

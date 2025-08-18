@@ -2,7 +2,7 @@ package filesystem
 
 type FileSystemProvider interface {
 	GetDirectorySize(DirEntry) int64
-	ScanDirectory(path string) []DirEntry
+	ScanDirectory(path string, includeExtensions []string) []DirEntry
 }
 
 type DirEntry struct {

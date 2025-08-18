@@ -4,6 +4,7 @@ import (
 	"io/fs"
 	"os"
 	"path"
+	"slices"
 )
 
 type JmrFS struct {
@@ -16,7 +17,7 @@ func NewJmrFS() *JmrFS {
 	}
 }
 
-func (j *JmrFS) ScanDirectory(dirpath string) []DirEntry {
+func (j *JmrFS) ScanDirectory(dirpath string, includeExtensions []string) []DirEntry {
 	entries, err := os.ReadDir(dirpath)
 	// fs.ReadDir()
 	if err != nil {
@@ -32,9 +33,17 @@ func (j *JmrFS) ScanDirectory(dirpath string) []DirEntry {
 		if entry.IsDir() {
 			// entry is a directory, recurse
 			outEntry.IsDirectory = true
-			outEntry.Children = j.ScanDirectory(outEntry.Path)
+			outEntry.Children = j.ScanDirectory(outEntry.Path, includeExtensions)
 			outEntry.Size = j.GetDirectorySize(outEntry)
 		} else {
+			// check if the file extension should be included
+			ext := path.Ext(outEntry.Path)
+			if !slices.ContainsFunc(includeExtensions, func(e string) bool {
+				return ext == e
+			}) {
+				continue
+			}
+
 			outEntry.IsDirectory = false
 			outEntry.Children = nil
 			info, err := entry.Info()

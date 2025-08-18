@@ -1,9 +1,9 @@
 <script lang="ts">
-	import type { ConfigSourceByID, DirEntry } from '$lib/models/config-models';
+	import type { ConfigSourcesByIDResponse, DirEntry } from '$lib/models/config-models';
 	import { CSDLStore } from './csdl-store.svelte';
 	import { convertToSizeString, joinStrings } from '$lib/stores/util';
 
-	const { id, data }: { id: string; data: ConfigSourceByID | null } = $props();
+	const { id, data }: { id: string; data: ConfigSourcesByIDResponse | null } = $props();
 	let store: CSDLStore | null = $state(null);
 
 	function handleListCheckChange(e: Event, item: DirEntry) {
@@ -24,8 +24,8 @@
 	}
 
 	$effect(() => {
-		if (data && data?.directoryEntries !== null) {
-			store = new CSDLStore(data.directoryEntries);
+		if (data && data?.entries !== null) {
+			store = new CSDLStore(data.entries);
 		}
 	});
 </script>

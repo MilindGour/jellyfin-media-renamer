@@ -13,7 +13,8 @@ func TestJmrFS_ScanDirectory(t *testing.T) {
 		fs fs.FS
 	}
 	type args struct {
-		dirpath string
+		dirpath            string
+		includedExtensions []string
 	}
 	tests := []struct {
 		name   string
@@ -27,37 +28,24 @@ func TestJmrFS_ScanDirectory(t *testing.T) {
 				fs: testdata.MockFSStructure,
 			},
 			args: args{
-				dirpath: "../testdata/fs-structure",
+				dirpath:            "../testdata/fs-structure",
+				includedExtensions: []string{".x"},
 			},
 			want: []DirEntry{
 				{
 					Name:        "testdir",
 					Path:        "../testdata/fs-structure/testdir",
-					Size:        6144,
+					Size:        3072,
 					IsDirectory: true,
 					Children: []DirEntry{
 						{
-							Name:        "testfile2",
-							Path:        "../testdata/fs-structure/testdir/testfile2",
-							Size:        3072,
-							IsDirectory: false,
-							Children:    nil,
-						},
-						{
-							Name:        "testfile3",
-							Path:        "../testdata/fs-structure/testdir/testfile3",
+							Name:        "testfile2.x",
+							Path:        "../testdata/fs-structure/testdir/testfile2.x",
 							Size:        3072,
 							IsDirectory: false,
 							Children:    nil,
 						},
 					},
-				},
-				{
-					Name:        "testfile",
-					Path:        "../testdata/fs-structure/testfile",
-					Size:        3072,
-					IsDirectory: false,
-					Children:    nil,
 				},
 			},
 		},
@@ -67,7 +55,7 @@ func TestJmrFS_ScanDirectory(t *testing.T) {
 			j := &JmrFS{
 				fs: tt.fields.fs,
 			}
-			if got := j.ScanDirectory(tt.args.dirpath); !reflect.DeepEqual(got, tt.want) {
+			if got := j.ScanDirectory(tt.args.dirpath, tt.args.includedExtensions); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("JmrFS.ScanDirectory() = %v, want %v", got, tt.want)
 			}
 		})

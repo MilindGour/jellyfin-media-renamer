@@ -116,7 +116,7 @@ func (j *JmrAPI) Get_SourceByID() APIHandlerFn {
 			return
 		}
 
-		w.Write(ToJSON(NewSourceByIDResponse(*src, j.fileSystemProvider.ScanDirectory(src.Path))))
+		w.Write(ToJSON(NewSourceByIDResponse(*src, j.fileSystemProvider.ScanDirectory(src.Path, j.configProvider.GetAllowedExtensions()))))
 	}
 }
 
