@@ -3,11 +3,6 @@ module github.com/MilindGour/jellyfin-media-renamer
 go 1.24.2
 
 require (
-	github.com/gocolly/colly v1.2.0
-	github.com/gorilla/mux v1.8.1
-)
-
-require (
 	github.com/PuerkitoBio/goquery v1.10.3 // indirect
 	github.com/andybalholm/cascadia v1.3.3 // indirect
 	github.com/antchfx/htmlquery v1.3.4 // indirect
