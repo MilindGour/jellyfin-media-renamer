@@ -22,3 +22,11 @@ export type DirEntry = {
     isDirectory: boolean,
     children?: DirEntry[]
 };
+
+export type MediaType = "Movie" | "Tv";
+
+export type SourceDirectoryListItemValue = {
+    entry: DirEntry,
+    type: MediaType | null,
+    selected: boolean
+};

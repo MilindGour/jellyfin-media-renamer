@@ -1,4 +1,4 @@
-import type { Source } from "$lib/models/models";
+import type { Source, SourceDirectoryListItemValue } from "$lib/models/models";
 import type { API } from "$lib/services/api";
 
 // Main store class for the whole application
@@ -27,5 +27,8 @@ export class JmrApplicationStore {
     /* First page related methods */
     setSource(s: Source) {
         this.#source = s;
+    }
+    setSourceDirectoryListItems(s: SourceDirectoryListItemValue[]) {
+
     }
 }

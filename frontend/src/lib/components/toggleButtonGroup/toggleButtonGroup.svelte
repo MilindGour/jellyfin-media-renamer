@@ -2,18 +2,13 @@
 	let {
 		id,
 		options,
-		required = false,
-		valid = $bindable(!required),
 		value = $bindable(null)
+	}: {
+		id: string;
+		options: string[];
+		required: boolean;
+		value: string | null;
 	} = $props();
-
-	$effect(() => {
-		if (value?.length > 0) {
-			valid = true;
-		} else {
-			valid = !required;
-		}
-	});
 </script>
 
 <div class="toggle-button-group flex items-center gap-2">

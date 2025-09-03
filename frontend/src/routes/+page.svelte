@@ -2,25 +2,27 @@
 	import { Button, Dropdown, SourceDirectoryList } from '$lib/components';
 	import type { PageProps } from './$types';
 	import { formatPathString } from '$lib/stores/util';
-	import type { Source } from '$lib/models/models';
+	import type { Source, SourceDirectoryListItemValue } from '$lib/models/models';
 	import { JmrApplicationStore } from '$lib/stores/app-store.svelte';
 	import { API } from '$lib/services/api';
 
 	const { data }: PageProps = $props();
 	const app = new JmrApplicationStore(API.http());
 
-	let sourceValue = $state<Source | null>(null);
-	let sourceValid = $state(false);
-	let srcDirsValid = $state(false);
-	let srcDirsValue = $state([]);
+	let source = $state<Source | null>(null);
+	let selectedSourceDirectoryItems = $state<SourceDirectoryListItemValue[]>([]);
+	const scanDirDisabled = $derived<boolean>(source === null);
+	const searchDisabled = $derived<boolean>(
+		selectedSourceDirectoryItems.length === 0 || selectedSourceDirectoryItems.some((x) => !x.type)
+	);
 
 	async function handleScanDirClick() {
-		if (sourceValue !== null) {
-			app.setSource(sourceValue);
+		if (source !== null) {
+			app.setSource(source);
 		}
 	}
 	function handleSearchClick() {
-		// get the value of csdl component using the service
+		app.setSourceDirectoryListItems(selectedSourceDirectoryItems);
 	}
 </script>
 
@@ -30,15 +32,13 @@
 	>
 		<label class="basis-full" for="cfgSourceDD">Please select media source directory</label>
 		<Dropdown
-			bind:value={sourceValue}
-			bind:valid={sourceValid}
-			required
+			bind:value={source}
 			id="sourceDropdown"
 			labelProp="name"
 			options={data.sourcesResponse.sources}
 			itemTemplate={dropdownTemplate}
 		/>
-		<Button type="primary" disabled={!sourceValid} onclick={handleScanDirClick}
+		<Button type="primary" disabled={scanDirDisabled} onclick={handleScanDirClick}
 			>Scan Directory</Button
 		>
 	</section>
@@ -48,8 +48,7 @@
 				<SourceDirectoryList
 					name="selectedList"
 					list={sourceDirectories.entries}
-					bind:valid={srcDirsValid}
-					bind:value={srcDirsValue}
+					bind:value={selectedSourceDirectoryItems}
 				/>
 			{:else}
 				Select and scan a source to view its directories...
@@ -57,7 +56,7 @@
 		{/await}
 	</section>
 	<section class="cta-section flex flex-col items-stretch text-right sm:flex-row sm:items-end">
-		<Button type="primary" onclick={handleSearchClick} disabled={!srcDirsValid}
+		<Button type="primary" onclick={handleSearchClick} disabled={searchDisabled}
 			>Search Media Online</Button
 		>
 	</section>

@@ -3,15 +3,7 @@
 	import chevronDown from 'svelte-awesome/icons/chevronDown';
 	import { slideDown } from '$lib/animations';
 
-	let {
-		id,
-		options,
-		labelProp = '',
-		itemTemplate = null,
-		value = $bindable(null),
-		required = false,
-		valid = $bindable(!required)
-	} = $props();
+	let { id, options, labelProp = '', itemTemplate = null, value = $bindable(null) } = $props();
 
 	let open = $state(false);
 	let el;
@@ -29,10 +21,8 @@
 	$effect(() => {
 		if (value === null) {
 			label = 'Please Select';
-			valid = !required;
 		} else {
 			label = labelProp?.length > 0 ? value[labelProp] : value;
-			valid = true;
 		}
 	});
 
