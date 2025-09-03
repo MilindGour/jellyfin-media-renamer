@@ -7,9 +7,12 @@
 	import { API } from '$lib/services/api';
 
 	const { data }: PageProps = $props();
+	const app = new JmrApplicationStore(API.http());
+
 	let sourceValue = $state<Source | null>(null);
 	let sourceValid = $state(false);
-	const app = new JmrApplicationStore(API.http());
+	let srcDirsValid = $state(false);
+	let srcDirsValue = $state([]);
 
 	async function handleScanDirClick() {
 		if (sourceValue !== null) {
@@ -21,7 +24,7 @@
 	}
 </script>
 
-<section class="page flex flex-col gap-8">
+<section class="page flex flex-col gap-8 pb-16">
 	<section
 		class="form-section flex flex-col flex-wrap items-stretch gap-2 sm:flex-row sm:items-start"
 	>
@@ -41,16 +44,22 @@
 	</section>
 	<section class="list-section">
 		{#await app.sourceDirectories then sourceDirectories}
-			{console.log(sourceDirectories)}
 			{#if sourceDirectories !== null}
-				<SourceDirectoryList />
-				<section class="cta-section">
-					<Button type="primary" onclick={handleSearchClick}>Search Media Online</Button>
-				</section>
+				<SourceDirectoryList
+					name="selectedList"
+					list={sourceDirectories.entries}
+					bind:valid={srcDirsValid}
+					bind:value={srcDirsValue}
+				/>
 			{:else}
 				Select and scan a source to view its directories...
 			{/if}
 		{/await}
+	</section>
+	<section class="cta-section flex flex-col items-stretch text-right sm:flex-row sm:items-end">
+		<Button type="primary" onclick={handleSearchClick} disabled={!srcDirsValid}
+			>Search Media Online</Button
+		>
 	</section>
 </section>
 

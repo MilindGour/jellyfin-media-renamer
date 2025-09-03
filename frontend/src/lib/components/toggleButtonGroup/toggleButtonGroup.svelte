@@ -1,7 +1,19 @@
 <script lang="ts">
-	const { id, label, options } = $props();
+	let {
+		id,
+		options,
+		required = false,
+		valid = $bindable(!required),
+		value = $bindable(null)
+	} = $props();
 
-	let activeOption = $state(null);
+	$effect(() => {
+		if (value?.length > 0) {
+			valid = true;
+		} else {
+			valid = !required;
+		}
+	});
 </script>
 
 <div class="toggle-button-group flex items-center gap-2">
@@ -9,10 +21,10 @@
 		{#each options as option}
 			<button
 				type="button"
-				class:bg-primary-bg={activeOption === option}
-				class:text-primary-fg={activeOption === option}
+				class:bg-primary-bg={value === option}
+				class:text-primary-fg={value === option}
 				class="min-w-16 cursor-pointer bg-gray-200 px-2 py-1 first:rounded-l-md last:rounded-r-md"
-				onclick={() => (activeOption = option)}
+				onclick={() => (value = option)}
 			>
 				{option}
 			</button>
