@@ -29,6 +29,6 @@ export class JmrApplicationStore {
         this.#source = s;
     }
     setSourceDirectoryListItems(s: SourceDirectoryListItemValue[]) {
-
+        console.log("[dbg] TODO: call next api:", $state.snapshot(s));
     }
 }

@@ -21,7 +21,7 @@
 			app.setSource(source);
 		}
 	}
-	function handleSearchClick() {
+	function handleNextButtonClick() {
 		app.setSourceDirectoryListItems(selectedSourceDirectoryItems);
 	}
 </script>
@@ -55,10 +55,10 @@
 			{/if}
 		{/await}
 	</section>
-	<section class="cta-section flex flex-col items-stretch text-right sm:flex-row sm:items-end">
-		<Button type="primary" onclick={handleSearchClick} disabled={searchDisabled}
-			>Search Media Online</Button
-		>
+	<section
+		class="cta-section flex flex-col justify-stretch text-right sm:flex-row sm:justify-start"
+	>
+		<Button type="primary" onclick={handleNextButtonClick} disabled={searchDisabled}>Next</Button>
 	</section>
 </section>
 
