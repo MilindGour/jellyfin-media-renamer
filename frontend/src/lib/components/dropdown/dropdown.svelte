@@ -2,20 +2,23 @@
 	import Icon from 'svelte-awesome';
 	import chevronDown from 'svelte-awesome/icons/chevronDown';
 	import { slideDown } from '$lib/animations';
-	import { DropdownModel } from './dropdown-model.svelte.ts';
-	import { onDestroy, onMount } from 'svelte';
-	import { DropdownService } from './dropdown-service.svelte.ts';
 
-	const { id, options, labelProp = '', itemTemplate = null, initialValue = null } = $props();
-
-	let dd: DropdownModel = new DropdownModel({
+	let {
+		id,
 		options,
-		labelProperty: labelProp,
-		value: initialValue
-	});
+		labelProp = '',
+		itemTemplate = null,
+		value = $bindable(null),
+		required = false,
+		valid = $bindable(!required)
+	} = $props();
+
+	let open = $state(false);
+	let el;
+	let label = $state('');
 
 	$effect(() => {
-		if (dd.open) {
+		if (open) {
 			document.body.removeEventListener('click', handleOutsideClick);
 			document.body.addEventListener('click', handleOutsideClick);
 		} else {
@@ -23,27 +26,25 @@
 		}
 	});
 
-	onMount(() => {
-		console.log('[dbg] mounting dropdown with initialValue:', dd.value);
-		DropdownService.register(id, dd);
+	$effect(() => {
+		if (value === null) {
+			label = 'Please Select';
+			valid = !required;
+		} else {
+			label = labelProp?.length > 0 ? value[labelProp] : value;
+			valid = true;
+		}
 	});
-	onDestroy(() => {
-		DropdownService.unregister(id);
-	});
-
-	export function getValue() {
-		return dd.value;
-	}
 
 	function closeDropdown() {
-		dd.open = false;
+		open = false;
 		document.body.removeEventListener('click', handleOutsideClick);
 	}
 	function handleDropdownHeadClick() {
-		dd.open = !dd.open;
+		open = !open;
 	}
 	function handleOutsideClick(e: MouseEvent) {
-		const ddBounds = dd.el!.getBoundingClientRect();
+		const ddBounds = el!.getBoundingClientRect();
 		if (
 			e.clientX < ddBounds.left ||
 			e.clientX > ddBounds.right ||
@@ -55,41 +56,42 @@
 	}
 
 	function handleItemSelect(item: any) {
-		dd.value = item;
+		value = item;
 	}
 </script>
 
 <div
-	bind:this={dd.el}
+	bind:this={el}
+	data-id={id}
 	class="jmr-dropdown relative inline-block min-w-full sm:min-w-sm"
-	class:open={dd.open}
+	class:open
 >
 	<button
 		type="button"
 		class="dropdown-head inline-flex w-full cursor-pointer items-center gap-3 rounded-md border border-gray-400 p-2 text-start"
 		onclick={handleDropdownHeadClick}
 	>
-		<span class="text grow-1">{dd.label || 'Please select'}</span>
-		<span class="flex items-center justify-center" class:rotate-180={dd.open}
+		<span class="text grow-1">{label}</span>
+		<span class="flex items-center justify-center" class:rotate-180={open}
 			><Icon data={chevronDown} /></span
 		>
 	</button>
-	{#if dd.open}
+	{#if open}
 		<div
 			transition:slideDown
 			class="dropdown-list absolute mt-px flex w-full flex-col overflow-hidden rounded-md border border-gray-400 bg-white"
 		>
-			{#each dd.options as option (option)}
+			{#each options as option (option)}
 				<button
 					onclick={() => handleItemSelect(option)}
 					class="item block cursor-pointer p-2 text-left"
-					class:bg-gray-200={JSON.stringify(option) === JSON.stringify(dd.value)}
-					class:hover:bg-gray-50={JSON.stringify(option) !== JSON.stringify(dd.value)}
+					class:bg-gray-200={JSON.stringify(option) === JSON.stringify(value)}
+					class:hover:bg-gray-50={JSON.stringify(option) !== JSON.stringify(value)}
 				>
 					{#if itemTemplate}
 						{@render itemTemplate(option)}
 					{:else}
-						{dd.label}
+						{label}
 					{/if}
 				</button>
 			{/each}
