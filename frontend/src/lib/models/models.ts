@@ -25,7 +25,7 @@ export type DirEntry = {
 
 export type MediaType = "Movie" | "Tv";
 
-export type SourceDirectoryListItemValue = {
+export type SourceDirectory = {
     entry: DirEntry,
     type: MediaType | null,
     selected: boolean

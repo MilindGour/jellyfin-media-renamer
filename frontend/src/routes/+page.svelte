@@ -2,7 +2,7 @@
 	import { Button, Dropdown, SourceDirectoryList } from '$lib/components';
 	import type { PageProps } from './$types';
 	import { formatPathString } from '$lib/stores/util';
-	import type { Source, SourceDirectoryListItemValue } from '$lib/models/models';
+	import type { Source, SourceDirectory } from '$lib/models/models';
 	import { JmrApplicationStore } from '$lib/stores/app-store.svelte';
 	import { API } from '$lib/services/api';
 
@@ -10,7 +10,7 @@
 	const app = new JmrApplicationStore(API.http());
 
 	let source = $state<Source | null>(null);
-	let selectedSourceDirectoryItems = $state<SourceDirectoryListItemValue[]>([]);
+	let selectedSourceDirectoryItems = $state<SourceDirectory[]>([]);
 	const scanDirDisabled = $derived<boolean>(source === null);
 	const searchDisabled = $derived<boolean>(
 		selectedSourceDirectoryItems.length === 0 || selectedSourceDirectoryItems.some((x) => !x.type)
@@ -22,7 +22,7 @@
 		}
 	}
 	function handleNextButtonClick() {
-		app.setSourceDirectoryListItems(selectedSourceDirectoryItems);
+		app.setSourceDirectories(selectedSourceDirectoryItems);
 	}
 </script>
 

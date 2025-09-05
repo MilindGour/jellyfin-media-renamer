@@ -1,4 +1,4 @@
-import type { Source, SourceDirectoryListItemValue } from "$lib/models/models";
+import type { Source, SourceDirectory } from "$lib/models/models";
 import type { API } from "$lib/services/api";
 
 // Main store class for the whole application
@@ -7,7 +7,7 @@ export class JmrApplicationStore {
 
     /* Variables */
     #source = $state<Source | null>(null);
-    #selectedSourceDirectoryListItems = $state<SourceDirectoryListItemValue[]>([]);
+    #selectSourceDirectories = $state<SourceDirectory[]>([]);
 
     sourceDirectories = $derived.by(async () => {
         if (this.#source === null) {
@@ -29,7 +29,7 @@ export class JmrApplicationStore {
     setSource(s: Source) {
         this.#source = s;
     }
-    setSourceDirectoryListItems(s: SourceDirectoryListItemValue[]) {
-        this.#selectedSourceDirectoryListItems = s;
+    setSourceDirectories(s: SourceDirectory[]) {
+        this.#selectSourceDirectories = s;
     }
 }
