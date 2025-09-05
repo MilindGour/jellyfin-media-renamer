@@ -41,7 +41,7 @@
 </script>
 
 <div class="source-directory-list-wrapper">
-	<div class="actions p-3">
+	<div class="actions flex flex-col justify-between p-3 sm:flex-row">
 		<div class="action flex items-center gap-2">
 			<input
 				type="checkbox"
@@ -52,7 +52,7 @@
 			/>
 			<label for="selectAll">Select All</label>
 		</div>
-		<div class="action">
+		<div class="action pt-1">
 			<Button onclick={() => allType('Movie')}>All Movies</Button>
 			<Button onclick={() => allType('Tv')}>All TVs</Button>
 		</div>

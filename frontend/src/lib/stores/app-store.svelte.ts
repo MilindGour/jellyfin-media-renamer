@@ -7,6 +7,7 @@ export class JmrApplicationStore {
 
     /* Variables */
     #source = $state<Source | null>(null);
+    #selectedSourceDirectoryListItems = $state<SourceDirectoryListItemValue[]>([]);
 
     sourceDirectories = $derived.by(async () => {
         if (this.#source === null) {
@@ -29,6 +30,6 @@ export class JmrApplicationStore {
         this.#source = s;
     }
     setSourceDirectoryListItems(s: SourceDirectoryListItemValue[]) {
-        console.log("[dbg] TODO: call next api:", $state.snapshot(s));
+        this.#selectedSourceDirectoryListItems = s;
     }
 }
