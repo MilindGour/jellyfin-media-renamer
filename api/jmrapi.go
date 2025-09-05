@@ -84,10 +84,17 @@ func (j *JmrAPI) populateSourcesWithID() {
 func (j *JmrAPI) RegisterAPIRoutes() {
 	j.serveMux = http.NewServeMux()
 
+	j.serveMux.HandleFunc("GET /api/ping", j.Get_Ping())
 	j.serveMux.HandleFunc("GET /api/sources", j.Get_Sources())
 	j.serveMux.HandleFunc("GET /api/sources/{id}", j.Get_SourceByID())
 }
 
+func (j *JmrAPI) Get_Ping() APIHandlerFn {
+	return func(w http.ResponseWriter, r *http.Request) {
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte("online"))
+	}
+}
 func (j *JmrAPI) Get_Sources() APIHandlerFn {
 	return func(w http.ResponseWriter, r *http.Request) {
 		raw := NewSourcesResponse(j.sourcesWithID)
