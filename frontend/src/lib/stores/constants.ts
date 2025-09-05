@@ -4,8 +4,8 @@ export const Constants = {
     API_BASE_URL_DEV: "http://localhost:7749",
     API_BASE_URL: "https://jmr.miracular.in",
 
-    API_GET_CONFIG_SOURCE: "api/sources",
-    API_GET_CONFIG_SOURCE_BY_ID: "api/sources/:id",
+    API_GET_SOURCE: "api/sources",
+    API_GET_SOURCE_DIRS: "api/sources/:id",
 };
 
 export function GetApiBaseUrl(): string {

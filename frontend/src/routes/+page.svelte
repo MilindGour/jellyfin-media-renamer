@@ -1,46 +1,68 @@
 <script lang="ts">
-	import { Button } from '$lib/components/button';
-	import { Dropdown, DropdownService } from '$lib/components/dropdown';
-	import type { ConfigSource } from '$lib/models/config-models';
-	import { JNetworkClient } from '$lib/services/network';
-	import { JmrStore } from '$lib/stores/app-store.svelte';
+	import { Button, Dropdown, SourceDirectoryList } from '$lib/components';
 	import type { PageProps } from './$types';
 	import { formatPathString } from '$lib/stores/util';
-	import { ConfigSourceDetailList } from '$lib/components/configSourceDetailList';
+	import type { Source, SourceDirectoryListItemValue } from '$lib/models/models';
+	import { JmrApplicationStore } from '$lib/stores/app-store.svelte';
+	import { API } from '$lib/services/api';
 
 	const { data }: PageProps = $props();
-	const netClient: JNetworkClient = new JNetworkClient();
-	const jmrStore = new JmrStore(netClient);
+	const app = new JmrApplicationStore(API.http());
+
+	let source = $state<Source | null>(null);
+	let selectedSourceDirectoryItems = $state<SourceDirectoryListItemValue[]>([]);
+	const scanDirDisabled = $derived<boolean>(source === null);
+	const searchDisabled = $derived<boolean>(
+		selectedSourceDirectoryItems.length === 0 || selectedSourceDirectoryItems.some((x) => !x.type)
+	);
 
 	async function handleScanDirClick() {
-		const cs = DropdownService.getValueOf<ConfigSource>('cfgSourceDD');
-		jmrStore.setConfigSource(cs);
+		if (source !== null) {
+			app.setSource(source);
+		}
+	}
+	function handleNextButtonClick() {
+		app.setSourceDirectoryListItems(selectedSourceDirectoryItems);
 	}
 </script>
 
-<section class="page flex flex-col gap-8">
+<section class="page flex flex-col gap-8 pb-16">
 	<section
 		class="form-section flex flex-col flex-wrap items-stretch gap-2 sm:flex-row sm:items-start"
 	>
 		<label class="basis-full" for="cfgSourceDD">Please select media source directory</label>
 		<Dropdown
-			id="cfgSourceDD"
+			bind:value={source}
+			id="sourceDropdown"
 			labelProp="name"
-			options={data.configSources.sources}
+			options={data.sourcesResponse.sources}
 			itemTemplate={dropdownTemplate}
 		/>
-		<Button type="primary" onclick={handleScanDirClick}>Scan Directory</Button>
+		<Button type="primary" disabled={scanDirDisabled} onclick={handleScanDirClick}
+			>Scan Directory</Button
+		>
 	</section>
 	<section class="list-section">
-		{#await jmrStore.configSourceDetails}
-			Loading subdirectories of selected source...
-		{:then cfd}
-			<ConfigSourceDetailList id="directoryList" data={cfd} />
+		{#await app.sourceDirectories then sourceDirectories}
+			{#if sourceDirectories !== null}
+				<SourceDirectoryList
+					name="selectedList"
+					list={sourceDirectories.entries}
+					bind:value={selectedSourceDirectoryItems}
+				/>
+			{:else}
+				Select and scan a source to view its directories...
+			{/if}
 		{/await}
+	</section>
+	<section
+		class="cta-section flex flex-col justify-stretch text-right sm:flex-row sm:justify-start"
+	>
+		<Button type="primary" onclick={handleNextButtonClick} disabled={searchDisabled}>Next</Button>
 	</section>
 </section>
 
-{#snippet dropdownTemplate(item: ConfigSource)}
+{#snippet dropdownTemplate(item: Source)}
 	<div class="item-instance">
 		<div class="font-semibold">{item.name}</div>
 		<div class="text-sm text-gray-500">{formatPathString(item.path)}</div>

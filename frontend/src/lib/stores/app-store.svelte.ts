@@ -1,33 +1,35 @@
-import type { ConfigSource, ConfigSourceByID, ConfigSourcesByIDResponse } from "$lib/models/config-models";
-import { JNetworkClient } from "$lib/services/network";
-import { Constants } from "./constants";
+import type { Source, SourceDirectoryListItemValue } from "$lib/models/models";
+import type { API } from "$lib/services/api";
 
-export class JmrStore {
-    static #instance: null | JmrStore = null;
-    #networkClient: JNetworkClient;
+// Main store class for the whole application
+export class JmrApplicationStore {
+    static instance?: JmrApplicationStore;
 
-    // all private store variables
-    #configSource: ConfigSource | null = $state(null);
+    /* Variables */
+    #source = $state<Source | null>(null);
+    #selectedSourceDirectoryListItems = $state<SourceDirectoryListItemValue[]>([]);
 
-    // all public store variables
-    configSourceDetails: Promise<ConfigSourcesByIDResponse> | null = $derived.by(() => {
-        if (this.#configSource !== null) {
-            const csId = this.#configSource.id;
-            const configSourceDetailApi = Constants.API_GET_CONFIG_SOURCE_BY_ID.replace(":id", csId);
-            return this.#networkClient.httpGetJSON<ConfigSourcesByIDResponse>(configSourceDetailApi);
+    sourceDirectories = $derived.by(async () => {
+        if (this.#source === null) {
+            return null;
         }
-        return null;
+        const srcRes = await this.api.getSourceDirectoriesAsync(this.#source);
+        return srcRes;
     });
 
-    constructor(netClient: JNetworkClient) {
-        if (JmrStore.#instance === null) {
-            JmrStore.#instance = this;
+    /* Constructor */
+    constructor(private api: API) {
+        if (!JmrApplicationStore.instance) {
+            JmrApplicationStore.instance = this;
         }
-        this.#networkClient = netClient;
-        return JmrStore.#instance;
+        return JmrApplicationStore.instance;
     }
 
-    setConfigSource(cs: ConfigSource | null) {
-        this.#configSource = cs;
+    /* First page related methods */
+    setSource(s: Source) {
+        this.#source = s;
+    }
+    setSourceDirectoryListItems(s: SourceDirectoryListItemValue[]) {
+        this.#selectedSourceDirectoryListItems = s;
     }
 }
