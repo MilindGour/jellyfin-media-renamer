@@ -38,5 +38,5 @@ func NewJmrApplication(isDev bool) *JmrApplication {
 }
 
 func (app *JmrApplication) Run() {
-	app.api.Initialize(app.devMode)
+	app.api.Initialize(true)
 }
