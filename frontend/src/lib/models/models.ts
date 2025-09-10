@@ -30,3 +30,17 @@ export type SourceDirectory = {
     type: MediaType | null,
     selected: boolean
 };
+
+export type MediaInfo = {
+    name: string,
+    description: string,
+    yearOfRelease: number,
+    thumbnailUrl: string,
+    mediaId: string
+}
+
+export type SourceDirWithInfo = {
+    sourceDirectory: SourceDirectory,
+    identifiedMediaName?: string,
+    identifiedMediaInfos?: MediaInfo[],
+};

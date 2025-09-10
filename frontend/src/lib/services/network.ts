@@ -27,4 +27,16 @@ export class HttpService {
         });
         return response.json() as T;
     }
+    async postJSON<T>(url: string, body: any, queryParams: URLSearchParams | null = null) {
+        const apiUrl = getApiUrl(url, queryParams);
+        const response = await fetch(apiUrl, {
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body,
+            method: "POST",
+            redirect: "error",
+        });
+        return response.json() as T;
+    }
 }

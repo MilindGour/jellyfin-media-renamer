@@ -5,6 +5,7 @@
 	import type { Source, SourceDirectory } from '$lib/models/models';
 	import { JmrApplicationStore } from '$lib/stores/app-store.svelte';
 	import { API } from '$lib/services/api';
+	import { goto } from '$app/navigation';
 
 	const { data }: PageProps = $props();
 	const app = new JmrApplicationStore(API.http());
@@ -23,6 +24,13 @@
 	}
 	function handleNextButtonClick() {
 		app.setSourceDirectories(selectedSourceDirectoryItems);
+		app.sourceDirsWithMediaNames.then((v) => {
+			if (v) {
+				goto('/identify');
+			} else {
+				console.error('Cannot get media names from server. Unknown error occured');
+			}
+		});
 	}
 </script>
 
