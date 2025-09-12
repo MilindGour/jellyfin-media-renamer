@@ -33,7 +33,7 @@ export class HttpService {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body,
+            body: JSON.stringify(body),
             method: "POST",
             redirect: "error",
         });

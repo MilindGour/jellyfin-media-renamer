@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts">
-	import type { MediaType, SourceDirectoryListItemValue } from '$lib/models/models';
+	import type { MediaType } from '$lib/models/models';
 	import { convertToSizeString, joinStrings } from '$lib/stores/util';
 	import ToggleButtonGroup from '../toggleButtonGroup/toggleButtonGroup.svelte';
 
@@ -20,7 +20,7 @@
 		value = $bindable()
 	}: {
 		name: string;
-		value: SourceDirectoryListItemValue;
+		value: any;
 	} = $props();
 
 	let valid = $state(false);

@@ -18,13 +18,6 @@ export class JmrApplicationStore {
     });
 
     sourceDirsWithMediaInfo = $state<SourceDirWithInfo[]>([]);
-    sourceDirsWithMediaNames = $derived.by(async () => {
-        if (this.#selectSourceDirectories.length === 0) {
-            return null;
-        }
-        const sourceWithNames = await this.api.identifyMediaNames(this.#selectSourceDirectories);
-        return sourceWithNames;
-    });
 
     /* Constructor */
     constructor(private api: API) {
@@ -43,6 +36,7 @@ export class JmrApplicationStore {
         if (this.#selectSourceDirectories.length === 0) {
             this.sourceDirsWithMediaInfo = [];
         }
+        console.log("[dbg] Calling setSourceDirectories with s:", $state.snapshot(s));
         const sourceWithNames = await this.api.identifyMediaNames(this.#selectSourceDirectories);
         if (sourceWithNames) {
             this.sourceDirsWithMediaInfo = sourceWithNames;
