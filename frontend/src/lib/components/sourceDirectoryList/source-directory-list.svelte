@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { DirEntry, MediaType, SourceDirectoryListItemValue } from '$lib/models/models';
+	import type { DirEntry, MediaType, SourceDirectory } from '$lib/models/models';
 	import { Button } from '$lib/components';
 	import SrcDirListItem from './src-dir-list-item.svelte';
 
@@ -10,18 +10,16 @@
 	}: {
 		name: string;
 		list: DirEntry[];
-		value: SourceDirectoryListItemValue[];
+		value: SourceDirectory[];
 	} = $props();
 
-	let items = $state<SourceDirectoryListItemValue[]>([]);
+	let items = $state<SourceDirectory[]>([]);
 	let selectAllChecked = $derived(value.length === items.length);
 	let selectAllIndeterminate = $derived(value.length < items.length && value.length > 0);
 
 	$effect(() => {
 		if (list?.length > 0) {
-			items = list.map(
-				(l) => ({ entry: l, selected: false, type: null }) as SourceDirectoryListItemValue
-			);
+			items = list.map((l) => ({ entry: l, selected: false, type: null }) as SourceDirectory);
 		} else {
 			items = [];
 		}
@@ -53,8 +51,8 @@
 			<label for="selectAll">Select All</label>
 		</div>
 		<div class="action pt-1">
-			<Button onclick={() => allType('Movie')}>All Movies</Button>
-			<Button onclick={() => allType('Tv')}>All TVs</Button>
+			<Button onclick={() => allType('MOVIE')}>All Movies</Button>
+			<Button onclick={() => allType('TV')}>All TVs</Button>
 		</div>
 	</div>
 	<div class="source-directory-list flex flex-col gap-1">

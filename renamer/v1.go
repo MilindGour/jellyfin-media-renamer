@@ -14,6 +14,12 @@ type JmrRenamerV1 struct {
 	mip m.MediaInfoProvider
 }
 
+func NewJmrRenamerV1(mip m.MediaInfoProvider) *JmrRenamerV1 {
+	return &JmrRenamerV1{
+		mip: mip,
+	}
+}
+
 func (j *JmrRenamerV1) GetMediaNameAndYear(rawFilename string) MediaNameAndYear {
 	// Step 1: remove special characters from input
 	onlyBasename := path.Base(rawFilename)

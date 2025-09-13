@@ -3,6 +3,7 @@ package api
 import (
 	"github.com/MilindGour/jellyfin-media-renamer/config"
 	"github.com/MilindGour/jellyfin-media-renamer/filesystem"
+	mediainfoprovider "github.com/MilindGour/jellyfin-media-renamer/mediaInfoProvider"
 )
 
 type SourcesResponse struct {
@@ -47,3 +48,18 @@ func NewSourceByIDResponse(src DirConfigWithID, children []filesystem.DirEntry) 
 
 	return out
 }
+
+type IdentifyNamesRequestItem struct {
+	Entry    DirEntryWithID              `json:"entry"`
+	Type     mediainfoprovider.MediaType `json:"type"`
+	Selected bool                        `json:"selected"`
+}
+type IdentifyNamesRequest []IdentifyNamesRequestItem
+
+type IdentifyNamesResponseItem struct {
+	SourceDirectory      IdentifyNamesRequestItem      `json:"sourceDirectory"`
+	IdentifiedMediaName  string                        `json:"identifiedMediaName"`
+	IdentifiedMediaYear  int                           `json:"identifiedMediaYear"`
+	IdentifiedMediaInfos []mediainfoprovider.MediaInfo `json:"identifiedMediaInfos"`
+}
+type IdentifyNamesResponse []IdentifyNamesResponseItem

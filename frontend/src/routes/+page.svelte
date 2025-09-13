@@ -24,14 +24,15 @@
 	}
 	function handleNextButtonClick() {
 		app.setSourceDirectories(selectedSourceDirectoryItems);
-		app.sourceDirsWithMediaNames.then((v) => {
-			if (v) {
-				goto('/identify');
-			} else {
-				console.error('Cannot get media names from server. Unknown error occured');
-			}
-		});
 	}
+
+	$effect(() => {
+		// Check if sourceDirsWithMediaInfo is filled, if yes
+		// navigate to next page.
+		if (app.sourceDirsWithMediaInfo?.length > 0) {
+			goto('/identify');
+		}
+	});
 </script>
 
 <section class="page flex flex-col gap-8 pb-16">

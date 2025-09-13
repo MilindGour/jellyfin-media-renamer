@@ -1,6 +1,7 @@
 package api
 
 import (
+	"encoding/json"
 	"errors"
 	"fmt"
 	"log"
@@ -9,7 +10,9 @@ import (
 
 	"github.com/MilindGour/jellyfin-media-renamer/config"
 	"github.com/MilindGour/jellyfin-media-renamer/filesystem"
+	mediainfoprovider "github.com/MilindGour/jellyfin-media-renamer/mediaInfoProvider"
 	"github.com/MilindGour/jellyfin-media-renamer/middlewares"
+	"github.com/MilindGour/jellyfin-media-renamer/renamer"
 	"github.com/MilindGour/jellyfin-media-renamer/util"
 )
 
@@ -19,6 +22,7 @@ type JmrAPI struct {
 	serveMux           *http.ServeMux
 	configProvider     config.ConfigProvider
 	fileSystemProvider filesystem.FileSystemProvider
+	ren                renamer.Renamer
 
 	sourcesWithID []DirConfigWithID
 }
@@ -26,10 +30,12 @@ type JmrAPI struct {
 func NewJmrApi(
 	configProvider config.ConfigProvider,
 	filesystemProvider filesystem.FileSystemProvider,
+	ren renamer.Renamer,
 ) *JmrAPI {
 	jmrApi := JmrAPI{
 		configProvider:     configProvider,
 		fileSystemProvider: filesystemProvider,
+		ren:                ren,
 	}
 
 	return &jmrApi
@@ -87,6 +93,7 @@ func (j *JmrAPI) RegisterAPIRoutes() {
 	j.serveMux.HandleFunc("GET /api/ping", j.Get_Ping())
 	j.serveMux.HandleFunc("GET /api/sources", j.Get_Sources())
 	j.serveMux.HandleFunc("GET /api/sources/{id}", j.Get_SourceByID())
+	j.serveMux.HandleFunc("POST /api/media/identify-names", j.Post_IdentifyNames())
 }
 
 func (j *JmrAPI) Get_Ping() APIHandlerFn {
@@ -124,6 +131,36 @@ func (j *JmrAPI) Get_SourceByID() APIHandlerFn {
 		}
 
 		w.Write(ToJSON(NewSourceByIDResponse(*src, j.fileSystemProvider.ScanDirectory(src.Path, j.configProvider.GetAllowedExtensions()))))
+	}
+}
+
+func (j *JmrAPI) Post_IdentifyNames() APIHandlerFn {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var request IdentifyNamesRequest
+		err := json.NewDecoder(r.Body).Decode(&request)
+
+		if err != nil {
+			j.HandleAPIError(w, r, http.StatusBadRequest, err)
+			return
+		}
+		if len(request) == 0 {
+			j.HandleAPIError(w, r, http.StatusBadRequest, errors.New("Atleast 1 request object is required"))
+			return
+		}
+
+		out := IdentifyNamesResponse{}
+		for _, requestItem := range request {
+			rawFilename := requestItem.Entry.Name
+			nameAndYear := j.ren.GetMediaNameAndYear(rawFilename)
+			out = append(out, IdentifyNamesResponseItem{
+				SourceDirectory:      requestItem,
+				IdentifiedMediaName:  nameAndYear.Name,
+				IdentifiedMediaYear:  nameAndYear.Year,
+				IdentifiedMediaInfos: []mediainfoprovider.MediaInfo{},
+			})
+		}
+		w.Write(ToJSON(out))
+		w.WriteHeader(http.StatusOK)
 	}
 }
 

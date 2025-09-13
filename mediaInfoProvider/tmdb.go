@@ -3,7 +3,6 @@ package mediainfoprovider
 import (
 	"fmt"
 	"net/url"
-	"path"
 	"regexp"
 	"strconv"
 	"strings"
@@ -59,31 +58,31 @@ func (t *TmdbMIProvider) SearchTVShows(term string, year int) []TVResult {
 	return out
 }
 
-func (t *TmdbMIProvider) GetProperDirectoryName(mediaInfo MediaInfo) string {
-	out := ""
+// func (t *TmdbMIProvider) GetProperDirectoryName(mediaInfo MediaInfo) string {
+// 	out := ""
+//
+// 	if len(mediaInfo.Name) == 0 {
+// 		panic("Media name should not be empty")
+// 	}
+// 	out += mediaInfo.Name
+//
+// 	if mediaInfo.YearOfRelease > 0 {
+// 		out += fmt.Sprintf(" (%d)", mediaInfo.YearOfRelease)
+// 	}
+// 	if len(mediaInfo.MediaID) > 0 {
+// 		out += fmt.Sprintf(" [tmdbid-%s]", mediaInfo.MediaID)
+// 	}
+//
+// 	return out
+// }
 
-	if len(mediaInfo.Name) == 0 {
-		panic("Media name should not be empty")
-	}
-	out += mediaInfo.Name
-
-	if mediaInfo.YearOfRelease > 0 {
-		out += fmt.Sprintf(" (%d)", mediaInfo.YearOfRelease)
-	}
-	if len(mediaInfo.MediaID) > 0 {
-		out += fmt.Sprintf(" [tmdbid-%s]", mediaInfo.MediaID)
-	}
-
-	return out
-}
-
-func (t *TmdbMIProvider) GetProperTVShowFilename(filename, showName string, season, episode int) string {
-	extension := path.Ext(filename)
-	if season < 0 {
-		season = 1
-	}
-	return fmt.Sprintf("%s S%02dE%02d%s", showName, season, episode, extension)
-}
+// func (t *TmdbMIProvider) GetProperTVShowFilename(filename, showName string, season, episode int) string {
+// 	extension := path.Ext(filename)
+// 	if season < 0 {
+// 		season = 1
+// 	}
+// 	return fmt.Sprintf("%s S%02dE%02d%s", showName, season, episode, extension)
+// }
 
 func (t *TmdbMIProvider) getParsedMediaInfoListFromUrl(url string, itemSelector string) []MediaInfo {
 	scrapResult, err := t.scrapper.Scrap(url, itemSelector, t.getSearchItemFieldmap())

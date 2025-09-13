@@ -36,7 +36,6 @@ export class JmrApplicationStore {
         if (this.#selectSourceDirectories.length === 0) {
             this.sourceDirsWithMediaInfo = [];
         }
-        console.log("[dbg] Calling setSourceDirectories with s:", $state.snapshot(s));
         const sourceWithNames = await this.api.identifyMediaNames(this.#selectSourceDirectories);
         if (sourceWithNames) {
             this.sourceDirsWithMediaInfo = sourceWithNames;

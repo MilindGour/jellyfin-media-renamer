@@ -23,7 +23,7 @@ export type DirEntry = {
     children?: DirEntry[]
 };
 
-export type MediaType = "Movie" | "Tv";
+export type MediaType = "MOVIE" | "TV";
 
 export type SourceDirectory = {
     entry: DirEntry,
