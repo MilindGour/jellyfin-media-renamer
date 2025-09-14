@@ -5,6 +5,7 @@ import "fmt"
 type MediaInfoProvider interface {
 	SearchMovies(term string, year int) []MovieResult
 	SearchTVShows(term string, year int) []TVResult
+	SearchMediaInfo(term string, year int, mediaType MediaType) []MediaInfo
 }
 
 type MediaType string

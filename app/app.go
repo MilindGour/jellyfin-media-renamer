@@ -12,6 +12,7 @@ type JmrApplication struct {
 	cfg config.ConfigProvider
 	api api.APIProvider
 	ren renamer.Renamer
+	mip mediainfoprovider.MediaInfoProvider
 
 	devMode bool
 }
@@ -22,12 +23,12 @@ func NewJmrApplication(isDev bool) *JmrApplication {
 	if isDev {
 		// DEV mode
 		configProvider := config.NewDevJmrConfig()
-		mediaInfoProvider := mediainfoprovider.NewMockTmdbMIProvider()
+		mediaInfoProvider := mediainfoprovider.NewTmdbMIProvider()
 		ren := renamer.NewJmrRenamerV1(mediaInfoProvider)
 
 		return &JmrApplication{
 			cfg:     configProvider,
-			api:     api.NewJmrApi(configProvider, fsProvider, ren),
+			api:     api.NewJmrApi(configProvider, fsProvider, ren, mediaInfoProvider),
 			ren:     ren,
 			devMode: true,
 		}
@@ -39,7 +40,7 @@ func NewJmrApplication(isDev bool) *JmrApplication {
 
 		return &JmrApplication{
 			cfg:     configProvider,
-			api:     api.NewJmrApi(configProvider, fsProvider, ren),
+			api:     api.NewJmrApi(configProvider, fsProvider, ren, mediaInfoProvider),
 			ren:     ren,
 			devMode: false,
 		}

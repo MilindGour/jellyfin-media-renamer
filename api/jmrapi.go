@@ -23,6 +23,7 @@ type JmrAPI struct {
 	configProvider     config.ConfigProvider
 	fileSystemProvider filesystem.FileSystemProvider
 	ren                renamer.Renamer
+	mip                mediainfoprovider.MediaInfoProvider
 
 	sourcesWithID []DirConfigWithID
 }
@@ -31,11 +32,13 @@ func NewJmrApi(
 	configProvider config.ConfigProvider,
 	filesystemProvider filesystem.FileSystemProvider,
 	ren renamer.Renamer,
+	mip mediainfoprovider.MediaInfoProvider,
 ) *JmrAPI {
 	jmrApi := JmrAPI{
 		configProvider:     configProvider,
 		fileSystemProvider: filesystemProvider,
 		ren:                ren,
+		mip:                mip,
 	}
 
 	return &jmrApi
@@ -94,6 +97,7 @@ func (j *JmrAPI) RegisterAPIRoutes() {
 	j.serveMux.HandleFunc("GET /api/sources", j.Get_Sources())
 	j.serveMux.HandleFunc("GET /api/sources/{id}", j.Get_SourceByID())
 	j.serveMux.HandleFunc("POST /api/media/identify-names", j.Post_IdentifyNames())
+	j.serveMux.HandleFunc("POST /api/media/identify-info", j.Post_IdentifyMediaInfo())
 }
 
 func (j *JmrAPI) Get_Ping() APIHandlerFn {
@@ -136,7 +140,7 @@ func (j *JmrAPI) Get_SourceByID() APIHandlerFn {
 
 func (j *JmrAPI) Post_IdentifyNames() APIHandlerFn {
 	return func(w http.ResponseWriter, r *http.Request) {
-		var request IdentifyNamesRequest
+		var request IdentifyNameRequest
 		err := json.NewDecoder(r.Body).Decode(&request)
 
 		if err != nil {
@@ -148,11 +152,11 @@ func (j *JmrAPI) Post_IdentifyNames() APIHandlerFn {
 			return
 		}
 
-		out := IdentifyNamesResponse{}
+		out := IdentifyMediaResponse{}
 		for _, requestItem := range request {
 			rawFilename := requestItem.Entry.Name
 			nameAndYear := j.ren.GetMediaNameAndYear(rawFilename)
-			out = append(out, IdentifyNamesResponseItem{
+			out = append(out, IdentifyMediaResponseItem{
 				SourceDirectory:      requestItem,
 				IdentifiedMediaName:  nameAndYear.Name,
 				IdentifiedMediaYear:  nameAndYear.Year,
@@ -160,7 +164,33 @@ func (j *JmrAPI) Post_IdentifyNames() APIHandlerFn {
 			})
 		}
 		w.Write(ToJSON(out))
-		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func (j *JmrAPI) Post_IdentifyMediaInfo() APIHandlerFn {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var request IdentifyMediaRequest
+		err := json.NewDecoder(r.Body).Decode(&request)
+
+		if err != nil {
+			j.HandleAPIError(w, r, http.StatusBadRequest, err)
+			return
+		}
+		if len(request) == 0 {
+			j.HandleAPIError(w, r, http.StatusBadRequest, errors.New("Atleast 1 request object is required"))
+			return
+		}
+
+		out := IdentifyMediaResponse{}
+		for _, requestItem := range request {
+			term := requestItem.IdentifiedMediaName
+			year := requestItem.IdentifiedMediaYear
+
+			requestItem.IdentifiedMediaInfos = j.mip.SearchMediaInfo(term, year, requestItem.SourceDirectory.Type)
+			out = append(out, requestItem)
+		}
+
+		w.Write(ToJSON(out))
 	}
 }
 

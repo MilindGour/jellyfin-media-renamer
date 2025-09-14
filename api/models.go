@@ -49,17 +49,21 @@ func NewSourceByIDResponse(src DirConfigWithID, children []filesystem.DirEntry) 
 	return out
 }
 
-type IdentifyNamesRequestItem struct {
+type IdentifyNameRequestItem struct {
 	Entry    DirEntryWithID              `json:"entry"`
 	Type     mediainfoprovider.MediaType `json:"type"`
 	Selected bool                        `json:"selected"`
 }
-type IdentifyNamesRequest []IdentifyNamesRequestItem
+type IdentifyNameRequest []IdentifyNameRequestItem
 
-type IdentifyNamesResponseItem struct {
-	SourceDirectory      IdentifyNamesRequestItem      `json:"sourceDirectory"`
+type IdentifyMediaResponseItem struct {
+	SourceDirectory      IdentifyNameRequestItem       `json:"sourceDirectory"`
 	IdentifiedMediaName  string                        `json:"identifiedMediaName"`
 	IdentifiedMediaYear  int                           `json:"identifiedMediaYear"`
 	IdentifiedMediaInfos []mediainfoprovider.MediaInfo `json:"identifiedMediaInfos"`
 }
-type IdentifyNamesResponse []IdentifyNamesResponseItem
+type IdentifyMediaResponse []IdentifyMediaResponseItem
+
+// Next media request and response items are same type
+type IdentifyMediaRequestItem IdentifyMediaResponseItem
+type IdentifyMediaRequest IdentifyMediaResponse
