@@ -24,6 +24,10 @@
 	}
 </script>
 
+<svelte:head>
+	<title>Identify</title>
+</svelte:head>
+
 <div class="identify-page flex flex-col gap-4">
 	<section class="cta text-right">
 		<Button onclick={searchMediaInfoClickHandler}>Search Media Info</Button>

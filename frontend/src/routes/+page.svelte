@@ -35,6 +35,9 @@
 	});
 </script>
 
+<svelte:head>
+	<title>Select Source</title>
+</svelte:head>
 <section class="page flex flex-col gap-8 pb-16">
 	<section
 		class="form-section flex flex-col flex-wrap items-stretch gap-2 sm:flex-row sm:items-start"
