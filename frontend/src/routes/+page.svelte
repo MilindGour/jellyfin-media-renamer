@@ -5,6 +5,7 @@
 	import type { Source, SourceDirectory } from '$lib/models/models';
 	import { JmrApplicationStore } from '$lib/stores/app-store.svelte';
 	import { API } from '$lib/services/api';
+	import { goto } from '$app/navigation';
 
 	const { data }: PageProps = $props();
 	const app = new JmrApplicationStore(API.http());
@@ -24,8 +25,19 @@
 	function handleNextButtonClick() {
 		app.setSourceDirectories(selectedSourceDirectoryItems);
 	}
+
+	$effect(() => {
+		// Check if sourceDirsWithMediaInfo is filled, if yes
+		// navigate to next page.
+		if (app.sourceDirsWithMediaInfo?.length > 0) {
+			goto('/identify');
+		}
+	});
 </script>
 
+<svelte:head>
+	<title>Select Source</title>
+</svelte:head>
 <section class="page flex flex-col gap-8 pb-16">
 	<section
 		class="form-section flex flex-col flex-wrap items-stretch gap-2 sm:flex-row sm:items-start"

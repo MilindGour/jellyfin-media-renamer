@@ -6,7 +6,14 @@ type HttpHtml struct {
 }
 
 func (h *HttpHtml) GetHTML(url string) (*http.Response, error) {
-	return http.Get(url)
+	r, err := http.NewRequest(http.MethodGet, url, nil)
+	if err != nil {
+		return nil, err
+	}
+	r.Header.Add("Accept-Language", "en-US")
+
+	client := http.Client{}
+	return client.Do(r)
 }
 
 func NewHttpHtml() *HttpHtml {

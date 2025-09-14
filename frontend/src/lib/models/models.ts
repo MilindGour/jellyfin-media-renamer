@@ -23,10 +23,25 @@ export type DirEntry = {
     children?: DirEntry[]
 };
 
-export type MediaType = "Movie" | "Tv";
+export type MediaType = "MOVIE" | "TV";
 
 export type SourceDirectory = {
     entry: DirEntry,
     type: MediaType | null,
     selected: boolean
+};
+
+export type MediaInfo = {
+    name: string,
+    description: string,
+    yearOfRelease: number,
+    thumbnailUrl: string,
+    mediaId: string
+}
+
+export type SourceDirWithInfo = {
+    sourceDirectory: SourceDirectory,
+    identifiedMediaName?: string,
+    identifiedMediaYear?: number,
+    identifiedMediaInfos?: MediaInfo[],
 };
