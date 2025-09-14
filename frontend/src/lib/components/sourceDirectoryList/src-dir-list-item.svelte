@@ -13,7 +13,7 @@
 	import ToggleButtonGroup from '../toggleButtonGroup/toggleButtonGroup.svelte';
 
 	const id = getNextId();
-	const toggleOptions: MediaType[] = ['Movie', 'Tv'];
+	const toggleOptions: MediaType[] = ['MOVIE', 'TV'];
 
 	let {
 		name,

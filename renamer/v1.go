@@ -81,7 +81,7 @@ func (j *JmrRenamerV1) GetMediaSeasonAndEpisode(rawFilepath string) MediaSeasonA
 func removeSpecialCharacters(inputFilename string) string {
 	outputFilename := ""
 	for _, ch := range inputFilename {
-		re := regexp.MustCompile("[A-Za-z0-9 ]")
+		re := regexp.MustCompile("[A-Za-z0-9 &]")
 
 		if re.MatchString(string(ch)) {
 			outputFilename += string(ch)

@@ -42,5 +42,6 @@ export type MediaInfo = {
 export type SourceDirWithInfo = {
     sourceDirectory: SourceDirectory,
     identifiedMediaName?: string,
+    identifiedMediaYear?: number,
     identifiedMediaInfos?: MediaInfo[],
 };
