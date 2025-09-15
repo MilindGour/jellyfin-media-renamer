@@ -28,7 +28,7 @@
 		: 'border-l-red-400'}"
 >
 	<h2 class="block font-medium break-all">{item.sourceDirectory.entry.name}</h2>
-	<p class="text-sm text-gray-500">{formatPathString(item.sourceDirectory.entry.path)}</p>
+	<p class="text-sm break-all text-gray-500">{formatPathString(item.sourceDirectory.entry.path)}</p>
 	<div class="tag-wrapper mt-2">
 		<MediaTag type={item.sourceDirectory.type!} />
 	</div>
