@@ -34,7 +34,9 @@
 	</div>
 	<div class="input-wrapper mt-2 flex flex-col items-start gap-px">
 		<label class="text-sm text-gray-500" for={identifiedNameId}>Identified year and name</label>
-		<div class="name-and-year flex overflow-hidden rounded border border-gray-200">
+		<div
+			class="name-and-year flex max-w-lg self-stretch overflow-hidden rounded border border-gray-200"
+		>
 			<input
 				type="number"
 				class="w-16 border-0 p-1 outline-0"
@@ -43,7 +45,7 @@
 			<input
 				type="text"
 				id={identifiedNameId}
-				class="w-md border-0 border-l-2 border-gray-200 p-1 outline-0"
+				class="grow-1 border-0 border-l-2 border-gray-200 p-1 outline-0"
 				bind:value={item.identifiedMediaName}
 			/>
 		</div>
