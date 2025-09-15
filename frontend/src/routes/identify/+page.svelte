@@ -2,10 +2,15 @@
 	import { goto } from '$app/navigation';
 	import { Button, SourceDirectoryInfoItem } from '$lib/components';
 	import { API } from '$lib/services/api';
+	import { Log } from '$lib/services/logger';
 	import { JmrApplicationStore } from '$lib/stores/app-store.svelte';
 	import { onMount } from 'svelte';
 
 	const app = new JmrApplicationStore(API.http());
+	const log = new Log('Identify page');
+	const nextButtonDisabled = $derived(
+		app.sourceDirsWithMediaInfo.some((x) => !x.identifiedMediaId)
+	);
 
 	onMount(() => {
 		// check if data is present, otherwise navigate to home page.
@@ -21,6 +26,12 @@
 	}
 	function restartClickHandler() {
 		window.location.assign('/');
+	}
+	function nextButtonClickHandler() {
+		log.info(
+			'TODO: Goto next page with these details:',
+			$state.snapshot(app.sourceDirsWithMediaInfo)
+		);
 	}
 </script>
 
@@ -39,5 +50,10 @@
 		{:else}
 			Session refreshed. Redirecting to home page...
 		{/each}
+	</section>
+	<section class="cta">
+		<Button disabled={nextButtonDisabled} type="primary" onclick={nextButtonClickHandler}
+			>Next</Button
+		>
 	</section>
 </div>

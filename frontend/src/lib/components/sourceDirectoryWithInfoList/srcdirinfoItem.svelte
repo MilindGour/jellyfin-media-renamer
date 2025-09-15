@@ -14,21 +14,18 @@
 
 	import MediaTag from '../mediaTag/media-tag.svelte';
 
-	const { item = $bindable() }: { item: SourceDirWithInfo } = $props();
+	let { item = $bindable() }: { item: SourceDirWithInfo } = $props();
 	const id = getNextId();
 	const identifiedNameId = joinStrings('srcdirinfoitem', id.toString());
-
-	let mediaId: string = $state('');
-	const isValidItem = $derived(mediaId?.length > 0);
 </script>
 
 <section
-	class="source-directory-info-item flex flex-col gap-px rounded border border-l-4 border-gray-200 bg-gray-50 px-4 py-3 {isValidItem
+	class="source-directory-info-item flex flex-col gap-px rounded border border-l-4 border-gray-200 bg-gray-50 px-4 py-3 {item?.identifiedMediaId
 		? 'border-l-green-400'
 		: 'border-l-red-400'}"
 >
 	<h2 class="block font-medium break-all">{item.sourceDirectory.entry.name}</h2>
-	<p class="text-sm text-gray-500">{formatPathString(item.sourceDirectory.entry.path)}</p>
+	<p class="text-sm break-all text-gray-500">{formatPathString(item.sourceDirectory.entry.path)}</p>
 	<div class="tag-wrapper mt-2">
 		<MediaTag type={item.sourceDirectory.type!} />
 	</div>
@@ -51,6 +48,6 @@
 		</div>
 	</div>
 	<div class="media-search-list-container mt-3">
-		<MediaSearchList list={item.identifiedMediaInfos || []} bind:value={mediaId} />
+		<MediaSearchList list={item.identifiedMediaInfos || []} bind:value={item.identifiedMediaId!} />
 	</div>
 </section>

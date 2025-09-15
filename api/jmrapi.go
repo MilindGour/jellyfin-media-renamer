@@ -7,6 +7,8 @@ import (
 	"log"
 	"net/http"
 	"strconv"
+	"sync"
+	"time"
 
 	"github.com/MilindGour/jellyfin-media-renamer/config"
 	"github.com/MilindGour/jellyfin-media-renamer/filesystem"
@@ -182,13 +184,30 @@ func (j *JmrAPI) Post_IdentifyMediaInfo() APIHandlerFn {
 		}
 
 		out := IdentifyMediaResponse{}
+		var wg sync.WaitGroup
+		startTime := time.Now()
 		for _, requestItem := range request {
-			term := requestItem.IdentifiedMediaName
-			year := requestItem.IdentifiedMediaYear
+			wg.Add(1)
+			go func(requestItem IdentifyMediaResponseItem) {
+				term := requestItem.IdentifiedMediaName
+				year := requestItem.IdentifiedMediaYear
+				requestItem.IdentifiedMediaInfos = j.mip.SearchMediaInfo(term, year, requestItem.SourceDirectory.Type)
+				out = append(out, requestItem)
+				wg.Done()
+			}(requestItem)
 
-			requestItem.IdentifiedMediaInfos = j.mip.SearchMediaInfo(term, year, requestItem.SourceDirectory.Type)
-			out = append(out, requestItem)
 		}
+		wg.Wait()
+		duration := time.Since(startTime)
+		log.Printf("Fetched %d mediaInfo in %s.\n", len(request), duration.String())
+
+		// for _, requestItem := range request {
+		// 	term := requestItem.IdentifiedMediaName
+		// 	year := requestItem.IdentifiedMediaYear
+		//
+		// 	requestItem.IdentifiedMediaInfos = j.mip.SearchMediaInfo(term, year, requestItem.SourceDirectory.Type)
+		// 	out = append(out, requestItem)
+		// }
 
 		w.Write(ToJSON(out))
 	}

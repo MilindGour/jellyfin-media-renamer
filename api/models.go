@@ -60,6 +60,7 @@ type IdentifyMediaResponseItem struct {
 	SourceDirectory      IdentifyNameRequestItem       `json:"sourceDirectory"`
 	IdentifiedMediaName  string                        `json:"identifiedMediaName"`
 	IdentifiedMediaYear  int                           `json:"identifiedMediaYear"`
+	IdentifiedMediaId    string                        `json:"identifiedMediaId"`
 	IdentifiedMediaInfos []mediainfoprovider.MediaInfo `json:"identifiedMediaInfos"`
 }
 type IdentifyMediaResponse []IdentifyMediaResponseItem

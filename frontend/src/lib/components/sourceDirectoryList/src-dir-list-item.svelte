@@ -47,7 +47,7 @@
 	<section class="text grow-1">
 		<label for={id} class="block cursor-pointer font-medium break-all">
 			{value.entry.name}
-			<p class="text-sm text-gray-500">{convertToSizeString(value.entry.size)}</p>
+			<p class="text-sm break-all text-gray-500">{convertToSizeString(value.entry.size)}</p>
 		</label>
 		<p class="mt-2">
 			<ToggleButtonGroup
