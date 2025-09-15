@@ -6,9 +6,11 @@
 	import { JmrApplicationStore } from '$lib/stores/app-store.svelte';
 	import { API } from '$lib/services/api';
 	import { goto } from '$app/navigation';
+	import { Log } from '$lib/services/logger';
 
 	const { data }: PageProps = $props();
 	const app = new JmrApplicationStore(API.http());
+	const log = new Log('Page 1');
 
 	let source = $state<Source | null>(null);
 	let selectedSourceDirectoryItems = $state<SourceDirectory[]>([]);
@@ -18,8 +20,11 @@
 	);
 
 	async function handleScanDirClick() {
+		log.info('Scan dir click. source = ', $state.snapshot(source));
 		if (source !== null) {
 			app.setSource(source);
+		} else {
+			log.error('[JMR] source is null');
 		}
 	}
 	function handleNextButtonClick() {

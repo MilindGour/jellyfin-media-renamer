@@ -1,6 +1,8 @@
-import type { SourceDirWithInfo, Source, SourceDirectory } from "$lib/models/models";
+import type { SourceDirWithInfo, Source, SourceDirectory, SourceDirectoriesResponse } from "$lib/models/models";
 import type { API } from "$lib/services/api";
+import { Log } from "$lib/services/logger";
 
+const log = new Log("app-store");
 // Main store class for the whole application
 export class JmrApplicationStore {
     static instance?: JmrApplicationStore;
@@ -9,14 +11,7 @@ export class JmrApplicationStore {
     #source = $state<Source | null>(null);
     #selectSourceDirectories = $state<SourceDirectory[]>([]);
 
-    sourceDirectories = $derived.by(async () => {
-        if (this.#source === null) {
-            return null;
-        }
-        const srcRes = await this.api.getSourceDirectoriesAsync(this.#source);
-        return srcRes;
-    });
-
+    sourceDirectories = $state<SourceDirectoriesResponse | null>(null);
     sourceDirsWithMediaInfo = $state<SourceDirWithInfo[]>([]);
 
     /* Constructor */
@@ -28,8 +23,12 @@ export class JmrApplicationStore {
     }
 
     /* First page related methods */
-    setSource(s: Source) {
+    async setSource(s: Source) {
         this.#source = s;
+        if (this.#source === null) {
+            this.sourceDirectories = null;
+        }
+        this.sourceDirectories = await this.api.getSourceDirectoriesAsync(this.#source);
     }
     async setSourceDirectories(s: SourceDirectory[]) {
         this.#selectSourceDirectories = s;
@@ -52,7 +51,7 @@ export class JmrApplicationStore {
                 // both the equal in length, can be assigned safely.
                 this.sourceDirsWithMediaInfo = result;
             } else {
-                console.error("Cannot identify media info from given names. Unknown error occured.");
+                log.error("Cannot identify media info from given names. Unknown error occured.");
             }
         }
     }

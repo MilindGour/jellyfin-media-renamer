@@ -1,6 +1,9 @@
 import type { Source, SourceDirectoriesResponse, SourceDirectory, SourceDirWithInfo } from "$lib/models/models";
 import { Constants } from "$lib/stores/constants";
+import { Log } from "./logger";
 import { HttpService } from "./network";
+
+const log = new Log("API");
 
 export class API {
     constructor(private http: HttpService) { }
@@ -11,7 +14,8 @@ export class API {
             const res = await this.http.getJSON<SourceDirectoriesResponse>(apiUrl);
             return res;
 
-        } catch {
+        } catch (err) {
+            log.error("getSourceDirectoriesAsync err:", err);
             return null;
         }
     }
