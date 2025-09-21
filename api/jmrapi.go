@@ -95,11 +95,19 @@ func (j *JmrAPI) populateSourcesWithID() {
 func (j *JmrAPI) RegisterAPIRoutes() {
 	j.serveMux = http.NewServeMux()
 
+	// ping APIs
 	j.serveMux.HandleFunc("GET /api/ping", j.Get_Ping())
+
+	// select source page APIs
 	j.serveMux.HandleFunc("GET /api/sources", j.Get_Sources())
 	j.serveMux.HandleFunc("GET /api/sources/{id}", j.Get_SourceByID())
+
+	// identify page APIs
 	j.serveMux.HandleFunc("POST /api/media/identify-names", j.Post_IdentifyNames())
 	j.serveMux.HandleFunc("POST /api/media/identify-info", j.Post_IdentifyMediaInfo())
+
+	// rename page APIs
+	j.serveMux.HandleFunc("POST /api/media/rename", j.Post_Rename())
 }
 
 func (j *JmrAPI) Get_Ping() APIHandlerFn {
@@ -201,13 +209,49 @@ func (j *JmrAPI) Post_IdentifyMediaInfo() APIHandlerFn {
 		duration := time.Since(startTime)
 		log.Printf("Fetched %d mediaInfo in %s.\n", len(request), duration.String())
 
-		// for _, requestItem := range request {
-		// 	term := requestItem.IdentifiedMediaName
-		// 	year := requestItem.IdentifiedMediaYear
-		//
-		// 	requestItem.IdentifiedMediaInfos = j.mip.SearchMediaInfo(term, year, requestItem.SourceDirectory.Type)
-		// 	out = append(out, requestItem)
-		// }
+		w.Write(ToJSON(out))
+	}
+}
+
+func (j *JmrAPI) Post_Rename() APIHandlerFn {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var request RenameMediaRequest
+		err := json.NewDecoder(r.Body).Decode(&request)
+
+		if err != nil {
+			j.HandleAPIError(w, r, http.StatusBadRequest, err)
+			return
+		}
+		if len(request) == 0 {
+			j.HandleAPIError(w, r, http.StatusBadRequest, errors.New("Atleast 1 request object is required"))
+			return
+		}
+
+		out := RenameMediaResponse{}
+		for _, reqItem := range request {
+			targetInfo := util.Filter(reqItem.IdentifiedMediaInfos, func(x mediainfoprovider.MediaInfo) bool {
+				return x.MediaID == reqItem.IdentifiedMediaId
+			})
+			var children []filesystem.DirEntry
+			if reqItem.SourceDirectory.Entry.IsDirectory {
+				children = j.fileSystemProvider.ScanDirectory(reqItem.SourceDirectory.Entry.Path, config.NewDevJmrConfig().GetAllowedExtensions())
+			}
+			entry := filesystem.DirEntry{
+				Name:        reqItem.SourceDirectory.Entry.Name,
+				Path:        reqItem.SourceDirectory.Entry.Path,
+				Size:        reqItem.SourceDirectory.Entry.Size,
+				IsDirectory: reqItem.SourceDirectory.Entry.IsDirectory,
+				Children:    children,
+			}
+			entriesAndIgnores := j.ren.SelectEntriesForRename(entry, reqItem.SourceDirectory.Type)
+			resItem := RenameMediaResponseItem{
+				Info:              targetInfo[0],
+				Type:              reqItem.SourceDirectory.Type,
+				Entry:             entry,
+				EntriesAndIgnores: entriesAndIgnores,
+			}
+			out = append(out, resItem)
+		}
 
 		w.Write(ToJSON(out))
 	}

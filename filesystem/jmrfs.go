@@ -66,3 +66,10 @@ func (j *JmrFS) GetDirectorySize(in DirEntry) int64 {
 	}
 	return out
 }
+
+func (j *JmrFS) IsMediaFile(path string) bool {
+	panic("Not implemented")
+}
+func (j *JmrFS) IsSubtitleFile(path string) bool {
+	panic("Not implemented")
+}

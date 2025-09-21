@@ -55,8 +55,14 @@ export class JmrApplicationStore {
             }
         }
     }
-    async confirmMediaInfos() {
-        // TODO: Confirm the final media IDs before moving on to next page.
-        throw Error("Not implemented");
+    async getMediaRenames() {
+        if (this.sourceDirsWithMediaInfo.length > 0) {
+            const result = await this.api.getMediaRenames(this.sourceDirsWithMediaInfo);
+            if (result && result.length === this.sourceDirsWithMediaInfo.length) {
+                log.info("TODO: Media renames from server:", result);
+            } else {
+                log.error("Cannot get media renames. Unknown error occured.");
+            }
+        }
     }
 }

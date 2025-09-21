@@ -60,7 +60,7 @@ func TestJmrRenamerV1_GetMediaNameAndYear(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			j := &JmrRenamerV1{
+			j := &JmrRenamer{
 				mip: tt.fields.mip,
 			}
 			if got := j.GetMediaNameAndYear(tt.args.rawFilename); !reflect.DeepEqual(got, tt.want) {
@@ -113,10 +113,16 @@ func TestJmrRenamerV1_GetMediaSeasonAndEpisode(t *testing.T) {
 			args{"some/good/show file s3 - 12"},
 			MediaSeasonAndEpisode{3, 12},
 		},
+		{
+			"Show with [2x03] in name",
+			fields{m.NewMockTmdbMIProvider()},
+			args{"some/good/show file [2x03]"},
+			MediaSeasonAndEpisode{2, 3},
+		},
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			j := &JmrRenamerV1{
+			j := &JmrRenamer{
 				mip: tt.fields.mip,
 			}
 			if got := j.GetMediaSeasonAndEpisode(tt.args.rawFilename); !reflect.DeepEqual(got, tt.want) {
