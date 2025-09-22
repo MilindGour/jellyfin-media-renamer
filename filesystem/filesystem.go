@@ -3,6 +3,8 @@ package filesystem
 type FileSystemProvider interface {
 	GetDirectorySize(DirEntry) int64
 	ScanDirectory(path string, includeExtensions []string) []DirEntry
+	IsMediaFile(path string) bool
+	IsSubtitleFile(path string) bool
 }
 
 type DirEntry struct {

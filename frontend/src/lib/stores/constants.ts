@@ -9,6 +9,7 @@ export const Constants = {
     API_POST_IDENTIFY_MEDIA_NAMES: "api/media/identify-names",
     API_POST_IDENTIFY_MEDIA_INFO: "api/media/identify-info",
     API_POST_IDENTIFY_CONFIRM_MEDIA_INFO: "api/media/confirm-info",
+    API_POST_MEDIA_RENAMES: "api/media/rename",
 };
 
 export function GetApiBaseUrl(): string {

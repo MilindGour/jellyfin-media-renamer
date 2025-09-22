@@ -1,4 +1,4 @@
-import type { Source, SourceDirectoriesResponse, SourceDirectory, SourceDirWithInfo } from "$lib/models/models";
+import type { RenameMediaResponseItem, Source, SourceDirectoriesResponse, SourceDirectory, SourceDirWithInfo } from "$lib/models/models";
 import { Constants } from "$lib/stores/constants";
 import { Log } from "./logger";
 import { HttpService } from "./network";
@@ -52,8 +52,19 @@ export class API {
             return null;
         }
     }
-    async confirmMediaInfo(input: SourceDirWithInfo[]) {
-        throw Error("Not implemented");
+
+    /**
+    * Returns all the rename previews for the selected media entries.
+    */
+    async getMediaRenames(input: SourceDirWithInfo[]): Promise<RenameMediaResponseItem[] | null> {
+        try {
+            const apiUrl = Constants.API_POST_MEDIA_RENAMES;
+            const res = await this.http.postJSON<RenameMediaResponseItem[]>(apiUrl, input);
+            return res;
+
+        } catch {
+            return null;
+        }
     }
 
     // Static methods

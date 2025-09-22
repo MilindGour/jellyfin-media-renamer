@@ -72,6 +72,19 @@ func (t *TmdbMIProvider) SearchTVShows(term string, year int) []TVResult {
 	return out
 }
 
+func (t *TmdbMIProvider) GetJellyfinCompatibleDirectoryName(info MediaInfo) string {
+	out := info.Name
+
+	if info.YearOfRelease > 0 {
+		out += fmt.Sprintf(" (%d)", info.YearOfRelease)
+	}
+	if len(info.MediaID) > 0 {
+		out += fmt.Sprintf(" [tmdbid-%s]", info.MediaID)
+	}
+
+	return out
+}
+
 func (t *TmdbMIProvider) getParsedMediaInfoListFromUrl(url string, itemSelector string) []MediaInfo {
 	scrapResult, err := t.scrapper.Scrap(url, itemSelector, t.getSearchItemFieldmap())
 	if err != nil {

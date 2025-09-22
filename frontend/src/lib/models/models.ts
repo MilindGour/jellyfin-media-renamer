@@ -46,3 +46,21 @@ export type SourceDirWithInfo = {
     identifiedMediaId?: string,
     identifiedMediaInfos?: MediaInfo[],
 };
+
+export type RenameEntry = {
+    from_path: string,
+    to_path: string,
+};
+
+export type MediaRenameEntry = {
+    subtitles: RenameEntry[],
+    media: RenameEntry[],
+};
+
+export type RenameMediaResponseItem = {
+    info: MediaInfo,
+    type: MediaType,
+    entry: DirEntry,
+    renames: MediaRenameEntry[],
+    ignoredEntries: DirEntry[],
+};

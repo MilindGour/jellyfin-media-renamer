@@ -28,15 +28,12 @@
 		window.location.assign('/');
 	}
 	function nextButtonClickHandler() {
-		log.info(
-			'TODO: Goto next page with these details:',
-			$state.snapshot(app.sourceDirsWithMediaInfo)
-		);
+		app.getMediaRenames();
 	}
 </script>
 
 <svelte:head>
-	<title>Identify</title>
+	<title>Identify: JMR</title>
 </svelte:head>
 
 <div class="identify-page flex flex-col gap-4">

@@ -517,3 +517,99 @@ func TestTmdbMIProvider_getSearchString(t *testing.T) {
 		})
 	}
 }
+
+func TestTmdbMIProvider_GetJellyfinCompatibleDirectoryName(t *testing.T) {
+	type fields struct {
+		baseUrl  string
+		scrapper scrapper.Scrapper
+	}
+	type args struct {
+		info MediaInfo
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   string
+	}{
+		{
+			name: "Simple name",
+			fields: fields{
+				baseUrl:  "",
+				scrapper: nil,
+			},
+			args: args{
+				info: MediaInfo{
+					Name:          "Test Media",
+					Description:   "",
+					YearOfRelease: 2025,
+					ThumbnailURL:  "",
+					MediaID:       "6789",
+				},
+			},
+			want: "Test Media (2025) [tmdbid-6789]",
+		},
+		{
+			name: "Without year",
+			fields: fields{
+				baseUrl:  "",
+				scrapper: nil,
+			},
+			args: args{
+				info: MediaInfo{
+					Name:          "Movie 2",
+					Description:   "",
+					YearOfRelease: 0,
+					ThumbnailURL:  "",
+					MediaID:       "1232",
+				},
+			},
+			want: "Movie 2 [tmdbid-1232]",
+		},
+		{
+			name: "Without media id",
+			fields: fields{
+				baseUrl:  "",
+				scrapper: nil,
+			},
+			args: args{
+				info: MediaInfo{
+					Name:          "TV X",
+					Description:   "",
+					YearOfRelease: 2024,
+					ThumbnailURL:  "",
+					MediaID:       "",
+				},
+			},
+			want: "TV X (2024)",
+		},
+		{
+			name: "Without any optional info",
+			fields: fields{
+				baseUrl:  "",
+				scrapper: nil,
+			},
+			args: args{
+				info: MediaInfo{
+					Name:          "Why though",
+					Description:   "",
+					YearOfRelease: -1,
+					ThumbnailURL:  "",
+					MediaID:       "",
+				},
+			},
+			want: "Why though",
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tr := &TmdbMIProvider{
+				baseUrl:  tt.fields.baseUrl,
+				scrapper: tt.fields.scrapper,
+			}
+			if got := tr.GetJellyfinCompatibleDirectoryName(tt.args.info); got != tt.want {
+				t.Errorf("TmdbMIProvider.GetJellyfinCompatibleDirectoryName() = %v, want %v", got, tt.want)
+			}
+		})
+	}
+}

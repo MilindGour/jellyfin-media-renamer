@@ -24,7 +24,7 @@ func NewJmrApplication(isDev bool) *JmrApplication {
 		// DEV mode
 		configProvider := config.NewDevJmrConfig()
 		mediaInfoProvider := mediainfoprovider.NewTmdbMIProvider()
-		ren := renamer.NewJmrRenamerV1(mediaInfoProvider)
+		ren := renamer.NewJmrRenamerV1(mediaInfoProvider, fsProvider, configProvider)
 
 		return &JmrApplication{
 			cfg:     configProvider,
@@ -36,7 +36,7 @@ func NewJmrApplication(isDev bool) *JmrApplication {
 		// PROD mode
 		configProvider := config.NewJmrConfig()
 		mediaInfoProvider := mediainfoprovider.NewTmdbMIProvider()
-		ren := renamer.NewJmrRenamerV1(mediaInfoProvider)
+		ren := renamer.NewJmrRenamerV1(mediaInfoProvider, fsProvider, configProvider)
 
 		return &JmrApplication{
 			cfg:     configProvider,

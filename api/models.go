@@ -4,6 +4,7 @@ import (
 	"github.com/MilindGour/jellyfin-media-renamer/config"
 	"github.com/MilindGour/jellyfin-media-renamer/filesystem"
 	mediainfoprovider "github.com/MilindGour/jellyfin-media-renamer/mediaInfoProvider"
+	"github.com/MilindGour/jellyfin-media-renamer/renamer"
 )
 
 type SourcesResponse struct {
@@ -68,3 +69,14 @@ type IdentifyMediaResponse []IdentifyMediaResponseItem
 // Next media request and response items are same type
 type IdentifyMediaRequestItem IdentifyMediaResponseItem
 type IdentifyMediaRequest IdentifyMediaResponse
+
+type RenameMediaRequestItem IdentifyMediaResponseItem
+type RenameMediaRequest []RenameMediaRequestItem
+
+type RenameMediaResponseItem struct {
+	Info  mediainfoprovider.MediaInfo `json:"info"`
+	Type  mediainfoprovider.MediaType `json:"type"`
+	Entry filesystem.DirEntry         `json:"entry"`
+	renamer.EntriesAndIgnores
+}
+type RenameMediaResponse []RenameMediaResponseItem

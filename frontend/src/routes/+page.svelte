@@ -41,7 +41,7 @@
 </script>
 
 <svelte:head>
-	<title>Select Source</title>
+	<title>Select Source: JMR</title>
 </svelte:head>
 <section class="page flex flex-col gap-8 pb-16">
 	<section
