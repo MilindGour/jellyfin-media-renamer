@@ -108,13 +108,13 @@ func (j *JmrRenamer) selectEntriesForMovieRename(rootEntry filesystem.DirEntry) 
 	slices.SortFunc(allSubtitleFiles, util.SortBySizeDesc)
 
 	out := EntriesAndIgnores{
-		Renames: []RenameEntry{},
-		Ignored: []filesystem.DirEntry{},
+		Selected: []RenameEntry{},
+		Ignored:  []filesystem.DirEntry{},
 	}
 
 	for i, mediaFile := range allMediaFiles {
 		if i == 0 {
-			out.Renames = append(out.Renames, RenameEntry{
+			out.Selected = append(out.Selected, RenameEntry{
 				Media:    &mediaFile,
 				Subtitle: nil,
 			})
@@ -124,8 +124,8 @@ func (j *JmrRenamer) selectEntriesForMovieRename(rootEntry filesystem.DirEntry) 
 	}
 
 	for i, srtFile := range allSubtitleFiles {
-		if i == 0 && len(out.Renames) > 0 {
-			out.Renames[0].Subtitle = &srtFile
+		if i == 0 && len(out.Selected) > 0 {
+			out.Selected[0].Subtitle = &srtFile
 		} else {
 			out.Ignored = append(out.Ignored, srtFile)
 		}
@@ -208,8 +208,8 @@ func (j *JmrRenamer) selectEntriesForTVRename(rootEntry filesystem.DirEntry) Ent
 	})
 
 	out := EntriesAndIgnores{
-		Renames: allSelected,
-		Ignored: allIgnored,
+		Selected: allSelected,
+		Ignored:  allIgnored,
 	}
 	return out
 }

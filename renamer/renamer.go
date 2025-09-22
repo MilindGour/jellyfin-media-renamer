@@ -26,6 +26,6 @@ type RenameEntry struct {
 	Episode  int                  `json:"episode,omitempty"`
 }
 type EntriesAndIgnores struct {
-	Renames []RenameEntry         `json:"renames"`
-	Ignored []filesystem.DirEntry `json:"ignored"`
+	Selected []RenameEntry         `json:"selected"`
+	Ignored  []filesystem.DirEntry `json:"ignored"`
 }
