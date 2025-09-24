@@ -1,4 +1,4 @@
-import type { RenameMediaResponseItem, Source, SourceDirectoriesResponse, SourceDirectory, SourceDirWithInfo } from "$lib/models/models";
+import type { RenameMediaResponseItem, SourceWithID, SourceDirectoriesResponse, SourceDirectory, SourceDirWithInfo } from "$lib/models/models";
 import { Constants } from "$lib/stores/constants";
 import { Log } from "./logger";
 import { HttpService } from "./network";
@@ -8,7 +8,7 @@ const log = new Log("API");
 export class API {
     constructor(private http: HttpService) { }
 
-    async getSourceDirectoriesAsync(s: Source): Promise<SourceDirectoriesResponse | null> {
+    async getSourceDirectoriesAsync(s: SourceWithID): Promise<SourceDirectoriesResponse | null> {
         try {
             const apiUrl = Constants.API_GET_SOURCE_DIRS.replace(":id", s.id.toString());
             const res = await this.http.getJSON<SourceDirectoriesResponse>(apiUrl);
@@ -56,7 +56,7 @@ export class API {
     /**
     * Returns all the rename previews for the selected media entries.
     */
-    async getMediaRenames(input: SourceDirWithInfo[]): Promise<RenameMediaResponseItem[] | null> {
+    async getMediaSelectionsForRenames(input: SourceDirWithInfo[]): Promise<RenameMediaResponseItem[] | null> {
         try {
             const apiUrl = Constants.API_POST_MEDIA_RENAMES;
             const res = await this.http.postJSON<RenameMediaResponseItem[]>(apiUrl, input);

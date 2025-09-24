@@ -7,6 +7,7 @@
 	import { API } from '$lib/services/api';
 	import { goto } from '$app/navigation';
 	import { Log } from '$lib/services/logger';
+	import { onMount } from 'svelte';
 
 	const { data }: PageProps = $props();
 	const app = new JmrApplicationStore(API.http());
@@ -18,6 +19,10 @@
 	const searchDisabled = $derived<boolean>(
 		selectedSourceDirectoryItems.length === 0 || selectedSourceDirectoryItems.some((x) => !x.type)
 	);
+
+	onMount(() => {
+		app.setConfig(data.appConfig);
+	});
 
 	async function handleScanDirClick() {
 		log.info('Scan dir click. source = ', $state.snapshot(source));
@@ -52,7 +57,7 @@
 			bind:value={source}
 			id="sourceDropdown"
 			labelProp="name"
-			options={data.sourcesResponse.sources}
+			options={data.appConfig.source}
 			itemTemplate={dropdownTemplate}
 		/>
 		<Button type="primary" disabled={scanDirDisabled} onclick={handleScanDirClick}
@@ -60,17 +65,15 @@
 		>
 	</section>
 	<section class="list-section">
-		{#await app.sourceDirectories then sourceDirectories}
-			{#if sourceDirectories !== null}
-				<SourceDirectoryList
-					name="selectedList"
-					list={sourceDirectories.entries}
-					bind:value={selectedSourceDirectoryItems}
-				/>
-			{:else}
-				Select and scan a source to view its directories...
-			{/if}
-		{/await}
+		{#if app.sourceDirectories !== null}
+			<SourceDirectoryList
+				name="selectedList"
+				list={app.sourceDirectories.entries}
+				bind:value={selectedSourceDirectoryItems}
+			/>
+		{:else}
+			Select and scan a source to view its directories...
+		{/if}
 	</section>
 	<section
 		class="cta-section flex flex-col justify-stretch text-right sm:flex-row sm:justify-start"

@@ -1,4 +1,4 @@
-import type { SourceDirWithInfo, Source, SourceDirectory, SourceDirectoriesResponse } from "$lib/models/models";
+import type { SourceDirWithInfo, SourceDirectory, SourceDirectoriesResponse, RenameMediaResponseItem, Config, Source } from "$lib/models/models";
 import type { API } from "$lib/services/api";
 import { Log } from "$lib/services/logger";
 
@@ -8,11 +8,13 @@ export class JmrApplicationStore {
     static instance?: JmrApplicationStore;
 
     /* Variables */
+    config = $state<Config | null>(null);
     #source = $state<Source | null>(null);
     #selectSourceDirectories = $state<SourceDirectory[]>([]);
 
     sourceDirectories = $state<SourceDirectoriesResponse | null>(null);
     sourceDirsWithMediaInfo = $state<SourceDirWithInfo[]>([]);
+    mediaSelectionForRenames = $state<RenameMediaResponseItem[]>([]);
 
     /* Constructor */
     constructor(private api: API) {
@@ -22,6 +24,10 @@ export class JmrApplicationStore {
         return JmrApplicationStore.instance;
     }
 
+    async setConfig(config: Config) {
+        this.config = config;
+        log.info("Config set:", config);
+    }
     /* First page related methods */
     async setSource(s: Source) {
         this.#source = s;
@@ -55,13 +61,15 @@ export class JmrApplicationStore {
             }
         }
     }
-    async getMediaRenames() {
+    async getMediaSelectionForRenames() {
         if (this.sourceDirsWithMediaInfo.length > 0) {
-            const result = await this.api.getMediaRenames(this.sourceDirsWithMediaInfo);
+            const result = await this.api.getMediaSelectionsForRenames(this.sourceDirsWithMediaInfo);
             if (result && result.length === this.sourceDirsWithMediaInfo.length) {
                 log.info("TODO: Media renames from server:", result);
+                this.mediaSelectionForRenames = result;
             } else {
                 log.error("Cannot get media renames. Unknown error occured.");
+                this.mediaSelectionForRenames = [];
             }
         }
     }

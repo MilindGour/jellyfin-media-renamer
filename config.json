@@ -14,6 +14,10 @@
     },
     "source": [
         {
+            "name": "Test Mix",
+            "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix"
+        },
+        {
             "name": "Data TVs",
             "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/data_tv"
         },
