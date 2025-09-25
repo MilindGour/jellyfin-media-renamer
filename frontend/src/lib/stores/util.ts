@@ -27,8 +27,8 @@ export function convertToSizeString(totalBytes: number): string {
             break;
         }
     }
-
-    return `${outTotal.toFixed(2)} ${allUnits[outUnitIndex]}`;
+    const outValue = Math.round(outTotal * 10) / 10;
+    return `${outValue} ${allUnits[outUnitIndex]}`;
 }
 
 export function joinStrings(...parts: string[]): string {

@@ -3,6 +3,9 @@
 	import pencil from 'svelte-awesome/icons/pencil';
 	import trashIcon from 'svelte-awesome/icons/trash';
 	import plusIcon from 'svelte-awesome/icons/plus';
+	import yesIcon from 'svelte-awesome/icons/check';
+	import noIcon from 'svelte-awesome/icons/remove';
+
 	import type {
 		AllowedExtensions,
 		DirEntry,
@@ -20,6 +23,7 @@
 	import Button from '../button/button.svelte';
 	import { Log } from '$lib/services/logger';
 	import { ToastService, ToastFactory } from '$lib/components/toast';
+	import EpisodeInput from '../episodeInput/episodeInput.svelte';
 
 	const log = new Log('RenameSelectionListItem');
 	const toastService = new ToastService();
@@ -34,12 +38,17 @@
 	);
 	const ignoredAccordionTitle = $derived(`Ignored files (${item.ignored?.length || 0})`);
 
-	function moveToIgnored(selectedItem: RenameEntry) {
-		item.ignored = [
-			...item.ignored,
-			...[selectedItem.media, selectedItem.subtitle].filter((x) => !!x)
-		];
-		item.selected = item.selected.filter((i) => i !== selectedItem);
+	function moveToIgnored(selectedItem: RenameEntry, onlySubtitle = false) {
+		if (onlySubtitle) {
+			item.ignored = [...item.ignored, selectedItem.subtitle!];
+			selectedItem.subtitle = undefined;
+		} else {
+			item.ignored = [
+				...item.ignored,
+				...[selectedItem.media, selectedItem.subtitle].filter((x) => !!x)
+			];
+			item.selected = item.selected.filter((i) => i !== selectedItem);
+		}
 	}
 
 	function moveToSelected(ignoredItem: DirEntry) {
@@ -115,16 +124,22 @@
 								<div class="media-name">
 									{getRelativePath(selectedItem.media.path, item.entry.path)}
 								</div>
-								<div class="subtitle-name text-gray-500">
+								<div class="subtitle-name items-basline gap-1 text-xs text-gray-500">
 									Subtitle:
 									{#if selectedItem.subtitle}
 										{getRelativePath(selectedItem.subtitle.path, item.entry.path)}
+										<Button
+											type="mini-icon"
+											title="Move subtitle to ignored"
+											onclick={() => moveToIgnored(selectedItem, true)}
+											><Icon data={trashIcon} class="ml-1" /></Button
+										>
 									{:else}
 										<span class="text-red-300">No subtitle</span>
 									{/if}
 								</div>
 							</div>
-							<div class="third-column">
+							<div class="third-column relative flex gap-4">
 								<Button
 									type="mini-icon"
 									title="Move to ignored"
@@ -132,9 +147,11 @@
 								>
 									<Icon data={trashIcon} />
 								</Button>
-								<Button type="mini-icon" title="Edit">
-									<Icon data={pencil} />
-								</Button>
+								{#if item.type !== 'MOVIE'}
+									<Button type="mini-icon" title="Edit">
+										<Icon data={pencil} />
+									</Button>
+								{/if}
 							</div>
 						</section>
 					{:else}

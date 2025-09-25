@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Loader from '$lib/components/loader/loader.svelte';
+	import { PopupManager } from '$lib/components/popup';
 	import { ToastManagerComponent } from '$lib/components/toast';
 	import JmrHeader from '$lib/jmrHeader.svelte';
 	import '../app.css';
@@ -12,4 +13,5 @@
 	{@render children()}
 	<Loader />
 	<ToastManagerComponent id="appToastManager" />
+	<PopupManager />
 </div>
