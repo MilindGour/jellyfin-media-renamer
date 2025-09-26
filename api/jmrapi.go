@@ -27,7 +27,7 @@ type JmrAPI struct {
 	ren                renamer.Renamer
 	mip                mediainfoprovider.MediaInfoProvider
 
-	sourcesWithID []DirConfigWithID
+	configResponse *ConfigResponse
 }
 
 func NewJmrApi(
@@ -53,7 +53,7 @@ func (j *JmrAPI) Initialize(enableCors bool) {
 		log.Fatal("Please place config before running the server")
 	}
 
-	j.populateSourcesWithID()
+	j.populateConfig()
 	j.startListenAndServe(enableCors)
 }
 
@@ -77,19 +77,10 @@ func (j *JmrAPI) startListenAndServe(enableCors bool) {
 	log.Printf("Starting JMR on port %s\n", addr)
 	http.ListenAndServe(addr, mwStack(j.serveMux))
 }
-func (j *JmrAPI) populateSourcesWithID() {
+func (j *JmrAPI) populateConfig() {
 	// get the sources by ID and cache it in memory
-	sources := j.configProvider.GetSourceList()
-	j.sourcesWithID = []DirConfigWithID{}
-	id := 0
-	for _, src := range sources {
-		id = id + 1
-		j.sourcesWithID = append(j.sourcesWithID, DirConfigWithID{
-			DirConfig: src,
-			ID:        id,
-		})
-	}
-
+	config := j.configProvider.GetConfig()
+	j.configResponse = NewConfigResponse(config)
 }
 
 func (j *JmrAPI) RegisterAPIRoutes() {
@@ -99,6 +90,7 @@ func (j *JmrAPI) RegisterAPIRoutes() {
 	j.serveMux.HandleFunc("GET /api/ping", j.Get_Ping())
 
 	// select source page APIs
+	j.serveMux.HandleFunc("GET /api/config", j.Get_Config())
 	j.serveMux.HandleFunc("GET /api/sources", j.Get_Sources())
 	j.serveMux.HandleFunc("GET /api/sources/{id}", j.Get_SourceByID())
 
@@ -110,6 +102,13 @@ func (j *JmrAPI) RegisterAPIRoutes() {
 	j.serveMux.HandleFunc("POST /api/media/rename", j.Post_Rename())
 }
 
+func (j *JmrAPI) Get_Config() func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		cfg := NewConfigResponse(j.configProvider.GetConfig())
+		w.Write(ToJSON(cfg))
+	}
+}
+
 func (j *JmrAPI) Get_Ping() APIHandlerFn {
 	return func(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusOK)
@@ -118,7 +117,7 @@ func (j *JmrAPI) Get_Ping() APIHandlerFn {
 }
 func (j *JmrAPI) Get_Sources() APIHandlerFn {
 	return func(w http.ResponseWriter, r *http.Request) {
-		raw := NewSourcesResponse(j.sourcesWithID)
+		raw := NewSourcesResponse(j.configResponse.Source)
 		w.Write(ToJSON(raw))
 	}
 }
@@ -136,7 +135,7 @@ func (j *JmrAPI) Get_SourceByID() APIHandlerFn {
 			j.HandleAPIError(w, r, http.StatusBadRequest, err)
 			return
 		}
-		src := util.Find(j.sourcesWithID, func(dcwi DirConfigWithID) bool {
+		src := util.Find(j.configResponse.Source, func(dcwi DirConfigWithID) bool {
 			return dcwi.ID == idInt
 		})
 		if src == nil {

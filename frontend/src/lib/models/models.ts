@@ -2,11 +2,23 @@ export type SourcesResponse = {
     sources: Source[]
 };
 
+export type Config = {
+    version: string;
+    port: string;
+    allowedExtensions: AllowedExtensions;
+    source: Source[];
+}
+
+export type AllowedExtensions = {
+    subtitle: string[];
+    media: string[];
+}
+
 export type Source = {
-    name: string,
-    path: string,
-    id: number,
-};
+    name: string;
+    path: string;
+    id: number;
+}
 
 export type SourceDirectoriesResponse = {
     source: Source,
@@ -48,19 +60,18 @@ export type SourceDirWithInfo = {
 };
 
 export type RenameEntry = {
-    from_path: string,
-    to_path: string,
-};
-
-export type MediaRenameEntry = {
-    subtitles: RenameEntry[],
-    media: RenameEntry[],
+    subtitle?: DirEntry,
+    media: DirEntry,
+    season?: number,
+    episode?: number
 };
 
 export type RenameMediaResponseItem = {
     info: MediaInfo,
     type: MediaType,
     entry: DirEntry,
-    renames: MediaRenameEntry[],
-    ignoredEntries: DirEntry[],
+    selected: RenameEntry[],
+    ignored: DirEntry[],
 };
+
+export type Filetype = "MEDIA" | "SUBTITLE" | "UNKNOWN";

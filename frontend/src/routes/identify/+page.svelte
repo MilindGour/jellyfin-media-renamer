@@ -28,8 +28,16 @@
 		window.location.assign('/');
 	}
 	function nextButtonClickHandler() {
-		app.getMediaRenames();
+		app.getMediaSelectionForRenames();
 	}
+
+	$effect(() => {
+		// Check if sourceDirsWithMediaInfo is filled, if yes
+		// navigate to next page.
+		if (app.mediaSelectionForRenames?.length > 0) {
+			goto('/rename');
+		}
+	});
 </script>
 
 <svelte:head>

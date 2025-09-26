@@ -3,6 +3,7 @@
 package config
 
 type ConfigProvider interface {
+	GetConfig() *Config
 	GetSourceList() []DirConfig
 	GetPort() string
 	GetAllowedExtensions() []string

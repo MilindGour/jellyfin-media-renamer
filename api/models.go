@@ -7,6 +7,30 @@ import (
 	"github.com/MilindGour/jellyfin-media-renamer/renamer"
 )
 
+type ConfigResponse struct {
+	Version           string                   `json:"version"`
+	Port              string                   `json:"port"`
+	AllowedExtensions config.AllowedExtensions `json:"allowedExtensions"`
+	Source            []DirConfigWithID        `json:"source"`
+}
+
+func NewConfigResponse(config *config.Config) *ConfigResponse {
+	dirSrcWithID := []DirConfigWithID{}
+	for i, cfg := range config.Source {
+		dirSrcWithID = append(dirSrcWithID, DirConfigWithID{
+			DirConfig: cfg,
+			ID:        i,
+		})
+	}
+
+	return &ConfigResponse{
+		Version:           config.Version,
+		Port:              config.Port,
+		AllowedExtensions: config.AllowedExtensions,
+		Source:            dirSrcWithID,
+	}
+}
+
 type SourcesResponse struct {
 	Sources []DirConfigWithID `json:"sources"`
 }

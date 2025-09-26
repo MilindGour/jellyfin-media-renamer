@@ -39,6 +39,10 @@ func (j *JmrConfig) GetPort() string {
 	return j.config.Port
 }
 
+func (j *JmrConfig) GetConfig() *Config {
+	return j.config
+}
+
 func (j *JmrConfig) GetSourceList() []DirConfig {
 	out := []DirConfig{}
 	for _, src := range j.config.Source {
