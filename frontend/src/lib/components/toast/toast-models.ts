@@ -2,7 +2,7 @@ import type { TransitionConfig } from "svelte/transition";
 import { cubicOut } from "svelte/easing";
 import type { ToastService } from "./toast-service.svelte";
 
-export enum ToastType { INFO, WARNING, ERROR };
+export enum ToastType { INFO, WARNING, ERROR, SUCCESS };
 
 export class Toast {
     id: number = -1;
@@ -68,6 +68,14 @@ export class ToastFactory {
             .setCloseInMS(5000)
             .build();
     }
+    static createSuccessToast(message: string, title?: string): Toast {
+        return (new ToastBuilder(message))
+            .setTitle(title || "Success")
+            .setType(ToastType.SUCCESS)
+            .setCloseInMS(5000)
+            .build();
+    }
+
 }
 
 export type ToastCloseReason = "CLOSE_BUTTON" | "CLOSE_TIMER" | "CLOSED_BY_MGR";

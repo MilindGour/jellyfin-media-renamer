@@ -1,9 +1,22 @@
-<script>
+<script lang="ts">
+	import { onMount } from 'svelte';
 	import { slide } from 'svelte/transition';
 	const { title = '', message = '', body, footer, data = {} } = $props();
+	let popupEl: HTMLElement;
+
+	onMount(() => {
+		const allFocusables = popupEl.querySelectorAll('input, button');
+		if (allFocusables.length > 0) {
+			// focus first element
+			(allFocusables[0] as HTMLInputElement).focus();
+		}
+	});
 </script>
 
-<section class="backdrop fixed inset-0 flex items-start justify-center bg-[#ffffffaa]">
+<section
+	class="backdrop fixed inset-0 flex items-start justify-center bg-[#ffffffaa]"
+	bind:this={popupEl}
+>
 	<section
 		class="popup-component mt-24 min-w-lg rounded-xl border border-gray-200 bg-white px-4 pt-8 pb-4 shadow-xl"
 		transition:slide

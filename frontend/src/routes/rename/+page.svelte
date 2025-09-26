@@ -1,5 +1,6 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
+	import { Button } from '$lib/components';
 	import RenameSelectionListItem from '$lib/components/renameSelectionList/renameSelectionListItem.svelte';
 	import { API } from '$lib/services/api';
 	import { JmrApplicationStore } from '$lib/stores/app-store.svelte';
@@ -15,6 +16,9 @@
 			}, 3000);
 		}
 	});
+	function restartClickHandler() {
+		window.location.assign('/');
+	}
 </script>
 
 <svelte:head>
@@ -22,6 +26,9 @@
 </svelte:head>
 
 <section class="page">
+	<section class="cta text-right">
+		<Button onclick={restartClickHandler}>Restart</Button>
+	</section>
 	<h1>Please adjust any selections that are not correct in following list</h1>
 	<section class="rename-selection-list mt-3 flex flex-col gap-4">
 		{#each app.mediaSelectionForRenames as item}

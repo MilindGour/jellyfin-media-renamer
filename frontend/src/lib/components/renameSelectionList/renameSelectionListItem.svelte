@@ -3,8 +3,6 @@
 	import pencil from 'svelte-awesome/icons/pencil';
 	import trashIcon from 'svelte-awesome/icons/trash';
 	import plusIcon from 'svelte-awesome/icons/plus';
-	import yesIcon from 'svelte-awesome/icons/check';
-	import noIcon from 'svelte-awesome/icons/remove';
 
 	import type {
 		AllowedExtensions,
@@ -23,10 +21,11 @@
 	import Button from '../button/button.svelte';
 	import { Log } from '$lib/services/logger';
 	import { ToastService, ToastFactory } from '$lib/components/toast';
-	import EpisodeInput from '../episodeInput/episodeInput.svelte';
+	import { PopupService } from '../popup';
 
 	const log = new Log('RenameSelectionListItem');
 	const toastService = new ToastService();
+	const popupService = new PopupService();
 
 	let {
 		item,
@@ -39,27 +38,34 @@
 	const ignoredAccordionTitle = $derived(`Ignored files (${item.ignored?.length || 0})`);
 
 	function moveToIgnored(selectedItem: RenameEntry, onlySubtitle = false) {
+		let msg = '';
 		if (onlySubtitle) {
 			item.ignored = [...item.ignored, selectedItem.subtitle!];
 			selectedItem.subtitle = undefined;
+			msg = 'Moved the selected subtitle to ignored list';
 		} else {
 			item.ignored = [
 				...item.ignored,
 				...[selectedItem.media, selectedItem.subtitle].filter((x) => !!x)
 			];
 			item.selected = item.selected.filter((i) => i !== selectedItem);
+			msg = 'Moved the selected media and subtitle to ignored list';
+		}
+
+		if (msg.length > 0) {
+			toastService.show(ToastFactory.createSuccessToast(msg));
 		}
 	}
 
-	function moveToSelected(ignoredItem: DirEntry) {
+	async function moveToSelected(ignoredItem: DirEntry) {
 		const ft = getFiletype(ignoredItem.path, allowedExtensions);
+		const movingSubtitle = ft === 'SUBTITLE';
+		const movingMedia = ft === 'MEDIA';
 
 		if (item.type === 'MOVIE') {
 			let success = true;
 			const mediaPresent = item.selected.length > 0;
 			const subtitlePresent = mediaPresent && !!item.selected[0].subtitle;
-			const movingSubtitle = ft === 'SUBTITLE';
-			const movingMedia = ft === 'MEDIA';
 
 			if (mediaPresent && movingSubtitle) {
 				if (subtitlePresent) {
@@ -81,12 +87,73 @@
 			if (success) {
 				item.ignored = item.ignored.filter((x) => x !== ignoredItem);
 			}
+		} else if (item.type === 'TV') {
+			let success = true;
+
+			const result = await popupService.showTVEpisodeEdit();
+			if (result !== null) {
+				const { season, episode } = result;
+				const existingMedia = item.selected.find(
+					(i) => i.season === season && i.episode === episode
+				);
+				const subtitlePresent = !!existingMedia?.subtitle;
+				if (existingMedia && movingSubtitle) {
+					if (subtitlePresent) {
+						toastService.show(
+							ToastFactory.createErrorToast(
+								'Cannot move subtitle because there is another subtitle present for that media. Please remove that first before adding this one.'
+							)
+						);
+						success = false;
+					} else {
+						existingMedia.subtitle = ignoredItem;
+					}
+				} else if (!existingMedia && movingMedia) {
+					item.selected.push({ media: ignoredItem, season, episode });
+				} else if (!existingMedia && movingSubtitle) {
+					toastService.show(
+						ToastFactory.createErrorToast(
+							'Cannot find the media for this subtitle in the selected list. Please add media first.'
+						)
+					);
+					success = false;
+				}
+			} else {
+				success = false;
+			}
+
+			if (success) {
+				const msg = `Moved the item to selected list.`;
+				toastService.show(ToastFactory.createSuccessToast(msg));
+				item.ignored = item.ignored.filter((x) => x !== ignoredItem);
+			}
 		} else {
 			toastService.show(
 				ToastFactory.createErrorToast('Operation not supported for type ' + item.type)
 			);
 		}
 	}
+
+	async function selectedItemEditHandler(entry: RenameEntry) {
+		if (item.type === 'TV') {
+			const { season: oldSeason, episode: oldEpisode } = entry;
+			const result = await popupService.showTVEpisodeEdit(oldSeason, oldEpisode);
+
+			if (result !== null) {
+				entry.season = result.season;
+				entry.episode = result.episode;
+				const msg = `Changed item to Season ${result.season} Episode ${result.episode}`;
+				toastService.show(ToastFactory.createSuccessToast(msg));
+			} else {
+				log.info('Edit operation cancelled by user');
+			}
+		} else {
+			const msg = 'Edit not supported for movies';
+			log.error(msg);
+			toastService.show(ToastFactory.createErrorToast(msg));
+		}
+	}
+	async function ignoredItemAddHandler(entry: DirEntry) {}
 </script>
 
 <section class="rename-selection-list-item flex flex-col gap-6 rounded border border-gray-200 p-3">
@@ -148,7 +215,11 @@
 									<Icon data={trashIcon} />
 								</Button>
 								{#if item.type !== 'MOVIE'}
-									<Button type="mini-icon" title="Edit">
+									<Button
+										type="mini-icon"
+										title="Edit"
+										onclick={() => selectedItemEditHandler(selectedItem)}
+									>
 										<Icon data={pencil} />
 									</Button>
 								{/if}

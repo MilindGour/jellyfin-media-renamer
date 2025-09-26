@@ -25,7 +25,7 @@
 		</div>
 	{/snippet}
 	{#snippet footer()}
-		<Button onclick={() => closePopup(true)}>Save</Button>
 		<Button onclick={() => closePopup(false)}>Cancel</Button>
+		<Button onclick={() => closePopup(true)}>Save</Button>
 	{/snippet}
 </PopupComponent>

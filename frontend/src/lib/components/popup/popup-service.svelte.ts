@@ -34,7 +34,7 @@ export class PopupService {
         }
     }
 
-    showTVEpisodeEdit(season: number, episode: number): Promise<{ season: number, episode: number } | null> {
+    showTVEpisodeEdit(season?: number, episode?: number): Promise<{ season: number, episode: number } | null> {
         if (this.#popupStore) {
             return this.#popupStore.addPopup(new Popup(
                 PopupType.TVEpisodeEdit,
