@@ -25,7 +25,6 @@
 	});
 
 	async function handleScanDirClick() {
-		log.info('Scan dir click. source = ', $state.snapshot(source));
 		if (source !== null) {
 			app.setSource(source);
 		} else {

@@ -28,7 +28,7 @@
 	const popupService = new PopupService();
 
 	let {
-		item,
+		item = $bindable(),
 		allowedExtensions
 	}: { item: RenameMediaResponseItem; allowedExtensions: AllowedExtensions } = $props();
 
@@ -41,7 +41,7 @@
 		let msg = '';
 		if (onlySubtitle) {
 			item.ignored = [...item.ignored, selectedItem.subtitle!];
-			selectedItem.subtitle = undefined;
+			delete selectedItem.subtitle;
 			msg = 'Moved the selected subtitle to ignored list';
 		} else {
 			item.ignored = [
@@ -109,7 +109,10 @@
 						existingMedia.subtitle = ignoredItem;
 					}
 				} else if (!existingMedia && movingMedia) {
-					item.selected.push({ media: ignoredItem, season, episode });
+					const newList = [...item.selected, { media: ignoredItem, season, episode }].sort(
+						sortBySeasonAndEpisode
+					);
+					item.selected = newList;
 				} else if (!existingMedia && movingSubtitle) {
 					toastService.show(
 						ToastFactory.createErrorToast(
@@ -153,7 +156,14 @@
 			toastService.show(ToastFactory.createErrorToast(msg));
 		}
 	}
-	async function ignoredItemAddHandler(entry: DirEntry) {}
+
+	function sortBySeasonAndEpisode(a: RenameEntry, b: RenameEntry) {
+		if (a.season! > b.season!) return 1;
+		if (a.season! < b.season!) return -1;
+		if (a.episode! > b.episode!) return 1;
+		if (a.episode! < b.episode!) return -1;
+		return 0;
+	}
 </script>
 
 <section class="rename-selection-list-item flex flex-col gap-6 rounded border border-gray-200 p-3">

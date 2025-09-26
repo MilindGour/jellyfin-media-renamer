@@ -3,7 +3,6 @@ import type { Toast } from "./toast-models";
 
 export class ToastManagerStore {
     #toastId = $state<number>(99);
-    #log = new Log("ToastManagerStore");
     id: string;
     toasts: Array<Toast> = $state<Array<Toast>>([]);
 
@@ -13,7 +12,6 @@ export class ToastManagerStore {
     addToast(t: Toast) {
         t.id = ++this.#toastId;
         this.toasts.push(t);
-        this.#log.info("Adding toast", t);
     }
     removeToast(t: Toast) {
 

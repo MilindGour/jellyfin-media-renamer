@@ -1,22 +1,19 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import type { Toast, ToastCloseReason } from './toast-models.ts';
+	import type { Toast } from './toast-models.ts';
 	import ToastComponent from './toast.svelte';
 	import { ToastService } from './toast-service.svelte';
 	import { ToastManagerStore } from './toast-mgr-store.svelte';
-	import { Log } from '$lib/services/logger';
 
 	const { id } = $props();
 	const store = new ToastManagerStore(id);
 	const service = new ToastService();
-	const log = new Log('ToastManager');
 
 	onMount(() => {
 		service.registerManager(store);
 	});
 
-	function toastOnCloseHandler(toast: Toast, closeReason: ToastCloseReason) {
-		log.info('Toast closed. Reason:', closeReason);
+	function toastOnCloseHandler(toast: Toast) {
 		store.removeToast(toast);
 	}
 </script>
@@ -26,6 +23,6 @@
 	{id}
 >
 	{#each store.toasts as toast (toast.id)}
-		<ToastComponent {toast} onclose={(closeReason) => toastOnCloseHandler(toast, closeReason)} />
+		<ToastComponent {toast} onclose={() => toastOnCloseHandler(toast)} />
 	{/each}
 </div>

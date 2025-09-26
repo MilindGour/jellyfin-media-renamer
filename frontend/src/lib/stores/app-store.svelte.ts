@@ -26,7 +26,6 @@ export class JmrApplicationStore {
 
     async setConfig(config: Config) {
         this.config = config;
-        log.info("Config set:", config);
     }
     /* First page related methods */
     async setSource(s: Source) {
@@ -65,7 +64,6 @@ export class JmrApplicationStore {
         if (this.sourceDirsWithMediaInfo.length > 0) {
             const result = await this.api.getMediaSelectionsForRenames(this.sourceDirsWithMediaInfo);
             if (result && result.length === this.sourceDirsWithMediaInfo.length) {
-                log.info("TODO: Media renames from server:", result);
                 this.mediaSelectionForRenames = result;
             } else {
                 log.error("Cannot get media renames. Unknown error occured.");
