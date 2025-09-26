@@ -28,6 +28,7 @@ type JmrAPI struct {
 	mip                mediainfoprovider.MediaInfoProvider
 
 	configResponse *ConfigResponse
+	allowedExts    []string
 }
 
 func NewJmrApi(
@@ -233,7 +234,7 @@ func (j *JmrAPI) Post_Rename() APIHandlerFn {
 			})
 			var children []filesystem.DirEntry
 			if reqItem.SourceDirectory.Entry.IsDirectory {
-				children = j.fileSystemProvider.ScanDirectory(reqItem.SourceDirectory.Entry.Path, config.NewDevJmrConfig().GetAllowedExtensions())
+				children = j.fileSystemProvider.ScanDirectory(reqItem.SourceDirectory.Entry.Path, j.configProvider.GetAllowedExtensions())
 			}
 			entry := filesystem.DirEntry{
 				Name:        reqItem.SourceDirectory.Entry.Name,
