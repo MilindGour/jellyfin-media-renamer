@@ -22,6 +22,7 @@
 	import { Log } from '$lib/services/logger';
 	import { ToastService, ToastFactory } from '$lib/components/toast';
 	import { PopupService } from '../popup';
+	import MediaTag from '../mediaTag/media-tag.svelte';
 
 	const log = new Log('RenameSelectionListItem');
 	const toastService = new ToastService();
@@ -32,10 +33,23 @@
 		allowedExtensions
 	}: { item: RenameMediaResponseItem; allowedExtensions: AllowedExtensions } = $props();
 
-	const renameAccordionTitle = $derived(
-		`Files selected for rename (${item.selected?.length || 0})`
+	const totalSelectedSize = $derived(
+		item.selected?.reduce((acc, cur) => acc + cur?.media?.size + (cur?.subtitle?.size || 0), 0)
 	);
-	const ignoredAccordionTitle = $derived(`Ignored files (${item.ignored?.length || 0})`);
+	const totalSelectedItems = $derived(
+		item.selected?.map<number>((i) => (!!i.subtitle ? 2 : 1)).reduce((ac, cr) => ac + cr)
+	);
+	const renameAccordionTitle = $derived(
+		`Files selected for rename [${totalSelectedItems} items totalling ${convertToSizeString(totalSelectedSize)}]`
+	);
+
+	const totalIgnoredItems = $derived(item.ignored?.length || 0);
+	const totalIgnoredSize = $derived(
+		item.ignored?.map((i) => i.size).reduce((acc, cur) => acc + cur, 0)
+	);
+	const ignoredAccordionTitle = $derived(
+		`Ignored files [${totalIgnoredItems} items totalling ${convertToSizeString(totalIgnoredSize)}]`
+	);
 
 	function moveToIgnored(selectedItem: RenameEntry, onlySubtitle = false) {
 		let msg = '';
@@ -175,6 +189,7 @@
 				alt="poster"
 			/>
 			<section class="text">
+				<MediaTag type={item.type} />
 				<h3 class="text-md font-medium">{item.info.name} ({item.info.yearOfRelease})</h3>
 				<p class="line-clamp-2 text-sm text-gray-500">
 					{getBasename(item.entry.path)}
