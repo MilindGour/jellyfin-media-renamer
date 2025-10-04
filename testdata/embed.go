@@ -8,6 +8,9 @@ import (
 //go:embed tmdb_scrap_search_response.json
 var ScrapSearchResponseMock []byte
 
+//go:embed tmdb_rename_confirm_request.json
+var RenameConfirmRequestMock []byte
+
 //go:embed config.test.json
 var ConfigJsonMock []byte
 

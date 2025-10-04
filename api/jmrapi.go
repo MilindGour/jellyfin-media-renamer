@@ -227,7 +227,7 @@ func (j *JmrAPI) Post_Rename() APIHandlerFn {
 			return
 		}
 
-		out := RenameMediaResponse{}
+		out := renamer.RenameMediaResponse{}
 		for _, reqItem := range request {
 			targetInfo := util.Filter(reqItem.IdentifiedMediaInfos, func(x mediainfoprovider.MediaInfo) bool {
 				return x.MediaID == reqItem.IdentifiedMediaId
@@ -244,7 +244,7 @@ func (j *JmrAPI) Post_Rename() APIHandlerFn {
 				Children:    children,
 			}
 			entriesAndIgnores := j.ren.SelectEntriesForRename(entry, reqItem.SourceDirectory.Type)
-			resItem := RenameMediaResponseItem{
+			resItem := renamer.RenameMediaResponseItem{
 				Info:              targetInfo[0],
 				Type:              reqItem.SourceDirectory.Type,
 				Entry:             entry,
@@ -254,6 +254,24 @@ func (j *JmrAPI) Post_Rename() APIHandlerFn {
 		}
 
 		w.Write(ToJSON(out))
+	}
+}
+
+func (j *JmrAPI) Post_RenameConfirm() APIHandlerFn {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var request renamer.RenameMediaConfirmRequest
+		err := json.NewDecoder(r.Body).Decode(&request)
+
+		if err != nil {
+			j.HandleAPIError(w, r, http.StatusBadRequest, err)
+			return
+		}
+		if len(request) == 0 {
+			j.HandleAPIError(w, r, http.StatusBadRequest, errors.New("Atleast 1 request object is required"))
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
 	}
 }
 
