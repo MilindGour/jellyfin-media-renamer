@@ -10,6 +10,7 @@ import (
 	"github.com/MilindGour/jellyfin-media-renamer/filesystem"
 	mediainfoprovider "github.com/MilindGour/jellyfin-media-renamer/mediaInfoProvider"
 	"github.com/MilindGour/jellyfin-media-renamer/testdata"
+	"github.com/MilindGour/jellyfin-media-renamer/websocket"
 )
 
 func TestJmrRenamerV1_GetMediaNameAndYear(t *testing.T) {
@@ -145,6 +146,6 @@ func TestJmrRenamer_ConfirmEntriesForRename(t *testing.T) {
 
 	fmt.Printf("Total entries: %d\n", len(request))
 
-	j := NewJmrRenamerV1(mediainfoprovider.NewMockTmdbMIProvider(), filesystem.NewJmrFS(), config.NewDevJmrConfig())
+	j := NewJmrRenamerV1(mediainfoprovider.NewMockTmdbMIProvider(), filesystem.NewJmrFS(), config.NewDevJmrConfig(), websocket.NewJMRWebSocket())
 	j.ConfirmEntriesForRename(request)
 }

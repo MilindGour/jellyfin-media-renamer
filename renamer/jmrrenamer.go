@@ -14,19 +14,22 @@ import (
 	"github.com/MilindGour/jellyfin-media-renamer/filesystem"
 	m "github.com/MilindGour/jellyfin-media-renamer/mediaInfoProvider"
 	"github.com/MilindGour/jellyfin-media-renamer/util"
+	"github.com/MilindGour/jellyfin-media-renamer/websocket"
 )
 
 type JmrRenamer struct {
 	mip m.MediaInfoProvider
 	fs  filesystem.FileSystemProvider
 	cfg config.ConfigProvider
+	ws  websocket.JMRWebSocket
 }
 
-func NewJmrRenamerV1(mip m.MediaInfoProvider, fs filesystem.FileSystemProvider, cfg config.ConfigProvider) *JmrRenamer {
+func NewJmrRenamerV1(mip m.MediaInfoProvider, fs filesystem.FileSystemProvider, cfg config.ConfigProvider, ws websocket.JMRWebSocket) *JmrRenamer {
 	return &JmrRenamer{
 		mip,
 		fs,
 		cfg,
+		ws,
 	}
 }
 
@@ -135,8 +138,9 @@ func (j *JmrRenamer) ConfirmEntriesForRename(entries RenameMediaConfirmRequest) 
 	go j.fs.MoveFiles(allPathPairs, progress)
 
 	for p := range progress {
-		log.Println("Overall progress:")
 
+		j.ws.SendProgressMessage(p)
+		log.Println()
 		for _, pp := range p {
 			log.Println(pp.ToString())
 		}
@@ -171,21 +175,6 @@ func (j *JmrRenamer) renameSingleEntry(entry RenameMediaResponseItem, e RenameEn
 		newBase := fmt.Sprintf("%s%s", j.mip.GetJellyfinCompatibleDirectoryName(entry.Info), ext)
 		return path.Join(newEntryDir, newBase)
 	}
-}
-
-func (j *JmrRenamer) getTotalSizeForRenameEntries(entries RenameMediaConfirmRequest) int64 {
-	// compute total size of all files
-	totalSize := int64(0)
-	for _, entry := range entries {
-		for _, renEntry := range entry.Selected {
-			totalSize += renEntry.Media.Size
-			if renEntry.Subtitle != nil {
-				totalSize += renEntry.Subtitle.Size
-			}
-		}
-	}
-
-	return totalSize
 }
 
 func (j *JmrRenamer) selectEntriesForMovieRename(rootEntry filesystem.DirEntry) EntriesAndIgnores {

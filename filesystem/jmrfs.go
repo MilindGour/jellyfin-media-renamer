@@ -89,12 +89,18 @@ func (j *JmrFS) moveSingleFile(fromPath, toPath string, channel chan FileTransfe
 	stdOutPipe, errOut := rsyncCmd.StdoutPipe()
 	stdErrPipe, errErr := rsyncCmd.StderrPipe()
 
+	files := PathPair{
+		OldPath: fromPath,
+		NewPath: toPath,
+	}
+
 	defer stdOutPipe.Close()
 	defer stdErrPipe.Close()
 
 	if errOut != nil {
 		channel <- FileTransferProgress{
 			Error: errOut,
+			Files: files,
 		}
 		close(channel)
 		return
@@ -102,6 +108,7 @@ func (j *JmrFS) moveSingleFile(fromPath, toPath string, channel chan FileTransfe
 	if errErr != nil {
 		channel <- FileTransferProgress{
 			Error: errErr,
+			Files: files,
 		}
 		close(channel)
 		return
@@ -110,6 +117,7 @@ func (j *JmrFS) moveSingleFile(fromPath, toPath string, channel chan FileTransfe
 	if errStart := rsyncCmd.Start(); errStart != nil {
 		channel <- FileTransferProgress{
 			Error: errStart,
+			Files: files,
 		}
 		close(channel)
 		return
@@ -136,6 +144,7 @@ func (j *JmrFS) moveSingleFile(fromPath, toPath string, channel chan FileTransfe
 
 		progress := j.parseRsyncOutputToProgress(line)
 		if progress != nil {
+			progress.Files = files
 			channel <- *progress
 		}
 	}
@@ -147,6 +156,7 @@ func (j *JmrFS) moveSingleFile(fromPath, toPath string, channel chan FileTransfe
 
 		channel <- FileTransferProgress{
 			Error: errors.New(line),
+			Files: files,
 		}
 	}
 
@@ -154,6 +164,7 @@ func (j *JmrFS) moveSingleFile(fromPath, toPath string, channel chan FileTransfe
 	if errWait := rsyncCmd.Wait(); errWait != nil {
 		channel <- FileTransferProgress{
 			Error: errWait,
+			Files: files,
 		}
 		close(channel)
 		return
@@ -161,6 +172,7 @@ func (j *JmrFS) moveSingleFile(fromPath, toPath string, channel chan FileTransfe
 
 	channel <- FileTransferProgress{
 		PercentComplete: 100,
+		Files:           files,
 	}
 	close(channel)
 }

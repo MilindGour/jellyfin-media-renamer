@@ -16,6 +16,7 @@ import (
 	"github.com/MilindGour/jellyfin-media-renamer/middlewares"
 	"github.com/MilindGour/jellyfin-media-renamer/renamer"
 	"github.com/MilindGour/jellyfin-media-renamer/util"
+	"github.com/MilindGour/jellyfin-media-renamer/websocket"
 )
 
 type JmrAPI struct {
@@ -29,6 +30,7 @@ type JmrAPI struct {
 
 	configResponse *ConfigResponse
 	allowedExts    []string
+	ws             websocket.JMRWebSocket
 }
 
 func NewJmrApi(
@@ -36,12 +38,14 @@ func NewJmrApi(
 	filesystemProvider filesystem.FileSystemProvider,
 	ren renamer.Renamer,
 	mip mediainfoprovider.MediaInfoProvider,
+	ws websocket.JMRWebSocket,
 ) *JmrAPI {
 	jmrApi := JmrAPI{
 		configProvider:     configProvider,
 		fileSystemProvider: filesystemProvider,
 		ren:                ren,
 		mip:                mip,
+		ws:                 ws,
 	}
 
 	return &jmrApi
@@ -101,6 +105,9 @@ func (j *JmrAPI) RegisterAPIRoutes() {
 
 	// rename page APIs
 	j.serveMux.HandleFunc("POST /api/media/rename", j.Post_Rename())
+
+	// sync page APIs
+	j.serveMux.HandleFunc("GET /api/ws/{clientid}", j.Get_WebSocket())
 }
 
 func (j *JmrAPI) Get_Config() func(http.ResponseWriter, *http.Request) {
@@ -254,6 +261,21 @@ func (j *JmrAPI) Post_Rename() APIHandlerFn {
 		}
 
 		w.Write(ToJSON(out))
+	}
+}
+
+func (j *JmrAPI) Get_WebSocket() APIHandlerFn {
+	return func(w http.ResponseWriter, r *http.Request) {
+		clientID := r.PathValue("clientid")
+		if len(clientID) == 0 {
+			j.HandleAPIError(w, r, http.StatusBadRequest, errors.New("Client ID is required!"))
+			return
+		}
+		err := j.ws.UpgradeConnectionAndAddClient(w, r)
+		if err != nil {
+			j.HandleAPIError(w, r, http.StatusInternalServerError, err)
+			return
+		}
 	}
 }
 
