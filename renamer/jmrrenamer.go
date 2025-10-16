@@ -103,18 +103,22 @@ func (j *JmrRenamer) SelectEntriesForRename(rootEntry filesystem.DirEntry, media
 	}
 }
 
-func (j *JmrRenamer) ConfirmEntriesForRename(entries RenameMediaConfirmRequest) (int, error) {
+func (j *JmrRenamer) ConfirmEntriesForRename(entries RenameMediaConfirmRequest) (*RenameMediaConfirmResponse, error) {
 	allPathPairs := []filesystem.PathPair{}
+	out := RenameMediaConfirmResponse{
+		RenamedItems: []RenameMediaConfirmResponseItem{},
+	}
 
 	for _, entry := range entries {
 		oldRoot := path.Dir(entry.Entry.Path)
 		newRoot := path.Join(oldRoot, ".jmr-renames")
 		newEntryDir := path.Join(newRoot, j.mip.GetJellyfinCompatibleDirectoryName(entry.Info))
+		totalSize := int64(0)
 
 		// Create newEntryDir
 		if j.fs.CreateDirectory(newEntryDir) != true {
 			// Failed to create newEntryDir
-			return -1, errors.New("Cannot create entry directory " + newEntryDir)
+			return nil, errors.New("Cannot create entry directory " + newEntryDir)
 		}
 
 		for _, renEntry := range entry.Selected {
@@ -123,6 +127,7 @@ func (j *JmrRenamer) ConfirmEntriesForRename(entries RenameMediaConfirmRequest) 
 				OldPath: renEntry.Media.Path,
 				NewPath: newPath,
 			})
+			totalSize += renEntry.Media.Size
 
 			if renEntry.Subtitle != nil {
 				newPath := j.renameSingleEntry(entry, renEntry, newEntryDir, true)
@@ -130,32 +135,21 @@ func (j *JmrRenamer) ConfirmEntriesForRename(entries RenameMediaConfirmRequest) 
 					OldPath: renEntry.Subtitle.Path,
 					NewPath: newPath,
 				})
+				totalSize += renEntry.Subtitle.Size
 			}
 		}
+
+		out.RenamedItems = append(out.RenamedItems, RenameMediaConfirmResponseItem{
+			Info:        entry.Info,
+			Size:        totalSize,
+			Type:        entry.Type,
+			OldPath:     entry.Entry.Path,
+			NewPath:     newEntryDir,
+			FileRenames: allPathPairs,
+		})
 	}
 
-	progress := make(chan []filesystem.FileTransferProgress)
-	go j.fs.MoveFiles(allPathPairs, progress)
-
-	for p := range progress {
-
-		j.ws.SendProgressMessage(p)
-		log.Println()
-		for _, pp := range p {
-			log.Println(pp.ToString())
-		}
-		log.Println()
-	}
-
-	// Delete original source entries to save space and reduce duplication
-	// TODO: uncomment this block before deploy
-	// for _, entry := range entries {
-	// 	if j.fs.DeleteDirectory(entry.Entry.Path) != true {
-	// 		log.Printf("Cannot delete directory / file %s", entry.Entry.Path)
-	// 	}
-	// }
-
-	return 1, nil
+	return &out, nil
 }
 
 func (j *JmrRenamer) renameSingleEntry(entry RenameMediaResponseItem, e RenameEntry, newEntryDir string, isSubtitle bool) string {

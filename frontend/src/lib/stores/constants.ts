@@ -11,6 +11,7 @@ export const Constants = {
   API_POST_IDENTIFY_MEDIA_INFO: "api/media/identify-info",
   API_POST_IDENTIFY_CONFIRM_MEDIA_INFO: "api/media/confirm-info",
   API_POST_MEDIA_RENAMES: "api/media/rename",
+  API_POST_MEDIA_RENAMES_CONFIRM: "api/media/rename-confirm",
   API_WS: "api/ws",
 };
 

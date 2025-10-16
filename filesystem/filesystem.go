@@ -5,8 +5,6 @@ import "fmt"
 type FileSystemProvider interface {
 	GetDirectorySize(DirEntry) int64
 	ScanDirectory(path string, includeExtensions []string) []DirEntry
-	IsMediaFile(path string) bool
-	IsSubtitleFile(path string) bool
 	MoveFiles(pathPairs []PathPair, progress chan []FileTransferProgress)
 	CreateDirectory(dirpath string) bool
 	DeleteDirectory(dirpath string) bool
@@ -21,18 +19,18 @@ type DirEntry struct {
 }
 
 type PathPair struct {
-	OldPath string
-	NewPath string
+	OldPath string `json:"old_path"`
+	NewPath string `json:"new_path"`
 }
 
 type FileTransferProgress struct {
-	BytesTransferred int64
-	PercentComplete  int
-	TimeRemaining    string
-	TransferSpeed    string
-	RawString        string
-	Error            error
-	Files            PathPair
+	BytesTransferred int64    `json:"bytes_transferred"`
+	PercentComplete  int      `json:"percent_complete"`
+	TimeRemaining    string   `json:"time_remaining"`
+	TransferSpeed    string   `json:"transfer_speed"`
+	RawString        string   `json:"raw_string"`
+	Error            error    `json:"error"`
+	Files            PathPair `json:"files"`
 }
 
 func (ftp *FileTransferProgress) ToString() string {

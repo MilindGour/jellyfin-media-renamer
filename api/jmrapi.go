@@ -105,6 +105,8 @@ func (j *JmrAPI) RegisterAPIRoutes() {
 
 	// rename page APIs
 	j.serveMux.HandleFunc("POST /api/media/rename", j.Post_Rename())
+	j.serveMux.HandleFunc("POST /api/media/rename-confirm", j.Post_RenameConfirm())
+	j.serveMux.HandleFunc("POST /api/media/start-copy", j.Post_StartCopy())
 
 	// sync page APIs
 	j.serveMux.HandleFunc("GET /api/ws/{clientid}", j.Get_WebSocket())
@@ -293,8 +295,68 @@ func (j *JmrAPI) Post_RenameConfirm() APIHandlerFn {
 			return
 		}
 
+		renamePreview, err := j.ren.ConfirmEntriesForRename(request)
+		if err != nil {
+			j.HandleAPIError(w, r, http.StatusInternalServerError, err)
+			return
+		}
+
+		// TODO: Start renaming here and sending progress to websocket
+		go j.moveFilesWithWSProgress(*renamePreview)
+
+		w.WriteHeader(http.StatusOK)
+		w.Write(ToJSON(renamePreview))
+	}
+}
+
+func (j *JmrAPI) Post_StartCopy() APIHandlerFn {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var request renamer.RenameMediaConfirmResponse
+		err := json.NewDecoder(r.Body).Decode(&request)
+
+		if err != nil {
+			j.HandleAPIError(w, r, http.StatusBadRequest, err)
+			return
+		}
+		if len(request.RenamedItems) == 0 {
+			j.HandleAPIError(w, r, http.StatusBadRequest, errors.New("Atleast 1 request object is required"))
+			return
+		}
+
+		go j.moveFilesWithWSProgress(request)
+
 		w.WriteHeader(http.StatusOK)
 	}
+}
+
+func (j *JmrAPI) moveFilesWithWSProgress(in renamer.RenameMediaConfirmResponse) {
+	// Start the copy task
+	allPathPairs := []filesystem.PathPair{}
+	for _, item := range in.RenamedItems {
+		allPathPairs = append(allPathPairs, item.FileRenames...)
+	}
+
+	progress := make(chan []filesystem.FileTransferProgress)
+	go j.fileSystemProvider.MoveFiles(allPathPairs, progress)
+
+	for p := range progress {
+
+		j.ws.SendProgressMessage(p)
+		log.Println()
+		for _, pp := range p {
+			log.Println(pp.ToString())
+		}
+		log.Println()
+	}
+
+	// Delete original source entries to save space and reduce duplication
+	// TODO: uncomment this block before deploy
+	// for _, entry := range entries {
+	// 	if j.DeleteDirectory(entry.Entry.Path) != true {
+	// 		log.Printf("Cannot delete directory / file %s", entry.Entry.Path)
+	// 	}
+	// }
+
 }
 
 func (j *JmrAPI) HandleAPIError(w http.ResponseWriter, r *http.Request, errorCode int, err error) {

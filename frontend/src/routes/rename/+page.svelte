@@ -23,10 +23,7 @@
 	}
 
 	function nextButtonClickHandler() {
-		new Log('Rename page').info(
-			'TODO: Start renaming with items:',
-			$state.snapshot(app.mediaSelectionForRenames)
-		);
+		app.getMediaConfirmPreview();
 	}
 </script>
 

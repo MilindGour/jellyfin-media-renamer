@@ -74,18 +74,12 @@ func (j *JmrFS) GetDirectorySize(in DirEntry) int64 {
 	return out
 }
 
-func (j *JmrFS) IsMediaFile(path string) bool {
-	panic("Not implemented")
-}
-func (j *JmrFS) IsSubtitleFile(path string) bool {
-	panic("Not implemented")
-}
-
 func (j *JmrFS) moveSingleFile(fromPath, toPath string, channel chan FileTransferProgress) {
 
 	// start file transfer using rsync
 	// TODO: add --remove-source-files in the arguments before deploy
-	rsyncCmd := exec.Command("rsync", "-avz", "--info=progress2", fromPath, toPath)
+	// and remove --bwlimit=4000
+	rsyncCmd := exec.Command("rsync", "-avz", "--info=progress2", "--bwlimit=5M", fromPath, toPath)
 	stdOutPipe, errOut := rsyncCmd.StdoutPipe()
 	stdErrPipe, errErr := rsyncCmd.StderrPipe()
 
@@ -170,9 +164,19 @@ func (j *JmrFS) moveSingleFile(fromPath, toPath string, channel chan FileTransfe
 		return
 	}
 
+	// get the file length transferred
+	destStat, err := os.Stat(toPath)
+	if err != nil {
+		channel <- FileTransferProgress{
+			Error: err,
+			Files: files,
+		}
+	}
+
 	channel <- FileTransferProgress{
-		PercentComplete: 100,
-		Files:           files,
+		BytesTransferred: destStat.Size(),
+		PercentComplete:  100,
+		Files:            files,
 	}
 	close(channel)
 }

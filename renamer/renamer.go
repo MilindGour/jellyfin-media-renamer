@@ -9,7 +9,7 @@ type Renamer interface {
 	GetMediaNameAndYear(rawFilename string) MediaNameAndYear
 	GetMediaSeasonAndEpisode(filePath string) MediaSeasonAndEpisode
 	SelectEntriesForRename(rootEntry filesystem.DirEntry, mediaType mediainfoprovider.MediaType) EntriesAndIgnores
-	ConfirmEntriesForRename(entries RenameMediaConfirmRequest) (int, error)
+	ConfirmEntriesForRename(entries RenameMediaConfirmRequest) (*RenameMediaConfirmResponse, error)
 }
 
 type MediaNameAndYear struct {
@@ -44,3 +44,16 @@ type RenameMediaResponseItem struct {
 type RenameMediaResponse []RenameMediaResponseItem
 
 type RenameMediaConfirmRequest []RenameMediaResponseItem
+
+type RenameMediaConfirmResponseItem struct {
+	Info        mediainfoprovider.MediaInfo `json:"info"`
+	Size        int64                       `json:"size"`
+	Type        mediainfoprovider.MediaType `json:"type"`
+	OldPath     string                      `json:"old_path"`
+	NewPath     string                      `json:"new_path"`
+	FileRenames []filesystem.PathPair       `json:"file_renames"`
+}
+
+type RenameMediaConfirmResponse struct {
+	RenamedItems []RenameMediaConfirmResponseItem `json:"renamed_items"`
+}
