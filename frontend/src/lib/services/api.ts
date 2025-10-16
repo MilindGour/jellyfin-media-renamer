@@ -1,4 +1,4 @@
-import type { RenameMediaResponseItem, SourceWithID, SourceDirectoriesResponse, SourceDirectory, SourceDirWithInfo } from "$lib/models/models";
+import type { RenameMediaResponseItem, SourceDirectoriesResponse, SourceDirectory, SourceDirWithInfo, Source } from "$lib/models";
 import { Constants } from "$lib/stores/constants";
 import { Log } from "./logger";
 import { HttpService } from "./network";
@@ -8,7 +8,7 @@ const log = new Log("API");
 export class API {
   constructor(private http: HttpService) { }
 
-  async getSourceDirectoriesAsync(s: SourceWithID): Promise<SourceDirectoriesResponse | null> {
+  async getSourceDirectoriesAsync(s: Source): Promise<SourceDirectoriesResponse | null> {
     try {
       const apiUrl = Constants.API_GET_SOURCE_DIRS.replace(":id", s.id.toString());
       const res = await this.http.getJSON<SourceDirectoriesResponse>(apiUrl);

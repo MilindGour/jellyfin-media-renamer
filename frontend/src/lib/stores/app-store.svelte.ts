@@ -1,4 +1,4 @@
-import type { SourceDirWithInfo, SourceDirectory, SourceDirectoriesResponse, RenameMediaResponseItem, Config, Source } from "$lib/models/models";
+import type { SourceDirWithInfo, SourceDirectory, SourceDirectoriesResponse, RenameMediaResponseItem, Config, Source } from "$lib/models";
 import type { API } from "$lib/services/api";
 import { Log } from "$lib/services/logger";
 
