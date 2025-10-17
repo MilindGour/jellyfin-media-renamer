@@ -1,6 +1,7 @@
 <script lang="ts">
 	import { goto } from '$app/navigation';
 	import { Button } from '$lib/components';
+	import { PopupService } from '$lib/components/popup';
 	import RenameSelectionListItem from '$lib/components/renameSelectionList/renameSelectionListItem.svelte';
 	import { API } from '$lib/services/api';
 	import { Log } from '$lib/services/logger';
@@ -9,6 +10,7 @@
 
 	const app = new JmrApplicationStore(API.http());
 	const nextButtonDisabled = false;
+	const popupService = new PopupService();
 
 	onMount(() => {
 		// check if data is present, otherwise navigate to home page.
@@ -24,6 +26,7 @@
 
 	function nextButtonClickHandler() {
 		app.getMediaConfirmPreview();
+		popupService.showFileTransferStatusPopup();
 	}
 </script>
 

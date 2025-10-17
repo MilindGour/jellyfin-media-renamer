@@ -60,3 +60,41 @@ export function getFiletype(filePath: string, allowedExtensions: AllowedExtensio
 
   return 'UNKNOWN';
 }
+
+export function removeCommonSubstring(firstString: string, secondString: string): { first: string, second: string } {
+  let first: string = "";
+  let second: string = "";
+
+  const minLength = Math.min(firstString.length, secondString.length);
+  let i = 0;
+  for (i = 0; i < minLength; i++) {
+    if (firstString[i] !== secondString[i]) {
+      break;
+    }
+  }
+  first = firstString.substring(i);
+  second = secondString.substring(i);
+
+  return { first, second };
+}
+
+export function formatTimeString(timeString: string): string {
+  if (!timeString) {
+    return "invalid time";
+  }
+  const [hhStr, mmStr, ssStr] = timeString.split(":");
+  const [hh, mm, ss] = [+hhStr, +mmStr, +ssStr];
+
+  let output: string[] = [];
+  if (hh > 0) {
+    output.push(`${hh} hours`);
+  }
+  if (mm > 0) {
+    output.push(`${mm} minutes`)
+  }
+  if (ss > 0) {
+    output.push(`${ss} seconds`);
+  }
+
+  return output.join(" ");
+}

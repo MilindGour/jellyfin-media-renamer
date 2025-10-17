@@ -2,12 +2,13 @@
 	import { Button, Dropdown, SourceDirectoryList } from '$lib/components';
 	import type { PageProps } from './$types';
 	import { formatPathString } from '$lib/stores/util';
-	import type { Source, SourceDirectory } from '$lib/models/models';
+	import type { Source, SourceDirectory } from '$lib/models';
 	import { JmrApplicationStore } from '$lib/stores/app-store.svelte';
 	import { API } from '$lib/services/api';
 	import { goto } from '$app/navigation';
 	import { Log } from '$lib/services/logger';
 	import { onMount } from 'svelte';
+	import { PopupService } from '$lib/components/popup';
 
 	const { data }: PageProps = $props();
 	const app = new JmrApplicationStore(API.http());
@@ -42,6 +43,14 @@
 			goto('/identify');
 		}
 	});
+
+	function showFTSPopup() {
+		// WARN: Hardcoded data for testing.
+		const ps = new PopupService();
+		ps.showFileTransferStatusPopup().then((success) => {
+			log.info('FileTransferPopup success:', success);
+		});
+	}
 </script>
 
 <svelte:head>
@@ -62,6 +71,7 @@
 		<Button type="primary" disabled={scanDirDisabled} onclick={handleScanDirClick}
 			>Scan Directory</Button
 		>
+		<Button type="primary" onclick={showFTSPopup}>Show File Transfer Popup</Button>
 	</section>
 	<section class="list-section">
 		{#if app.sourceDirectories !== null}
