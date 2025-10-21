@@ -50,6 +50,14 @@ func (j *JmrConfig) GetSourceList() []DirConfig {
 	}
 	return out
 }
+
+func (j *JmrConfig) GetDestinationList() []DestConfig {
+	for i := range j.config.Destination {
+		j.config.Destination[i].ID = i + 1
+	}
+	return j.config.Destination
+}
+
 func (j *JmrConfig) GetMediaExtensions() []string {
 	if len(j.config.AllowedExtensions.Media) == 0 {
 		j.config.AllowedExtensions.Media = []string{".mp4", ".mkv", ".m4v", ".avi"}

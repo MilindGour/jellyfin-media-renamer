@@ -1,77 +1,88 @@
 export type SourcesResponse = {
-    sources: Source[]
+  sources: Source[]
 };
 
 export type Config = {
-    version: string;
-    port: string;
-    allowedExtensions: AllowedExtensions;
-    source: Source[];
+  version: string;
+  port: string;
+  allowedExtensions: AllowedExtensions;
+  source: Source[];
 }
 
 export type AllowedExtensions = {
-    subtitle: string[];
-    media: string[];
+  subtitle: string[];
+  media: string[];
 }
 
 export type Source = {
-    name: string;
-    path: string;
-    id: number;
+  name: string;
+  path: string;
+  id: number;
 }
 
 export type SourceDirectoriesResponse = {
-    source: Source,
-    entries: DirEntry[]
+  source: Source,
+  entries: DirEntry[]
+};
+
+export type DestConfig = {
+  name: string;
+  path: string;
+  id: number;
+  type: MediaType;
 };
 
 export type DirEntry = {
-    id: number,
-    name: string,
-    path: string,
-    size: number,
+  id: number,
+  name: string,
+  path: string,
+  size: number,
 
-    isDirectory: boolean,
-    children?: DirEntry[]
+  isDirectory: boolean,
+  children?: DirEntry[]
 };
 
 export type MediaType = "MOVIE" | "TV";
 
 export type SourceDirectory = {
-    entry: DirEntry,
-    type: MediaType | null,
-    selected: boolean
+  entry: DirEntry,
+  type: MediaType | null,
+  selected: boolean
 };
 
 export type MediaInfo = {
-    name: string,
-    description: string,
-    yearOfRelease: number,
-    thumbnailUrl: string,
-    mediaId: string
+  name: string,
+  description: string,
+  yearOfRelease: number,
+  thumbnailUrl: string,
+  mediaId: string
 }
 
 export type SourceDirWithInfo = {
-    sourceDirectory: SourceDirectory,
-    identifiedMediaName?: string,
-    identifiedMediaYear?: number,
-    identifiedMediaId?: string,
-    identifiedMediaInfos?: MediaInfo[],
+  sourceDirectory: SourceDirectory,
+  identifiedMediaName?: string,
+  identifiedMediaYear?: number,
+  identifiedMediaId?: string,
+  identifiedMediaInfos?: MediaInfo[],
 };
 
 export type RenameEntry = {
-    subtitle?: DirEntry,
-    media: DirEntry,
-    season?: number,
-    episode?: number
+  subtitle?: DirEntry,
+  media: DirEntry,
+  season?: number,
+  episode?: number
 };
 
 export type RenameMediaResponseItem = {
-    info: MediaInfo,
-    type: MediaType,
-    entry: DirEntry,
-    selected: RenameEntry[],
-    ignored: DirEntry[],
+  info: MediaInfo,
+  type: MediaType,
+  entry: DirEntry,
+  selected: RenameEntry[],
+  ignored: DirEntry[],
 };
 
 export type Filetype = "MEDIA" | "SUBTITLE" | "UNKNOWN";
+
+export type ConfirmMediaRequestItem = RenameMediaResponseItem & {
+  destination: DestConfig;
+};

@@ -43,14 +43,6 @@
 			goto('/identify');
 		}
 	});
-
-	function showFTSPopup() {
-		// WARN: Hardcoded data for testing.
-		const ps = new PopupService();
-		ps.showFileTransferStatusPopup().then((success) => {
-			log.info('FileTransferPopup success:', success);
-		});
-	}
 </script>
 
 <svelte:head>
@@ -71,7 +63,6 @@
 		<Button type="primary" disabled={scanDirDisabled} onclick={handleScanDirClick}
 			>Scan Directory</Button
 		>
-		<Button type="primary" onclick={showFTSPopup}>Show File Transfer Popup</Button>
 	</section>
 	<section class="list-section">
 		{#if app.sourceDirectories !== null}

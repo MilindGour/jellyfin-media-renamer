@@ -98,6 +98,7 @@ func (j *JmrAPI) RegisterAPIRoutes() {
 	j.serveMux.HandleFunc("GET /api/config", j.Get_Config())
 	j.serveMux.HandleFunc("GET /api/sources", j.Get_Sources())
 	j.serveMux.HandleFunc("GET /api/sources/{id}", j.Get_SourceByID())
+	j.serveMux.HandleFunc("GET /api/destinations", j.Get_Destinations())
 
 	// identify page APIs
 	j.serveMux.HandleFunc("POST /api/media/identify-names", j.Post_IdentifyNames())
@@ -131,6 +132,14 @@ func (j *JmrAPI) Get_Sources() APIHandlerFn {
 		w.Write(ToJSON(raw))
 	}
 }
+
+func (j *JmrAPI) Get_Destinations() func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		cfg := j.configProvider.GetDestinationList()
+		w.Write(ToJSON(cfg))
+	}
+}
+
 func (j *JmrAPI) Get_SourceByID() APIHandlerFn {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := r.PathValue("id")

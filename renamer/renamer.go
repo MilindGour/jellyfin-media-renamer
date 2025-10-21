@@ -1,6 +1,7 @@
 package renamer
 
 import (
+	"github.com/MilindGour/jellyfin-media-renamer/config"
 	"github.com/MilindGour/jellyfin-media-renamer/filesystem"
 	mediainfoprovider "github.com/MilindGour/jellyfin-media-renamer/mediaInfoProvider"
 )
@@ -43,7 +44,14 @@ type RenameMediaResponseItem struct {
 
 type RenameMediaResponse []RenameMediaResponseItem
 
-type RenameMediaConfirmRequest []RenameMediaResponseItem
+type RenameMediaConfirmRequestItem struct {
+	Info        mediainfoprovider.MediaInfo `json:"info"`
+	Type        mediainfoprovider.MediaType `json:"type"`
+	Entry       filesystem.DirEntry         `json:"entry"`
+	Destination config.DestConfig           `json:"destination"`
+	EntriesAndIgnores
+}
+type RenameMediaConfirmRequest []RenameMediaConfirmRequestItem
 
 type RenameMediaConfirmResponseItem struct {
 	Info        mediainfoprovider.MediaInfo `json:"info"`

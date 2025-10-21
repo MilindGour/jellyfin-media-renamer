@@ -7,6 +7,7 @@ export const Constants = {
   API_GET_CONFIG: "api/config",
   API_GET_SOURCE: "api/sources",
   API_GET_SOURCE_DIRS: "api/sources/:id",
+  API_GET_DESTINATIONS: "api/destinations",
   API_POST_IDENTIFY_MEDIA_NAMES: "api/media/identify-names",
   API_POST_IDENTIFY_MEDIA_INFO: "api/media/identify-info",
   API_POST_IDENTIFY_CONFIRM_MEDIA_INFO: "api/media/confirm-info",

@@ -68,14 +68,19 @@
 
 <PopupComponent title={data.title || '📑 File transfer status'}>
 	{#snippet body()}
-		<div class="flex max-h-100 flex-col gap-2 overflow-auto">
+		<div>
+			Completed: {completedString}
+		</div>
+		<div class="mt-2 flex max-h-100 flex-col gap-2 overflow-auto">
 			{#each progressStore as item, itemIndex}
 				{@render progressItemComponent(item, itemIndex)}
 			{/each}
 		</div>
-		<div class="mt-2">
-			Completed: {completedString}
-		</div>
+		{#if isComplete}
+			<div class="mt-2 text-green-600">
+				All files have been transferred successfully! Click close to go back to home page.
+			</div>
+		{/if}
 	{/snippet}
 	{#snippet footer()}
 		<Button disabled={!isComplete} type="primary" onclick={() => closePopup(true)}>Close</Button>

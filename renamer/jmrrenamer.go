@@ -110,8 +110,7 @@ func (j *JmrRenamer) ConfirmEntriesForRename(entries RenameMediaConfirmRequest) 
 	}
 
 	for _, entry := range entries {
-		oldRoot := path.Dir(entry.Entry.Path)
-		newRoot := path.Join(oldRoot, ".jmr-renames")
+		newRoot := entry.Destination.Path
 		newEntryDir := path.Join(newRoot, j.mip.GetJellyfinCompatibleDirectoryName(entry.Info))
 		totalSize := int64(0)
 
@@ -152,7 +151,7 @@ func (j *JmrRenamer) ConfirmEntriesForRename(entries RenameMediaConfirmRequest) 
 	return &out, nil
 }
 
-func (j *JmrRenamer) renameSingleEntry(entry RenameMediaResponseItem, e RenameEntry, newEntryDir string, isSubtitle bool) string {
+func (j *JmrRenamer) renameSingleEntry(entry RenameMediaConfirmRequestItem, e RenameEntry, newEntryDir string, isSubtitle bool) string {
 	var ext string
 	if isSubtitle {
 		ext = path.Ext(e.Subtitle.Path)

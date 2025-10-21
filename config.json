@@ -1,41 +1,63 @@
 {
-    "version": "0.0.1",
-    "port": "7749",
-    "allowedExtensions": {
-        "subtitle": [
-            ".srt"
-        ],
-        "media": [
-            ".mp4",
-            ".avi",
-            ".mkv",
-            ".m4v"
-        ]
-    },
-    "source": [
-        {
-            "name": "Test Mix",
-            "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix"
-        },
-        {
-            "name": "Data TVs",
-            "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/data_tv"
-        },
-        {
-            "name": "Media Movies",
-            "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/media_movies"
-        },
-        {
-            "name": "Media TVs",
-            "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/media_tv"
-        },
-        {
-            "name": "Transmission Downloads",
-            "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/transmission_downloads"
-        },
-        {
-            "name": "Test data",
-            "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure"
-        }
+  "version": "0.0.1",
+  "port": "7749",
+  "allowedExtensions": {
+    "subtitle": [
+      ".srt"
+    ],
+    "media": [
+      ".mp4",
+      ".avi",
+      ".mkv",
+      ".m4v"
     ]
+  },
+  "source": [
+    {
+      "name": "Test Mix",
+      "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix"
+    },
+    {
+      "name": "Data TVs",
+      "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/data_tv"
+    },
+    {
+      "name": "Media Movies",
+      "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/media_movies"
+    },
+    {
+      "name": "Media TVs",
+      "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/media_tv"
+    },
+    {
+      "name": "Transmission Downloads",
+      "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/transmission_downloads"
+    },
+    {
+      "name": "Test data",
+      "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure"
+    }
+  ],
+  "destination": [
+    {
+      "name": "JFM Movies",
+      "path": "/Users/milindgour/Documents/workspace/personal/test-structure/jellyfin-media/Movies",
+      "type": "MOVIE"
+    },
+    {
+      "name": "JFM TV",
+      "path": "/Users/milindgour/Documents/workspace/personal/test-structure/jellyfin-media/TV",
+      "type": "TV"
+    },
+    {
+      "name": "JFM Movies 2",
+      "path": "/Users/milindgour/Documents/workspace/personal/test-structure/jellyfin-media/Movies_2",
+      "type": "MOVIE"
+    },
+    {
+      "name": "JFM TV 2",
+      "path": "/Users/milindgour/Documents/workspace/personal/test-structure/jellyfin-media/TV_2",
+      "type": "TV"
+    }
+  ]
 }

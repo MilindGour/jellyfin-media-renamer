@@ -1,4 +1,4 @@
-import type { RenameMediaResponseItem, SourceDirectoriesResponse, SourceDirectory, SourceDirWithInfo, Source } from "$lib/models";
+import type { RenameMediaResponseItem, SourceDirectoriesResponse, SourceDirectory, SourceDirWithInfo, Source, ConfirmMediaRequestItem, DestConfig } from "$lib/models";
 import { Constants } from "$lib/stores/constants";
 import { Log } from "./logger";
 import { HttpService } from "./network";
@@ -67,8 +67,16 @@ export class API {
     }
   }
 
-  async confirmMediaRenames(input: RenameMediaResponseItem[]): Promise<any[] | null> {
+  async confirmMediaRenames(mediaSelections: RenameMediaResponseItem[], mediaDestinations: DestConfig[]): Promise<any[] | null> {
     try {
+      const input: ConfirmMediaRequestItem[] = [];
+      for (let i = 0; i < mediaSelections.length; i++) {
+        input.push({
+          ...mediaSelections[i],
+          destination: mediaDestinations[i]
+        })
+      }
+      log.info("TODO: confirm and sync request:", input);
       const apiUrl = Constants.API_POST_MEDIA_RENAMES_CONFIRM;
       const res = await this.http.postJSON<any[]>(apiUrl, input);
       return res;

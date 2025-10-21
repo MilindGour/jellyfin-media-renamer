@@ -2,9 +2,12 @@
 // that deal with the config file.
 package config
 
+import mediainfoprovider "github.com/MilindGour/jellyfin-media-renamer/mediaInfoProvider"
+
 type ConfigProvider interface {
 	GetConfig() *Config
 	GetSourceList() []DirConfig
+	GetDestinationList() []DestConfig
 	GetPort() string
 	GetAllowedExtensions() []string
 	GetMediaExtensions() []string
@@ -18,6 +21,13 @@ type DirConfig struct {
 	Path string `json:"path"`
 }
 
+type DestConfig struct {
+	Name string                      `json:"name"`
+	Path string                      `json:"path"`
+	Type mediainfoprovider.MediaType `json:"type"`
+	ID   int                         `json:"id"`
+}
+
 type AllowedExtensions struct {
 	Subtitle []string `json:"subtitle"`
 	Media    []string `json:"media"`
@@ -28,4 +38,5 @@ type Config struct {
 	Port              string            `json:"port"`
 	AllowedExtensions AllowedExtensions `json:"allowedExtensions"`
 	Source            []DirConfig       `json:"source"`
+	Destination       []DestConfig      `json:"destination"`
 }

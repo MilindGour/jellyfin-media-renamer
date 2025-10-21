@@ -3,13 +3,15 @@
 	import pencil from 'svelte-awesome/icons/pencil';
 	import trashIcon from 'svelte-awesome/icons/trash';
 	import plusIcon from 'svelte-awesome/icons/plus';
+	import { v4 as uuidv4 } from 'uuid';
 
 	import type {
 		AllowedExtensions,
+		DestConfig,
 		DirEntry,
 		RenameEntry,
 		RenameMediaResponseItem
-	} from '$lib/models/models';
+	} from '$lib/models';
 	import {
 		convertToSizeString,
 		getBasename,
@@ -23,15 +25,24 @@
 	import { ToastService, ToastFactory } from '$lib/components/toast';
 	import { PopupService } from '../popup';
 	import MediaTag from '../mediaTag/media-tag.svelte';
+	import { DestinationDirectoryDropdown } from '$lib/components';
 
 	const log = new Log('RenameSelectionListItem');
 	const toastService = new ToastService();
 	const popupService = new PopupService();
+	const id = `renameItem_${uuidv4()}`;
 
 	let {
 		item = $bindable(),
-		allowedExtensions
-	}: { item: RenameMediaResponseItem; allowedExtensions: AllowedExtensions } = $props();
+		allowedExtensions,
+		dest = $bindable(),
+		destinations
+	}: {
+		item: RenameMediaResponseItem;
+		allowedExtensions: AllowedExtensions;
+		dest: DestConfig;
+		destinations: DestConfig[];
+	} = $props();
 
 	const totalSelectedSize = $derived(
 		item.selected?.reduce((acc, cur) => acc + cur?.media?.size + (cur?.subtitle?.size || 0), 0)
@@ -196,6 +207,15 @@
 				</p>
 			</section>
 		</section>
+	</section>
+	<section class="media-target-select flex flex-col gap-2">
+		<label for={`dd_${id}`}>Select destination:</label>
+		<DestinationDirectoryDropdown
+			bind:value={dest}
+			destinationList={destinations}
+			id={`dd_${id}`}
+			type={item.type}
+		/>
 	</section>
 	<section class="renames-and-ignores flex flex-col gap-4">
 		<!-- Selected files Accordion -->

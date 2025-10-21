@@ -6,7 +6,7 @@
 	let { id, options, labelProp = '', itemTemplate = null, value = $bindable(null) } = $props();
 
 	let open = $state(false);
-	let el;
+	let el: HTMLElement;
 	let label = $state('');
 
 	$effect(() => {
@@ -34,7 +34,10 @@
 		open = !open;
 	}
 	function handleOutsideClick(e: MouseEvent) {
-		const ddBounds = el!.getBoundingClientRect();
+		const ddBounds = el?.getBoundingClientRect();
+		if (!ddBounds) {
+			return;
+		}
 		if (
 			e.clientX < ddBounds.left ||
 			e.clientX > ddBounds.right ||
@@ -69,7 +72,7 @@
 	{#if open}
 		<div
 			transition:slideDown
-			class="dropdown-list absolute mt-px flex w-full flex-col overflow-hidden rounded-md border border-gray-400 bg-white"
+			class="dropdown-list absolute z-10 mt-px flex w-full flex-col overflow-hidden rounded-md border border-gray-400 bg-white"
 		>
 			{#each options as option (option)}
 				<button
