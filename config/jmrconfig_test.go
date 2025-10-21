@@ -21,11 +21,34 @@ func TestJmrConfig_ParseFromBytes(t *testing.T) {
 			name: "Parse mock config",
 			j:    JmrConfig{},
 			args: args{config: testdata.ConfigJsonMock},
+			// want: &Config{
+			// 	"1.2.3",
+			// 	"7749",
+			// 	AllowedExtensions{[]string{".srt"}, []string{".mp4"}},
+			// 	[]DirConfig{{"name1", "path1"}},
+			// },
 			want: &Config{
-				"1.2.3",
-				"7749",
-				AllowedExtensions{[]string{".srt"}, []string{".mp4"}},
-				[]DirConfig{{"name1", "path1"}},
+				Version: "1.2.3",
+				Port:    "7749",
+				AllowedExtensions: AllowedExtensions{
+					Subtitle: []string{".srt"},
+					Media:    []string{".mp4"},
+				},
+				Source: []DirConfig{
+					{
+						Name: "name1",
+						Path: "path1",
+					},
+				},
+				Destination: []DestConfig{
+					{
+						Name:       "testname1",
+						Path:       "testpath1",
+						Type:       "MOVIE",
+						ID:         0,
+						MountPoint: "/",
+					},
+				},
 			},
 		},
 		{
