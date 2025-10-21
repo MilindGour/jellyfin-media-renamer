@@ -3,7 +3,14 @@
 	import chevronDown from 'svelte-awesome/icons/chevronDown';
 	import { slideDown } from '$lib/animations';
 
-	let { id, options, labelProp = '', itemTemplate = null, value = $bindable(null) } = $props();
+	let {
+		id,
+		options,
+		labelProp = '',
+		itemTemplate = null,
+		value = $bindable(null),
+		disabledItemFn
+	} = $props();
 
 	let open = $state(false);
 	let el: HTMLElement;
@@ -76,8 +83,9 @@
 		>
 			{#each options as option (option)}
 				<button
+					disabled={disabledItemFn ? disabledItemFn(option) : false}
 					onclick={() => handleItemSelect(option)}
-					class="item block cursor-pointer p-2 text-left"
+					class="item block cursor-pointer p-2 text-left disabled:pointer-events-none disabled:opacity-50"
 					class:bg-gray-200={JSON.stringify(option) === JSON.stringify(value)}
 					class:hover:bg-gray-50={JSON.stringify(option) !== JSON.stringify(value)}
 				>
