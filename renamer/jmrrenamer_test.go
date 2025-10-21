@@ -1,16 +1,21 @@
 package renamer
 
 import (
+	"encoding/json"
+	"fmt"
 	"reflect"
 	"testing"
 
-	m "github.com/MilindGour/jellyfin-media-renamer/mediaInfoProvider"
+	"github.com/MilindGour/jellyfin-media-renamer/config"
+	"github.com/MilindGour/jellyfin-media-renamer/filesystem"
 	mediainfoprovider "github.com/MilindGour/jellyfin-media-renamer/mediaInfoProvider"
+	"github.com/MilindGour/jellyfin-media-renamer/testdata"
+	"github.com/MilindGour/jellyfin-media-renamer/websocket"
 )
 
 func TestJmrRenamerV1_GetMediaNameAndYear(t *testing.T) {
 	type fields struct {
-		mip m.MediaInfoProvider
+		mip mediainfoprovider.MediaInfoProvider
 	}
 	type args struct {
 		rawFilename string
@@ -72,7 +77,7 @@ func TestJmrRenamerV1_GetMediaNameAndYear(t *testing.T) {
 
 func TestJmrRenamerV1_GetMediaSeasonAndEpisode(t *testing.T) {
 	type fields struct {
-		mip m.MediaInfoProvider
+		mediainfoprovider.MediaInfoProvider
 	}
 	type args struct {
 		rawFilename string
@@ -85,37 +90,37 @@ func TestJmrRenamerV1_GetMediaSeasonAndEpisode(t *testing.T) {
 	}{
 		{
 			"Simple show name",
-			fields{m.NewMockTmdbMIProvider()},
+			fields{mediainfoprovider.NewMockTmdbMIProvider()},
 			args{"Simple Show Name"},
 			MediaSeasonAndEpisode{-1, -1},
 		},
 		{
 			"Show With episode only",
-			fields{m.NewMockTmdbMIProvider()},
+			fields{mediainfoprovider.NewMockTmdbMIProvider()},
 			args{"some/show/Show Name 05"},
 			MediaSeasonAndEpisode{1, 5},
 		},
 		{
 			"Simple season and episode",
-			fields{m.NewMockTmdbMIProvider()},
+			fields{mediainfoprovider.NewMockTmdbMIProvider()},
 			args{"some/good/show file s01e02"},
 			MediaSeasonAndEpisode{1, 2},
 		},
 		{
 			"Show name variant 2",
-			fields{m.NewMockTmdbMIProvider()},
+			fields{mediainfoprovider.NewMockTmdbMIProvider()},
 			args{"some/good/show file season 3 - 04"},
 			MediaSeasonAndEpisode{3, 4},
 		},
 		{
 			"Show name variant 3",
-			fields{m.NewMockTmdbMIProvider()},
+			fields{mediainfoprovider.NewMockTmdbMIProvider()},
 			args{"some/good/show file s3 - 12"},
 			MediaSeasonAndEpisode{3, 12},
 		},
 		{
 			"Show with [2x03] in name",
-			fields{m.NewMockTmdbMIProvider()},
+			fields{mediainfoprovider.NewMockTmdbMIProvider()},
 			args{"some/good/show file [2x03]"},
 			MediaSeasonAndEpisode{2, 3},
 		},
@@ -123,11 +128,24 @@ func TestJmrRenamerV1_GetMediaSeasonAndEpisode(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			j := &JmrRenamer{
-				mip: tt.fields.mip,
+				mip: tt.fields.MediaInfoProvider,
 			}
 			if got := j.GetMediaSeasonAndEpisode(tt.args.rawFilename); !reflect.DeepEqual(got, tt.want) {
 				t.Errorf("JmrRenamerV1.ExtractTVShowFileInfo() = %v, want %v", got, tt.want)
 			}
 		})
 	}
+}
+
+func TestJmrRenamer_ConfirmEntriesForRename(t *testing.T) {
+	var request RenameMediaConfirmRequest
+	err := json.Unmarshal(testdata.RenameConfirmRequestMock, &request)
+	if err != nil {
+		t.Errorf("ConfirmRename() err: %s", err.Error())
+	}
+
+	fmt.Printf("Total entries: %d\n", len(request))
+
+	j := NewJmrRenamerV1(mediainfoprovider.NewMockTmdbMIProvider(), filesystem.NewJmrFS(), config.NewDevJmrConfig(), websocket.NewJMRWebSocket())
+	j.ConfirmEntriesForRename(request)
 }

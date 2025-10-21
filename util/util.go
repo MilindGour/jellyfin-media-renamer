@@ -1,8 +1,6 @@
 package util
 
-import (
-	"github.com/MilindGour/jellyfin-media-renamer/filesystem"
-)
+import "github.com/MilindGour/jellyfin-media-renamer/filesystem"
 
 func Filter[T any](in []T, predicateFn func(T) bool) []T {
 	out := []T{}

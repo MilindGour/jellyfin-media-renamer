@@ -134,3 +134,26 @@ func TestJmrFS_GetDirectorySize(t *testing.T) {
 		})
 	}
 }
+
+// NOTE: These test cases are commented because they take time, and are not required for now.
+// func TestJmrFS_MoveFile(t *testing.T) {
+// 	jmrFS := NewJmrFS()
+//
+// 	progressChannel := make(chan FileTransferProgress)
+// 	go jmrFS.MoveFile(
+// 		"/Users/milindgour/Documents/workspace/personal/test-structure/rsync_fs/src/",
+// 		"/Users/milindgour/Documents/workspace/personal/test-structure/rsync_fs/dest/",
+// 		progressChannel,
+// 	)
+//
+// 	for progress := range progressChannel {
+// 		fmt.Printf("[TEST] %s\n", progress.ToString())
+// 	}
+// }
+
+// func TestJmrFS_CreateDirectory(t *testing.T) {
+// 	// create a test directory
+// 	jfs := NewJmrFS()
+//
+// 	jfs.CreateDirectory("/Users/milindgour/Documents/workspace/personal/test-structure/rsync_fs/.jmr-renames/another/depth/of-dirs")
+// }

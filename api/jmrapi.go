@@ -16,6 +16,7 @@ import (
 	"github.com/MilindGour/jellyfin-media-renamer/middlewares"
 	"github.com/MilindGour/jellyfin-media-renamer/renamer"
 	"github.com/MilindGour/jellyfin-media-renamer/util"
+	"github.com/MilindGour/jellyfin-media-renamer/websocket"
 )
 
 type JmrAPI struct {
@@ -29,6 +30,7 @@ type JmrAPI struct {
 
 	configResponse *ConfigResponse
 	allowedExts    []string
+	ws             websocket.JMRWebSocket
 }
 
 func NewJmrApi(
@@ -36,12 +38,14 @@ func NewJmrApi(
 	filesystemProvider filesystem.FileSystemProvider,
 	ren renamer.Renamer,
 	mip mediainfoprovider.MediaInfoProvider,
+	ws websocket.JMRWebSocket,
 ) *JmrAPI {
 	jmrApi := JmrAPI{
 		configProvider:     configProvider,
 		fileSystemProvider: filesystemProvider,
 		ren:                ren,
 		mip:                mip,
+		ws:                 ws,
 	}
 
 	return &jmrApi
@@ -94,6 +98,7 @@ func (j *JmrAPI) RegisterAPIRoutes() {
 	j.serveMux.HandleFunc("GET /api/config", j.Get_Config())
 	j.serveMux.HandleFunc("GET /api/sources", j.Get_Sources())
 	j.serveMux.HandleFunc("GET /api/sources/{id}", j.Get_SourceByID())
+	j.serveMux.HandleFunc("GET /api/destinations", j.Get_Destinations())
 
 	// identify page APIs
 	j.serveMux.HandleFunc("POST /api/media/identify-names", j.Post_IdentifyNames())
@@ -101,6 +106,11 @@ func (j *JmrAPI) RegisterAPIRoutes() {
 
 	// rename page APIs
 	j.serveMux.HandleFunc("POST /api/media/rename", j.Post_Rename())
+	j.serveMux.HandleFunc("POST /api/media/rename-confirm", j.Post_RenameConfirm())
+	j.serveMux.HandleFunc("POST /api/media/start-copy", j.Post_StartCopy())
+
+	// sync page APIs
+	j.serveMux.HandleFunc("GET /api/ws/{clientid}", j.Get_WebSocket())
 }
 
 func (j *JmrAPI) Get_Config() func(http.ResponseWriter, *http.Request) {
@@ -122,6 +132,14 @@ func (j *JmrAPI) Get_Sources() APIHandlerFn {
 		w.Write(ToJSON(raw))
 	}
 }
+
+func (j *JmrAPI) Get_Destinations() func(http.ResponseWriter, *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		cfg := j.configProvider.GetDestinationList()
+		w.Write(ToJSON(cfg))
+	}
+}
+
 func (j *JmrAPI) Get_SourceByID() APIHandlerFn {
 	return func(w http.ResponseWriter, r *http.Request) {
 		id := r.PathValue("id")
@@ -227,7 +245,7 @@ func (j *JmrAPI) Post_Rename() APIHandlerFn {
 			return
 		}
 
-		out := RenameMediaResponse{}
+		out := renamer.RenameMediaResponse{}
 		for _, reqItem := range request {
 			targetInfo := util.Filter(reqItem.IdentifiedMediaInfos, func(x mediainfoprovider.MediaInfo) bool {
 				return x.MediaID == reqItem.IdentifiedMediaId
@@ -244,7 +262,7 @@ func (j *JmrAPI) Post_Rename() APIHandlerFn {
 				Children:    children,
 			}
 			entriesAndIgnores := j.ren.SelectEntriesForRename(entry, reqItem.SourceDirectory.Type)
-			resItem := RenameMediaResponseItem{
+			resItem := renamer.RenameMediaResponseItem{
 				Info:              targetInfo[0],
 				Type:              reqItem.SourceDirectory.Type,
 				Entry:             entry,
@@ -255,6 +273,99 @@ func (j *JmrAPI) Post_Rename() APIHandlerFn {
 
 		w.Write(ToJSON(out))
 	}
+}
+
+func (j *JmrAPI) Get_WebSocket() APIHandlerFn {
+	return func(w http.ResponseWriter, r *http.Request) {
+		clientID := r.PathValue("clientid")
+		if len(clientID) == 0 {
+			j.HandleAPIError(w, r, http.StatusBadRequest, errors.New("Client ID is required!"))
+			return
+		}
+		err := j.ws.UpgradeConnectionAndAddClient(w, r)
+		if err != nil {
+			j.HandleAPIError(w, r, http.StatusInternalServerError, err)
+			return
+		}
+	}
+}
+
+func (j *JmrAPI) Post_RenameConfirm() APIHandlerFn {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var request renamer.RenameMediaConfirmRequest
+		err := json.NewDecoder(r.Body).Decode(&request)
+
+		if err != nil {
+			j.HandleAPIError(w, r, http.StatusBadRequest, err)
+			return
+		}
+		if len(request) == 0 {
+			j.HandleAPIError(w, r, http.StatusBadRequest, errors.New("Atleast 1 request object is required"))
+			return
+		}
+
+		renamePreview, err := j.ren.ConfirmEntriesForRename(request)
+		if err != nil {
+			j.HandleAPIError(w, r, http.StatusInternalServerError, err)
+			return
+		}
+
+		// TODO: Start renaming here and sending progress to websocket
+		go j.moveFilesWithWSProgress(*renamePreview)
+
+		w.WriteHeader(http.StatusOK)
+		w.Write(ToJSON(renamePreview))
+	}
+}
+
+func (j *JmrAPI) Post_StartCopy() APIHandlerFn {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var request renamer.RenameMediaConfirmResponse
+		err := json.NewDecoder(r.Body).Decode(&request)
+
+		if err != nil {
+			j.HandleAPIError(w, r, http.StatusBadRequest, err)
+			return
+		}
+		if len(request.RenamedItems) == 0 {
+			j.HandleAPIError(w, r, http.StatusBadRequest, errors.New("Atleast 1 request object is required"))
+			return
+		}
+
+		go j.moveFilesWithWSProgress(request)
+
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
+func (j *JmrAPI) moveFilesWithWSProgress(in renamer.RenameMediaConfirmResponse) {
+	// Start the copy task
+	allPathPairs := []filesystem.PathPair{}
+	for _, item := range in.RenamedItems {
+		allPathPairs = append(allPathPairs, item.FileRenames...)
+	}
+
+	progress := make(chan []filesystem.FileTransferProgress)
+	go j.fileSystemProvider.MoveFiles(allPathPairs, progress)
+
+	for p := range progress {
+
+		j.ws.SendProgressMessage(p)
+		log.Println()
+		for _, pp := range p {
+			log.Println(pp.ToString())
+		}
+		log.Println()
+	}
+
+	// Delete original source entries to save space and reduce duplication
+	// TODO: uncomment this block before deploy
+	// for _, entry := range entries {
+	// 	if j.DeleteDirectory(entry.Entry.Path) != true {
+	// 		log.Printf("Cannot delete directory / file %s", entry.Entry.Path)
+	// 	}
+	// }
+
 }
 
 func (j *JmrAPI) HandleAPIError(w http.ResponseWriter, r *http.Request, errorCode int, err error) {

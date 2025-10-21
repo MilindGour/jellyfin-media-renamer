@@ -1,6 +1,7 @@
 package renamer
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"path"
@@ -12,21 +13,23 @@ import (
 	"github.com/MilindGour/jellyfin-media-renamer/config"
 	"github.com/MilindGour/jellyfin-media-renamer/filesystem"
 	m "github.com/MilindGour/jellyfin-media-renamer/mediaInfoProvider"
-	mediainfoprovider "github.com/MilindGour/jellyfin-media-renamer/mediaInfoProvider"
 	"github.com/MilindGour/jellyfin-media-renamer/util"
+	"github.com/MilindGour/jellyfin-media-renamer/websocket"
 )
 
 type JmrRenamer struct {
 	mip m.MediaInfoProvider
 	fs  filesystem.FileSystemProvider
 	cfg config.ConfigProvider
+	ws  websocket.JMRWebSocket
 }
 
-func NewJmrRenamerV1(mip m.MediaInfoProvider, fs filesystem.FileSystemProvider, cfg config.ConfigProvider) *JmrRenamer {
+func NewJmrRenamerV1(mip m.MediaInfoProvider, fs filesystem.FileSystemProvider, cfg config.ConfigProvider, ws websocket.JMRWebSocket) *JmrRenamer {
 	return &JmrRenamer{
 		mip,
 		fs,
 		cfg,
+		ws,
 	}
 }
 
@@ -89,14 +92,81 @@ func (j *JmrRenamer) GetMediaSeasonAndEpisode(rawFilepath string) MediaSeasonAnd
 	return MediaSeasonAndEpisode{-1, -1}
 }
 
-func (j *JmrRenamer) SelectEntriesForRename(rootEntry filesystem.DirEntry, mediaType mediainfoprovider.MediaType) EntriesAndIgnores {
+func (j *JmrRenamer) SelectEntriesForRename(rootEntry filesystem.DirEntry, mediaType m.MediaType) EntriesAndIgnores {
 	switch mediaType {
-	case mediainfoprovider.MediaTypeMovie:
+	case m.MediaTypeMovie:
 		return j.selectEntriesForMovieRename(rootEntry)
-	case mediainfoprovider.MediaTypeTV:
+	case m.MediaTypeTV:
 		return j.selectEntriesForTVRename(rootEntry)
 	default:
 		panic(fmt.Sprintf("SelectEntriesForRename not implemented for mediaType: %s", mediaType))
+	}
+}
+
+func (j *JmrRenamer) ConfirmEntriesForRename(entries RenameMediaConfirmRequest) (*RenameMediaConfirmResponse, error) {
+	allPathPairs := []filesystem.PathPair{}
+	out := RenameMediaConfirmResponse{
+		RenamedItems: []RenameMediaConfirmResponseItem{},
+	}
+
+	for _, entry := range entries {
+		newRoot := entry.Destination.Path
+		newEntryDir := path.Join(newRoot, j.mip.GetJellyfinCompatibleDirectoryName(entry.Info))
+		totalSize := int64(0)
+
+		// Create newEntryDir
+		if j.fs.CreateDirectory(newEntryDir) != true {
+			// Failed to create newEntryDir
+			return nil, errors.New("Cannot create entry directory " + newEntryDir)
+		}
+
+		for _, renEntry := range entry.Selected {
+			newPath := j.renameSingleEntry(entry, renEntry, newEntryDir, false)
+			allPathPairs = append(allPathPairs, filesystem.PathPair{
+				OldPath: renEntry.Media.Path,
+				NewPath: newPath,
+			})
+			totalSize += renEntry.Media.Size
+
+			if renEntry.Subtitle != nil {
+				newPath := j.renameSingleEntry(entry, renEntry, newEntryDir, true)
+				allPathPairs = append(allPathPairs, filesystem.PathPair{
+					OldPath: renEntry.Subtitle.Path,
+					NewPath: newPath,
+				})
+				totalSize += renEntry.Subtitle.Size
+			}
+		}
+
+		out.RenamedItems = append(out.RenamedItems, RenameMediaConfirmResponseItem{
+			Info:        entry.Info,
+			Size:        totalSize,
+			Type:        entry.Type,
+			OldPath:     entry.Entry.Path,
+			NewPath:     newEntryDir,
+			FileRenames: allPathPairs,
+		})
+	}
+
+	return &out, nil
+}
+
+func (j *JmrRenamer) renameSingleEntry(entry RenameMediaConfirmRequestItem, e RenameEntry, newEntryDir string, isSubtitle bool) string {
+	var ext string
+	if isSubtitle {
+		ext = path.Ext(e.Subtitle.Path)
+	} else {
+		ext = path.Ext(e.Media.Path)
+	}
+
+	if e.Season > 0 && e.Episode > 0 {
+		// TV Show
+		newBase := fmt.Sprintf("Season %02d/%s S%02dE%02d%s", e.Season, entry.Info.Name, e.Season, e.Episode, ext)
+		return path.Join(newEntryDir, newBase)
+	} else {
+		// Movie
+		newBase := fmt.Sprintf("%s%s", j.mip.GetJellyfinCompatibleDirectoryName(entry.Info), ext)
+		return path.Join(newEntryDir, newBase)
 	}
 }
 

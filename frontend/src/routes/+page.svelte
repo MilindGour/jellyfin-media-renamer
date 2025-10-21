@@ -2,12 +2,13 @@
 	import { Button, Dropdown, SourceDirectoryList } from '$lib/components';
 	import type { PageProps } from './$types';
 	import { formatPathString } from '$lib/stores/util';
-	import type { Source, SourceDirectory } from '$lib/models/models';
+	import type { Source, SourceDirectory } from '$lib/models';
 	import { JmrApplicationStore } from '$lib/stores/app-store.svelte';
 	import { API } from '$lib/services/api';
 	import { goto } from '$app/navigation';
 	import { Log } from '$lib/services/logger';
 	import { onMount } from 'svelte';
+	import { PopupService } from '$lib/components/popup';
 
 	const { data }: PageProps = $props();
 	const app = new JmrApplicationStore(API.http());

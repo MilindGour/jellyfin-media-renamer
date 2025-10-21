@@ -1,0 +1,252 @@
+[
+  {
+    "info": {
+      "name": "Contracted: Phase II",
+      "description": "Picking up directly where the previous film left off, the story follows Riley, one of the last people to come in contact with Samantha, as he scrambles to track down those responsible for the outbreak before the highly contagious disease not only consumes his body, but the world as we know it.",
+      "yearOfRelease": 2015,
+      "thumbnailUrl": "https://media.themoviedb.org/t/p/w94_and_h141_bestv2/jTFrI6BWcFDwBaXT2fPjQAb8amt.jpg",
+      "mediaId": "345468"
+    },
+    "type": "MOVIE",
+    "entry": {
+      "name": "Contracted.Phase.II.2015.BRRip.XviD-ETRG",
+      "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/Contracted.Phase.II.2015.BRRip.XviD-ETRG",
+      "size": 26752000,
+      "isDirectory": true,
+      "children": [
+        {
+          "name": "Contracted.Phase.II.2015.BRRip.XviD-ETRG.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/Contracted.Phase.II.2015.BRRip.XviD-ETRG/Contracted.Phase.II.2015.BRRip.XviD-ETRG.mkv",
+          "size": 26214400,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "name": "subtitle.ar.srt",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/Contracted.Phase.II.2015.BRRip.XviD-ETRG/subtitle.ar.srt",
+          "size": 281600,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "name": "subtitle.en.srt",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/Contracted.Phase.II.2015.BRRip.XviD-ETRG/subtitle.en.srt",
+          "size": 256000,
+          "isDirectory": false,
+          "children": null
+        }
+      ]
+    },
+    "selected": [
+      {
+        "media": {
+          "name": "Contracted.Phase.II.2015.BRRip.XviD-ETRG.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/Contracted.Phase.II.2015.BRRip.XviD-ETRG/Contracted.Phase.II.2015.BRRip.XviD-ETRG.mkv",
+          "size": 100000000,
+          "isDirectory": false,
+          "children": null
+        },
+        "subtitle": {
+          "name": "subtitle.en.srt",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/Contracted.Phase.II.2015.BRRip.XviD-ETRG/subtitle.en.srt",
+          "size": 256000,
+          "isDirectory": false,
+          "children": null
+        }
+      }
+    ],
+    "ignored": [
+      {
+        "name": "subtitle.en.srt",
+        "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/Contracted.Phase.II.2015.BRRip.XviD-ETRG/subtitle.en.srt",
+        "size": 256000,
+        "isDirectory": false,
+        "children": null
+      }
+    ]
+  },
+  {
+    "info": {
+      "name": "One-Punch Man",
+      "description": "Saitama is a hero who only became a hero for fun. After three years of “special” training, though, he's become so strong that he's practically invincible. In fact, he's too strong — even his mightiest opponents are taken out with a single punch, and it turns out that being devastatingly powerful is actually kind of a bore. With his passion for being a hero lost along with his hair, yet still faced with new enemies every day, how much longer can he keep it going?",
+      "yearOfRelease": 2015,
+      "thumbnailUrl": "https://media.themoviedb.org/t/p/w94_and_h141_bestv2/jbYJuxfZMpYDalkiOnBcCv9TaL.jpg",
+      "mediaId": "63926"
+    },
+    "type": "TV",
+    "entry": {
+      "name": "One-Punch.Man.2015",
+      "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/One-Punch.Man.2015",
+      "size": 98566144,
+      "isDirectory": true,
+      "children": [
+        {
+          "name": "One-Punch.Man.S02E01.720p.HULU.WEBRip.x264-GalaxyTV.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/One-Punch.Man.2015/One-Punch.Man.S02E01.720p.HULU.WEBRip.x264-GalaxyTV.mkv",
+          "size": 24117248,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "name": "One-Punch.Man.S02E02.720p.HULU.WEBRip.x264-GalaxyTV.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/One-Punch.Man.2015/One-Punch.Man.S02E02.720p.HULU.WEBRip.x264-GalaxyTV.mkv",
+          "size": 17825792,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "name": "One-Punch.Man.S02E03.720p.HULU.WEBRip.x264-GalaxyTV.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/One-Punch.Man.2015/One-Punch.Man.S02E03.720p.HULU.WEBRip.x264-GalaxyTV.mkv",
+          "size": 12582912,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "name": "One-Punch.Man.S02E04.720p.HULU.WEBRip.x264-GalaxyTV.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/One-Punch.Man.2015/One-Punch.Man.S02E04.720p.HULU.WEBRip.x264-GalaxyTV.mkv",
+          "size": 23068672,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "name": "One-Punch.Man.S02E05.720p.HULU.WEBRip.x264-GalaxyTV.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/One-Punch.Man.2015/One-Punch.Man.S02E05.720p.HULU.WEBRip.x264-GalaxyTV.mkv",
+          "size": 20971520,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "name": "opm-S02E01.srt",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/One-Punch.Man.2015/opm-S02E01.srt",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "name": "opm-S02E02.srt",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/One-Punch.Man.2015/opm-S02E02.srt",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "name": "opm-S02E03.ar-dontpickthis.srt",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/One-Punch.Man.2015/opm-S02E03.ar-dontpickthis.srt",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "name": "opm-S02E03.srt",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/One-Punch.Man.2015/opm-S02E03.srt",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "name": "opm-S02E04.ar-dontpickthis.srt",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/One-Punch.Man.2015/opm-S02E04.ar-dontpickthis.srt",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        {
+          "name": "opm-S02E05.ar-dontpickthis.srt",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/One-Punch.Man.2015/opm-S02E05.ar-dontpickthis.srt",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        }
+      ]
+    },
+    "selected": [
+      {
+        "media": {
+          "name": "One-Punch.Man.S02E01.720p.HULU.WEBRip.x264-GalaxyTV.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/One-Punch.Man.2015/One-Punch.Man.S02E01.720p.HULU.WEBRip.x264-GalaxyTV.mkv",
+          "size": 250000000,
+          "isDirectory": false,
+          "children": null
+        },
+        "subtitle": {
+          "name": "opm-S02E01.srt",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/One-Punch.Man.2015/opm-S02E01.srt",
+          "size": 125000,
+          "isDirectory": false,
+          "children": null
+        },
+        "season": 2,
+        "episode": 1
+      },
+      {
+        "media": {
+          "name": "One-Punch.Man.S02E02.720p.HULU.WEBRip.x264-GalaxyTV.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/One-Punch.Man.2015/One-Punch.Man.S02E02.720p.HULU.WEBRip.x264-GalaxyTV.mkv",
+          "size": 300000000,
+          "isDirectory": false,
+          "children": null
+        },
+        "subtitle": {
+          "name": "opm-S02E02.srt",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/One-Punch.Man.2015/opm-S02E02.srt",
+          "size": 75000,
+          "isDirectory": false,
+          "children": null
+        },
+        "season": 2,
+        "episode": 2
+      },
+      {
+        "media": {
+          "name": "One-Punch.Man.S02E03.720p.HULU.WEBRip.x264-GalaxyTV.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/One-Punch.Man.2015/One-Punch.Man.S02E03.720p.HULU.WEBRip.x264-GalaxyTV.mkv",
+          "size": 275000000,
+          "isDirectory": false,
+          "children": null
+        },
+        "subtitle": {
+          "name": "opm-S02E03.srt",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/One-Punch.Man.2015/opm-S02E03.srt",
+          "size": 0,
+          "isDirectory": false,
+          "children": null
+        },
+        "season": 2,
+        "episode": 3
+      },
+      {
+        "media": {
+          "name": "One-Punch.Man.S02E04.720p.HULU.WEBRip.x264-GalaxyTV.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/One-Punch.Man.2015/One-Punch.Man.S02E04.720p.HULU.WEBRip.x264-GalaxyTV.mkv",
+          "size": 130000000,
+          "isDirectory": false,
+          "children": null
+        },
+        "subtitle": null,
+        "season": 2,
+        "episode": 4
+      },
+      {
+        "media": {
+          "name": "One-Punch.Man.S02E05.720p.HULU.WEBRip.x264-GalaxyTV.mkv",
+          "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/One-Punch.Man.2015/One-Punch.Man.S02E05.720p.HULU.WEBRip.x264-GalaxyTV.mkv",
+          "size": 130000000,
+          "isDirectory": false,
+          "children": null
+        },
+        "subtitle": null,
+        "season": 2,
+        "episode": 5
+      }
+    ],
+    "ignored": [
+      {
+        "name": "opm-S02E03.srt",
+        "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix/One-Punch.Man.2015/opm-S02E03.srt",
+        "size": 13000,
+        "isDirectory": false,
+        "children": null
+      }
+    ]
+  }
+]

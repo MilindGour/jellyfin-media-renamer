@@ -4,12 +4,14 @@ import SourceDirectoryList from './sourceDirectoryList/source-directory-list.sve
 import SourceDirectoryInfoItem from './sourceDirectoryWithInfoList/srcdirinfoItem.svelte';
 import RenameSelectionListItem from './renameSelectionList/renameSelectionListItem.svelte';
 import Accordion from './accordion/accordion.svelte';
+import DestinationDirectoryDropdown from './destinationDirectoryDropdown/dest-dir-dd.svelte';
 
 export {
-    Dropdown,
-    Button,
-    SourceDirectoryList,
-    SourceDirectoryInfoItem,
-    RenameSelectionListItem,
-    Accordion
+  Dropdown,
+  Button,
+  SourceDirectoryList,
+  SourceDirectoryInfoItem,
+  RenameSelectionListItem,
+  Accordion,
+  DestinationDirectoryDropdown
 }
