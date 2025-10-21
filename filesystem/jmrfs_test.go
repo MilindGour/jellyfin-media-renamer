@@ -157,3 +157,52 @@ func TestJmrFS_GetDirectorySize(t *testing.T) {
 //
 // 	jfs.CreateDirectory("/Users/milindgour/Documents/workspace/personal/test-structure/rsync_fs/.jmr-renames/another/depth/of-dirs")
 // }
+
+func TestJmrFS_GetMountPointInfo(t *testing.T) {
+	type fields struct {
+		fs fs.FS
+	}
+	type args struct {
+		mountPoint string
+	}
+	tests := []struct {
+		name   string
+		fields fields
+		args   args
+		want   []MountPointInfo
+	}{
+		{
+			name: "Test using 1 path",
+			fields: fields{
+				fs: NewJmrFS().fs,
+			},
+			args: args{
+				mountPoint: "/",
+			},
+			want: []MountPointInfo{
+				{
+					TotalSizeKB: 123123,
+					FreeSizeKB:  12312,
+					UsedSizeKB:  1234,
+					MountPoint:  "/",
+				},
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			j := &JmrFS{
+				fs: tt.fields.fs,
+			}
+			got := j.GetMountPointInfo(tt.args.mountPoint)
+			if got.MountPoint != tt.args.mountPoint {
+				t.Errorf("GetMountPointInfo() = %s, want %s", got.MountPoint, tt.args.mountPoint)
+				return
+			}
+			if got.TotalSizeKB == 0 || got.UsedSizeKB == 0 || got.FreeSizeKB == 0 {
+				t.Errorf("GetMountPointInfo() total: %d, used: %d, free: %d. Want non-zero values", got.TotalSizeKB, got.UsedSizeKB, got.FreeSizeKB)
+				return
+			}
+		})
+	}
+}

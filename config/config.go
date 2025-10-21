@@ -22,10 +22,11 @@ type DirConfig struct {
 }
 
 type DestConfig struct {
-	Name string                      `json:"name"`
-	Path string                      `json:"path"`
-	Type mediainfoprovider.MediaType `json:"type"`
-	ID   int                         `json:"id"`
+	Name       string                      `json:"name"`
+	Path       string                      `json:"path"`
+	Type       mediainfoprovider.MediaType `json:"type"`
+	ID         int                         `json:"id"`
+	MountPoint string                      `json:"mount_point"`
 }
 
 type AllowedExtensions struct {

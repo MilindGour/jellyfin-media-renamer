@@ -30,6 +30,10 @@ export type DestConfig = {
   path: string;
   id: number;
   type: MediaType;
+  mount_point: string;
+  total_size_kb: number;
+  free_size_kb: number;
+  used_size_kb: number;
 };
 
 export type DirEntry = {

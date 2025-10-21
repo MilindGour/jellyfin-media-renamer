@@ -227,6 +227,99 @@ func (j *JmrFS) DeleteDirectory(dirpath string) bool {
 	return true
 }
 
+func (j *JmrFS) GetMountPointInfo(mountPoint string) MountPointInfo {
+	cmd := exec.Command("df", "-k", mountPoint)
+	out := MountPointInfo{}
+
+	stderr, er1 := cmd.StderrPipe()
+	stdout, er2 := cmd.StdoutPipe()
+
+	defer stderr.Close()
+	defer stdout.Close()
+
+	if er1 != nil {
+		log.Printf("Error during StdinPipe(): %s", er1.Error())
+		return out
+	}
+	if er2 != nil {
+		log.Printf("Error during StdoutPipe(): %s", er2.Error())
+		return out
+	}
+
+	if err := cmd.Start(); err != nil {
+		log.Printf("Error occured while executing df -k. More info: %s", err.Error())
+		return out
+	}
+
+	// StdOut scanner
+	outScanner := bufio.NewScanner(stdout)
+	lineCount := 0
+	for outScanner.Scan() {
+		line := outScanner.Text()
+		lineCount++
+		if lineCount == 2 {
+			trimmed := strings.Trim(line, " \t\n\r")
+			log.Printf("Output from df -k: %s", trimmed)
+			parsedMPInfo := j.parseDFOutputToMountPointInfo(trimmed)
+			if parsedMPInfo != nil {
+				parsedMPInfo.MountPoint = mountPoint
+				out = *parsedMPInfo
+			}
+		}
+	}
+
+	// StdErr scanner
+	errScanner := bufio.NewScanner(stderr)
+	for errScanner.Scan() {
+		line := outScanner.Text()
+		log.Printf("Error from df -k: %s", line)
+	}
+
+	if err := cmd.Wait(); err != nil {
+		log.Printf("Error occured while waiting for command df -k. More info: %s", err.Error())
+		return out
+	}
+
+	return out
+}
+
+func (j *JmrFS) parseDFOutputToMountPointInfo(in string) *MountPointInfo {
+	splits := []string{}
+	for s := range strings.SplitSeq(in, " ") {
+		if len(s) > 0 {
+			splits = append(splits, s)
+		}
+	}
+
+	out := MountPointInfo{
+		TotalSizeKB: 0,
+		FreeSizeKB:  0,
+		UsedSizeKB:  0,
+	}
+	if len(splits) >= 4 {
+		var err error
+		out.TotalSizeKB, err = strconv.ParseInt(splits[1], 10, 64)
+		if err != nil {
+			log.Printf("Error occured while parsing total size: %s", err.Error())
+			return nil
+		}
+		out.UsedSizeKB, err = strconv.ParseInt(splits[2], 10, 64)
+		if err != nil {
+			log.Printf("Error occured while parsing used size: %s", err.Error())
+			return nil
+		}
+		out.FreeSizeKB, err = strconv.ParseInt(splits[3], 10, 64)
+		if err != nil {
+			log.Printf("Error occured while parsing free size: %s", err.Error())
+			return nil
+		}
+
+		return &out
+	}
+
+	return nil
+}
+
 func (j *JmrFS) parseRsyncOutputToProgress(outputLine string) *FileTransferProgress {
 	splits := strings.Split(outputLine, " ")
 	requiredSplits := []string{}

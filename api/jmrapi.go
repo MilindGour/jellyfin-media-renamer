@@ -136,7 +136,30 @@ func (j *JmrAPI) Get_Sources() APIHandlerFn {
 func (j *JmrAPI) Get_Destinations() func(http.ResponseWriter, *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		cfg := j.configProvider.GetDestinationList()
-		w.Write(ToJSON(cfg))
+		out := DestinationResponse{}
+
+		mountMap := map[string]filesystem.MountPointInfo{}
+		for i := range cfg {
+			mp := cfg[i].MountPoint
+			mpInfo, hasMP := mountMap[mp]
+			if !hasMP {
+				mpInfo = j.fileSystemProvider.GetMountPointInfo(mp)
+				mountMap[mp] = mpInfo
+			}
+
+			out = append(out, DestinationResponseItem{
+				Name:        cfg[i].Name,
+				Path:        cfg[i].Path,
+				Type:        cfg[i].Type,
+				ID:          cfg[i].ID,
+				MountPoint:  mp,
+				TotalSizeKB: mpInfo.TotalSizeKB,
+				FreeSizeKB:  mpInfo.FreeSizeKB,
+				UsedSizeKB:  mpInfo.UsedSizeKB,
+			})
+		}
+
+		w.Write(ToJSON(out))
 	}
 }
 
