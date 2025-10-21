@@ -18,6 +18,10 @@
       "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix"
     },
     {
+      "name": "Test Empty",
+      "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_empty"
+    },
+    {
       "name": "Data TVs",
       "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/data_tv"
     },
@@ -42,22 +46,26 @@
     {
       "name": "JFM Movies",
       "path": "/Users/milindgour/Documents/workspace/personal/test-structure/jellyfin-media/Movies",
-      "type": "MOVIE"
+      "type": "MOVIE",
+      "mount_point": "/"
     },
     {
       "name": "JFM TV",
       "path": "/Users/milindgour/Documents/workspace/personal/test-structure/jellyfin-media/TV",
-      "type": "TV"
+      "type": "TV",
+      "mount_point": "/"
     },
     {
       "name": "JFM Movies 2",
       "path": "/Users/milindgour/Documents/workspace/personal/test-structure/jellyfin-media/Movies_2",
-      "type": "MOVIE"
+      "type": "MOVIE",
+      "mount_point": "/"
     },
     {
       "name": "JFM TV 2",
       "path": "/Users/milindgour/Documents/workspace/personal/test-structure/jellyfin-media/TV_2",
-      "type": "TV"
+      "type": "TV",
+      "mount_point": "/"
     }
   ]
 }

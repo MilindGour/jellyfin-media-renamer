@@ -11,8 +11,8 @@
 	const { data } = $props();
 	const log = new Log('Rename Page');
 	const app = new JmrApplicationStore(API.http());
-	const nextButtonDisabled = false;
 	const popupService = new PopupService();
+	const confirmAndSyncDisabled = $derived(app.mediaDestinationSelections.some((ds) => ds === null));
 
 	onMount(() => {
 		// check if data is present, otherwise navigate to home page.
@@ -64,7 +64,7 @@
 		{/each}
 	</section>
 	<section class="cta">
-		<Button disabled={nextButtonDisabled} type="primary" onclick={confirmRenameClickHandler}
+		<Button disabled={confirmAndSyncDisabled} type="primary" onclick={confirmRenameClickHandler}
 			>Confirm Rename & Sync</Button
 		>
 	</section>

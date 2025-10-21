@@ -213,6 +213,7 @@
 		<DestinationDirectoryDropdown
 			bind:value={dest}
 			destinationList={destinations}
+			sourceSize={totalSelectedSize}
 			id={`dd_${id}`}
 			type={item.type}
 		/>

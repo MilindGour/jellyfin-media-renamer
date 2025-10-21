@@ -95,3 +95,16 @@ type IdentifyMediaRequest IdentifyMediaResponse
 
 type RenameMediaRequestItem IdentifyMediaResponseItem
 type RenameMediaRequest []RenameMediaRequestItem
+
+type DestinationResponseItem struct {
+	Name        string                      `json:"name"`
+	Path        string                      `json:"path"`
+	Type        mediainfoprovider.MediaType `json:"type"`
+	ID          int                         `json:"id"`
+	MountPoint  string                      `json:"mount_point"`
+	TotalSizeKB int64                       `json:"total_size_kb"`
+	FreeSizeKB  int64                       `json:"free_size_kb"`
+	UsedSizeKB  int64                       `json:"used_size_kb"`
+}
+
+type DestinationResponse []DestinationResponseItem

@@ -8,6 +8,7 @@ type FileSystemProvider interface {
 	MoveFiles(pathPairs []PathPair, progress chan []FileTransferProgress)
 	CreateDirectory(dirpath string) bool
 	DeleteDirectory(dirpath string) bool
+	GetMountPointInfo(allPaths string) MountPointInfo
 }
 
 type DirEntry struct {
@@ -31,6 +32,13 @@ type FileTransferProgress struct {
 	RawString        string   `json:"raw_string"`
 	Error            error    `json:"error"`
 	Files            PathPair `json:"files"`
+}
+
+type MountPointInfo struct {
+	MountPoint  string `json:"mount_point"`
+	TotalSizeKB int64  `json:"total_size_kb"`
+	FreeSizeKB  int64  `json:"free_size_kb"`
+	UsedSizeKB  int64  `json:"used_size_kb"`
 }
 
 func (ftp *FileTransferProgress) ToString() string {
