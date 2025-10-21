@@ -65,14 +65,16 @@
 		>
 	</section>
 	<section class="list-section">
-		{#if app.sourceDirectories !== null}
+		{#if app.sourceDirectories !== null && app.sourceDirectories.entries?.length > 0}
 			<SourceDirectoryList
 				name="selectedList"
 				list={app.sourceDirectories.entries}
 				bind:value={selectedSourceDirectoryItems}
 			/>
+		{:else if app.sourceDirectories?.entries === null}
+			There are no files or directories in the selected source. Please select a different source.
 		{:else}
-			Select and scan a source to view its directories...
+			Select and scan a source to view its directories.
 		{/if}
 	</section>
 	<section

@@ -183,6 +183,11 @@ func (j *JmrFS) moveSingleFile(fromPath, toPath string, channel chan FileTransfe
 
 func (j *JmrFS) MoveFiles(pathPairs []PathPair, progressChannel chan []FileTransferProgress) {
 	ftp := make([]FileTransferProgress, len(pathPairs))
+
+	for i := range ftp {
+		ftp[i].Files = pathPairs[i]
+	}
+
 	for pIndex, p := range pathPairs {
 		newDir := path.Dir(p.NewPath)
 
