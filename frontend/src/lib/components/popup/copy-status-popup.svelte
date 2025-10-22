@@ -5,6 +5,7 @@
 	import type { FileTransferData, ProgressData, WebSocketService } from '$lib/services/network';
 	import { Log } from '$lib/services/logger';
 	import { formatTimeString, removeCommonSubstring } from '$lib/stores/util';
+	import SizeTag from '../sizeTag/sizeTag.svelte';
 
 	const {
 		data,
@@ -16,6 +17,8 @@
 	const log = new Log('CopyStatusPopup');
 
 	let progressStore = $state<ProgressData>([]);
+	let autoScrollEnabled = $state<boolean>(true);
+
 	const isComplete = $derived(
 		progressStore.length > 0 && progressStore.every((p) => p.percent_complete === 100)
 	);
@@ -40,7 +43,9 @@
 	function onProgressMessage(progressData: ProgressData) {
 		log.info('message received by popup:', progressData);
 		progressStore = progressData;
-		scrollToCurrentFile();
+		if (autoScrollEnabled) {
+			scrollToCurrentFile();
+		}
 	}
 
 	function scrollToCurrentFile() {
@@ -83,6 +88,10 @@
 		{/if}
 	{/snippet}
 	{#snippet footer()}
+		<label class="mr-6 inline-flex items-center gap-2">
+			<input type="checkbox" bind:checked={autoScrollEnabled} />
+			Auto scroll
+		</label>
 		<Button disabled={!isComplete} type="primary" onclick={() => closePopup(true)}>Close</Button>
 	{/snippet}
 </PopupComponent>
@@ -99,7 +108,7 @@
 		<div class="number-col">{index + 1}</div>
 		<div class="info-col">
 			<div>{x.second}</div>
-			<div class="text-sm text-gray-500">from: {x.first}</div>
+			<div class="text-sm text-gray-500"><SizeTag bytes={item.total_bytes} /> {x.first}</div>
 			{#if item.percent_complete > 0 && item.percent_complete < 100}
 				<div class="progres-data mt-2">
 					<div

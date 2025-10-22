@@ -17,7 +17,7 @@
 		<h3>{title}</h3>
 	</button>
 	{#if open}
-		<section class="accordion-body mt-2 pl-6" transition:slide>
+		<section class="accordion-body mt-2 pl-0 sm:pl-6" transition:slide>
 			{@render body()}
 		</section>
 	{/if}

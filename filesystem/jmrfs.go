@@ -74,11 +74,11 @@ func (j *JmrFS) GetDirectorySize(in DirEntry) int64 {
 	return out
 }
 
-func (j *JmrFS) moveSingleFile(fromPath, toPath string, channel chan FileTransferProgress) {
+func (j *JmrFS) moveSingleFile(fromPath, toPath string, channel chan FileTransferProgress, totalBytes int64) {
 
 	// start file transfer using rsync
-	// NOTE: --remove-source-files is not required since we are going to delete the old path anyways.
-	rsyncCmd := exec.Command("rsync", "-avz", "--info=progress2", fromPath, toPath)
+	// TODO: Remove --bwlimit option before deployinh to prod!
+	rsyncCmd := exec.Command("rsync", "-avz", "--info=progress2", "--bwlimit=5M", fromPath, toPath)
 	stdOutPipe, errOut := rsyncCmd.StdoutPipe()
 	stdErrPipe, errErr := rsyncCmd.StderrPipe()
 
@@ -92,16 +92,18 @@ func (j *JmrFS) moveSingleFile(fromPath, toPath string, channel chan FileTransfe
 
 	if errOut != nil {
 		channel <- FileTransferProgress{
-			Error: errOut,
-			Files: files,
+			Error:      errOut,
+			Files:      files,
+			TotalBytes: totalBytes,
 		}
 		close(channel)
 		return
 	}
 	if errErr != nil {
 		channel <- FileTransferProgress{
-			Error: errErr,
-			Files: files,
+			Error:      errErr,
+			Files:      files,
+			TotalBytes: totalBytes,
 		}
 		close(channel)
 		return
@@ -109,8 +111,9 @@ func (j *JmrFS) moveSingleFile(fromPath, toPath string, channel chan FileTransfe
 
 	if errStart := rsyncCmd.Start(); errStart != nil {
 		channel <- FileTransferProgress{
-			Error: errStart,
-			Files: files,
+			Error:      errStart,
+			Files:      files,
+			TotalBytes: totalBytes,
 		}
 		close(channel)
 		return
@@ -138,6 +141,7 @@ func (j *JmrFS) moveSingleFile(fromPath, toPath string, channel chan FileTransfe
 		progress := j.parseRsyncOutputToProgress(line)
 		if progress != nil {
 			progress.Files = files
+			progress.TotalBytes = totalBytes
 			channel <- *progress
 		}
 	}
@@ -148,16 +152,18 @@ func (j *JmrFS) moveSingleFile(fromPath, toPath string, channel chan FileTransfe
 		line := errScanner.Text()
 
 		channel <- FileTransferProgress{
-			Error: errors.New(line),
-			Files: files,
+			Error:      errors.New(line),
+			Files:      files,
+			TotalBytes: totalBytes,
 		}
 	}
 
 	// Wait for rsync command to finish
 	if errWait := rsyncCmd.Wait(); errWait != nil {
 		channel <- FileTransferProgress{
-			Error: errWait,
-			Files: files,
+			Error:      errWait,
+			Files:      files,
+			TotalBytes: totalBytes,
 		}
 		close(channel)
 		return
@@ -167,8 +173,9 @@ func (j *JmrFS) moveSingleFile(fromPath, toPath string, channel chan FileTransfe
 	destStat, err := os.Stat(toPath)
 	if err != nil {
 		channel <- FileTransferProgress{
-			Error: err,
-			Files: files,
+			Error:      err,
+			Files:      files,
+			TotalBytes: totalBytes,
 		}
 	}
 
@@ -176,6 +183,7 @@ func (j *JmrFS) moveSingleFile(fromPath, toPath string, channel chan FileTransfe
 		BytesTransferred: destStat.Size(),
 		PercentComplete:  100,
 		Files:            files,
+		TotalBytes:       totalBytes,
 	}
 	close(channel)
 }
@@ -185,6 +193,10 @@ func (j *JmrFS) MoveFiles(pathPairs []PathPair, progressChannel chan []FileTrans
 
 	for i := range ftp {
 		ftp[i].Files = pathPairs[i]
+		stat, err := os.Stat(pathPairs[i].OldPath)
+		if err == nil {
+			ftp[i].TotalBytes = stat.Size()
+		}
 	}
 
 	for pIndex, p := range pathPairs {
@@ -192,7 +204,7 @@ func (j *JmrFS) MoveFiles(pathPairs []PathPair, progressChannel chan []FileTrans
 
 		if j.CreateDirectory(newDir) == true {
 			ch := make(chan FileTransferProgress)
-			go j.moveSingleFile(p.OldPath, p.NewPath, ch)
+			go j.moveSingleFile(p.OldPath, p.NewPath, ch, ftp[pIndex].TotalBytes)
 			for progress := range ch {
 				ftp[pIndex] = progress
 				progressChannel <- ftp

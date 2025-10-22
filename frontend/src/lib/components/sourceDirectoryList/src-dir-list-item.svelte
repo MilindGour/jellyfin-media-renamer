@@ -10,6 +10,7 @@
 <script lang="ts">
 	import type { MediaType } from '$lib/models';
 	import { convertToSizeString, joinStrings } from '$lib/stores/util';
+	import SizeTag from '../sizeTag/sizeTag.svelte';
 	import ToggleButtonGroup from '../toggleButtonGroup/toggleButtonGroup.svelte';
 
 	const id = getNextId();
@@ -47,7 +48,7 @@
 	<section class="text grow-1">
 		<label for={id} class="block cursor-pointer font-medium break-all">
 			{value.entry.name}
-			<p class="text-sm break-all text-gray-500">{convertToSizeString(value.entry.size)}</p>
+			<p><SizeTag bytes={value.entry.size} /></p>
 		</label>
 		<p class="mt-2">
 			<ToggleButtonGroup

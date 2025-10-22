@@ -7,6 +7,7 @@ import Accordion from './accordion/accordion.svelte';
 import DestinationDirectoryDropdown from './destinationDirectoryDropdown/dest-dir-dd.svelte';
 import MediaTag from './mediaTag/media-tag.svelte';
 import MediaSearchList from './mediasearchlist/media-search-list.svelte';
+import SizeTag from './sizeTag/sizeTag.svelte';
 
 export {
   Dropdown,
@@ -17,5 +18,6 @@ export {
   Accordion,
   DestinationDirectoryDropdown,
   MediaTag,
-  MediaSearchList
+  MediaSearchList,
+  SizeTag
 }
