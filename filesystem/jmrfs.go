@@ -78,8 +78,7 @@ func (j *JmrFS) moveSingleFile(fromPath, toPath string, channel chan FileTransfe
 
 	// start file transfer using rsync
 	// TODO: add --remove-source-files in the arguments before deploy
-	// and remove --bwlimit=4000
-	rsyncCmd := exec.Command("rsync", "-avz", "--info=progress2", "--bwlimit=5M", fromPath, toPath)
+	rsyncCmd := exec.Command("rsync", "-avz", "--info=progress2", fromPath, toPath)
 	stdOutPipe, errOut := rsyncCmd.StdoutPipe()
 	stdErrPipe, errErr := rsyncCmd.StderrPipe()
 

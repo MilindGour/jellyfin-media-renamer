@@ -76,7 +76,6 @@ export class API {
           destination: mediaDestinations[i]
         })
       }
-      log.info("TODO: confirm and sync request:", input);
       const apiUrl = Constants.API_POST_MEDIA_RENAMES_CONFIRM;
       const res = await this.http.postJSON<any[]>(apiUrl, input);
       return res;

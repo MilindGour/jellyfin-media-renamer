@@ -333,7 +333,6 @@ func (j *JmrAPI) Post_RenameConfirm() APIHandlerFn {
 			return
 		}
 
-		// TODO: Start renaming here and sending progress to websocket
 		go j.moveFilesWithWSProgress(*renamePreview)
 
 		w.WriteHeader(http.StatusOK)
