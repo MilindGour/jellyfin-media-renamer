@@ -3,15 +3,19 @@ import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
-  preprocess: vitePreprocess(),
+	preprocess: vitePreprocess(),
 
-  kit: {
-    adapter: adapter()
-  },
-  prerender: {
-    default: true
-  }
-
+	kit: {
+		adapter: adapter(),
+		vite: {
+			ssr: {
+				noExternal: ['uuid']
+			}
+		}
+	},
+	prerender: {
+		default: true
+	}
 };
 
 export default config;
