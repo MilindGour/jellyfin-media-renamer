@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { loaderService } from "$lib/components/loader";
-import { Constants, GetApiBaseUrl } from "$lib/stores/constants";
+import { Constants, GetApiBaseUrl, getWSBaseUrl } from "$lib/stores/constants";
 import { Log } from "./logger";
 
 function getBaseUrl(): string {
@@ -95,8 +95,8 @@ export class WebSocketService {
 
   getWSURL(): string {
     const uuid = uuidv4();
-    const wsBaseURL = GetApiBaseUrl().replace(/^https?:\/\//, '');
-    return `ws://${wsBaseURL}/${Constants.API_WS}/${uuid}`;
+    const wsBaseURL = getWSBaseUrl();
+    return `${wsBaseURL}/${uuid}`;
   }
 
   handleOnOpen = (event: Event) => {
