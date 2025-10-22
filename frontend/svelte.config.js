@@ -8,6 +8,11 @@ const config = {
 	kit: {
 		adapter: adapter()
 	},
+	vite: {
+		ssr: {
+			noExternal: ['uuid']
+		}
+	},
 	prerender: {
 		default: true
 	}
