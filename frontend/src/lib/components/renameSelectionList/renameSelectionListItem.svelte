@@ -218,7 +218,7 @@
 	</section>
 	<section class="renames-and-ignores flex flex-col gap-4">
 		<!-- Selected files Accordion -->
-		<Accordion title={renameAccordionTitle} open>
+		<Accordion title={renameAccordionTitle}>
 			{#snippet body()}
 				<section class="accordion-body flex flex-col gap-2">
 					{#each item.selected as selectedItem}
