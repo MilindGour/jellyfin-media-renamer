@@ -77,7 +77,7 @@ func (j *JmrFS) GetDirectorySize(in DirEntry) int64 {
 func (j *JmrFS) moveSingleFile(fromPath, toPath string, channel chan FileTransferProgress) {
 
 	// start file transfer using rsync
-	// TODO: add --remove-source-files in the arguments before deploy
+	// NOTE: --remove-source-files is not required since we are going to delete the old path anyways.
 	rsyncCmd := exec.Command("rsync", "-avz", "--info=progress2", fromPath, toPath)
 	stdOutPipe, errOut := rsyncCmd.StdoutPipe()
 	stdErrPipe, errErr := rsyncCmd.StderrPipe()

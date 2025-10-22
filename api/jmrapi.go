@@ -381,12 +381,13 @@ func (j *JmrAPI) moveFilesWithWSProgress(in renamer.RenameMediaConfirmResponse) 
 	}
 
 	// Delete original source entries to save space and reduce duplication
-	// TODO: uncomment this block before deploy
-	// for _, entry := range entries {
-	// 	if j.DeleteDirectory(entry.Entry.Path) != true {
-	// 		log.Printf("Cannot delete directory / file %s", entry.Entry.Path)
-	// 	}
-	// }
+	for _, renamedItem := range in.RenamedItems {
+		if j.fileSystemProvider.DeleteDirectory(renamedItem.OldPath) != true {
+			log.Printf("Cannot delete directory / file %s", renamedItem.OldPath)
+		} else {
+			log.Printf("Deleted media directory / file: %s", renamedItem.OldPath)
+		}
+	}
 
 }
 
