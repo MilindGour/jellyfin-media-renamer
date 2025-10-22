@@ -371,13 +371,7 @@ func (j *JmrAPI) moveFilesWithWSProgress(in renamer.RenameMediaConfirmResponse) 
 	go j.fileSystemProvider.MoveFiles(allPathPairs, progress)
 
 	for p := range progress {
-
 		j.ws.SendProgressMessage(p)
-		log.Println()
-		for _, pp := range p {
-			log.Println(pp.ToString())
-		}
-		log.Println()
 	}
 
 	// Delete original source entries to save space and reduce duplication

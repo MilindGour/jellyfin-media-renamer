@@ -29,7 +29,7 @@ type FileTransferProgress struct {
 	PercentComplete  int      `json:"percent_complete"`
 	TimeRemaining    string   `json:"time_remaining"`
 	TransferSpeed    string   `json:"transfer_speed"`
-	RawString        string   `json:"raw_string"`
+	TotalBytes       int64    `json:"total_bytes"`
 	Error            error    `json:"error"`
 	Files            PathPair `json:"files"`
 }
@@ -46,7 +46,7 @@ func (ftp *FileTransferProgress) ToString() string {
 	if ftp.Error != nil {
 		out = fmt.Sprintf("FileTransfer Error: %s", ftp.Error.Error())
 	} else {
-		out = fmt.Sprintf("FileTransferProgress: [%d%%, %d bytes @ %s, remaining %s (FROM: %s ::: TO: %s)]", ftp.PercentComplete, ftp.BytesTransferred, ftp.TransferSpeed, ftp.TimeRemaining, ftp.Files.OldPath, ftp.Files.NewPath)
+		out = fmt.Sprintf("FileTransferProgress: [%d%%, %d bytes @ %s, remaining %s (FROM: %s ::: TO: %s) (total: %d)]", ftp.PercentComplete, ftp.BytesTransferred, ftp.TransferSpeed, ftp.TimeRemaining, ftp.Files.OldPath, ftp.Files.NewPath, ftp.TotalBytes)
 	}
 
 	return out

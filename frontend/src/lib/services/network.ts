@@ -149,6 +149,7 @@ export type FileTransferData = {
   percent_complete: number,
   raw_string: string,
   time_remaining: string,
-  transfer_speed: string
+  transfer_speed: string,
+  total_bytes: number
 };
 export type ProgressData = Array<FileTransferData>;

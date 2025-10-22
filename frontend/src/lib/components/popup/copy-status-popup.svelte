@@ -5,6 +5,7 @@
 	import type { FileTransferData, ProgressData, WebSocketService } from '$lib/services/network';
 	import { Log } from '$lib/services/logger';
 	import { formatTimeString, removeCommonSubstring } from '$lib/stores/util';
+	import SizeTag from '../sizeTag/sizeTag.svelte';
 
 	const {
 		data,
@@ -107,7 +108,7 @@
 		<div class="number-col">{index + 1}</div>
 		<div class="info-col">
 			<div>{x.second}</div>
-			<div class="text-sm text-gray-500">from: {x.first}</div>
+			<div class="text-sm text-gray-500"><SizeTag bytes={item.total_bytes} /> {x.first}</div>
 			{#if item.percent_complete > 0 && item.percent_complete < 100}
 				<div class="progres-data mt-2">
 					<div

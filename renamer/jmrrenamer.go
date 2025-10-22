@@ -104,12 +104,12 @@ func (j *JmrRenamer) SelectEntriesForRename(rootEntry filesystem.DirEntry, media
 }
 
 func (j *JmrRenamer) ConfirmEntriesForRename(entries RenameMediaConfirmRequest) (*RenameMediaConfirmResponse, error) {
-	allPathPairs := []filesystem.PathPair{}
 	out := RenameMediaConfirmResponse{
 		RenamedItems: []RenameMediaConfirmResponseItem{},
 	}
 
 	for _, entry := range entries {
+		allPathPairs := []filesystem.PathPair{}
 		newRoot := entry.Destination.Path
 		newEntryDir := path.Join(newRoot, j.mip.GetJellyfinCompatibleDirectoryName(entry.Info))
 		totalSize := int64(0)
