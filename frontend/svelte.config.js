@@ -6,12 +6,7 @@ const config = {
 	preprocess: vitePreprocess(),
 
 	kit: {
-		adapter: adapter(),
-		vite: {
-			ssr: {
-				noExternal: ['uuid']
-			}
-		}
+		adapter: adapter()
 	},
 	prerender: {
 		default: true
