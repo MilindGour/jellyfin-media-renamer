@@ -7,7 +7,7 @@
 </script>
 
 <script lang="ts">
-	import type { MediaInfo } from '$lib/models/models';
+	import type { MediaInfo } from '$lib/models';
 	import { joinStrings } from '$lib/stores/util';
 	import MediaSearchlistItem from './media-searchlist-item.svelte';
 

@@ -9,7 +9,7 @@
 		labelProp = '',
 		itemTemplate = null,
 		value = $bindable(null),
-		disabledItemFn
+		disabledItemFn = null
 	} = $props();
 
 	let open = $state(false);

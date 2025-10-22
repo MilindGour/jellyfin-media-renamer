@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { DestConfig, MediaType } from '$lib/models';
 	import { convertToSizeString } from '$lib/stores/util';
-	import Dropdown from '../dropdown/dropdown.svelte';
+	import { Dropdown } from '$lib/components';
 
 	let {
 		type,

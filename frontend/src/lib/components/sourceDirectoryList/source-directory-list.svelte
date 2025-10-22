@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { DirEntry, MediaType, SourceDirectory } from '$lib/models/models';
+	import type { DirEntry, MediaType, SourceDirectory } from '$lib/models';
 	import { Button } from '$lib/components';
 	import SrcDirListItem from './src-dir-list-item.svelte';
 

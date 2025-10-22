@@ -1,5 +1,5 @@
 import { v4 as uuidv4 } from 'uuid';
-import { loaderService } from "$lib/components/loader/loader-store.svelte";
+import { loaderService } from "$lib/components/loader";
 import { Constants, GetApiBaseUrl } from "$lib/stores/constants";
 import { Log } from "./logger";
 

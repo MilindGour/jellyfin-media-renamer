@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { PopupComponent } from '.';
-	import Button from '../button/button.svelte';
+	import { Button } from '$lib/components';
 
 	const { data, onclose } = $props();
 	let season = $state<number>(data.season);

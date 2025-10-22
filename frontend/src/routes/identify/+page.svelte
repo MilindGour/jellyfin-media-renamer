@@ -2,12 +2,10 @@
 	import { goto } from '$app/navigation';
 	import { Button, SourceDirectoryInfoItem } from '$lib/components';
 	import { API } from '$lib/services/api';
-	import { Log } from '$lib/services/logger';
 	import { JmrApplicationStore } from '$lib/stores/app-store.svelte';
 	import { onMount } from 'svelte';
 
 	const app = new JmrApplicationStore(API.http());
-	const log = new Log('Identify page');
 	const nextButtonDisabled = $derived(
 		app.sourceDirsWithMediaInfo.some((x) => !x.identifiedMediaId)
 	);

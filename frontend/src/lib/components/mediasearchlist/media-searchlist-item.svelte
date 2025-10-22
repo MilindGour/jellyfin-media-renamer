@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { MediaInfo } from '$lib/models/models';
+	import type { MediaInfo } from '$lib/models';
 	import type { ChangeEventHandler } from 'svelte/elements';
 
 	const {

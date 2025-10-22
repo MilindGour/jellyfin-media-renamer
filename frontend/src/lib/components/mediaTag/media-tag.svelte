@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { MediaType } from '$lib/models/models';
+	import type { MediaType } from '$lib/models';
 
 	const { type }: { type: MediaType } = $props();
 </script>

@@ -8,7 +8,7 @@
 </script>
 
 <script lang="ts">
-	import type { MediaType } from '$lib/models/models';
+	import type { MediaType } from '$lib/models';
 	import { convertToSizeString, joinStrings } from '$lib/stores/util';
 	import ToggleButtonGroup from '../toggleButtonGroup/toggleButtonGroup.svelte';
 

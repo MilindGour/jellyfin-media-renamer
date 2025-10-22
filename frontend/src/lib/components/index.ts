@@ -5,6 +5,8 @@ import SourceDirectoryInfoItem from './sourceDirectoryWithInfoList/srcdirinfoIte
 import RenameSelectionListItem from './renameSelectionList/renameSelectionListItem.svelte';
 import Accordion from './accordion/accordion.svelte';
 import DestinationDirectoryDropdown from './destinationDirectoryDropdown/dest-dir-dd.svelte';
+import MediaTag from './mediaTag/media-tag.svelte';
+import MediaSearchList from './mediasearchlist/media-search-list.svelte';
 
 export {
   Dropdown,
@@ -13,5 +15,7 @@ export {
   SourceDirectoryInfoItem,
   RenameSelectionListItem,
   Accordion,
-  DestinationDirectoryDropdown
+  DestinationDirectoryDropdown,
+  MediaTag,
+  MediaSearchList
 }

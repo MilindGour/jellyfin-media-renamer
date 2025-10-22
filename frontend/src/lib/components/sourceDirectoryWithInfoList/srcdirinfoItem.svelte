@@ -7,12 +7,10 @@
 </script>
 
 <script lang="ts">
-	import type { SourceDirWithInfo } from '$lib/models/models';
+	import type { SourceDirWithInfo } from '$lib/models';
 
 	import { formatPathString, joinStrings } from '$lib/stores/util';
-	import MediaSearchList from '../mediasearchlist/media-search-list.svelte';
-
-	import MediaTag from '../mediaTag/media-tag.svelte';
+	import { MediaTag, MediaSearchList } from '$lib/components';
 
 	let { item = $bindable() }: { item: SourceDirWithInfo } = $props();
 	const id = getNextId();

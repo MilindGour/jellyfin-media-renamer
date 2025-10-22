@@ -1,8 +1,17 @@
-import type { SourceDirWithInfo, SourceDirectory, SourceDirectoriesResponse, RenameMediaResponseItem, Config, Source, DestConfig } from "$lib/models";
+import type {
+  SourceDirWithInfo,
+  SourceDirectory,
+  SourceDirectoriesResponse,
+  RenameMediaResponseItem,
+  Config,
+  Source,
+  DestConfig
+} from "$lib/models";
 import type { API } from "$lib/services/api";
 import { Log } from "$lib/services/logger";
 
 const log = new Log("app-store");
+
 // Main store class for the whole application
 export class JmrApplicationStore {
   static instance?: JmrApplicationStore;

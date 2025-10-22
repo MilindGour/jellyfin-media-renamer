@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onDestroy, onMount } from 'svelte';
 	import { PopupComponent } from '.';
-	import Button from '../button/button.svelte';
+	import { Button } from '$lib/components';
 	import type { FileTransferData, ProgressData, WebSocketService } from '$lib/services/network';
 	import { Log } from '$lib/services/logger';
 	import { formatTimeString, removeCommonSubstring } from '$lib/stores/util';

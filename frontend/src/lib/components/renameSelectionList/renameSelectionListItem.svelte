@@ -19,13 +19,10 @@
 		getRelativePath,
 		getSeasonEpisodeShortString
 	} from '$lib/stores/util';
-	import Accordion from '../accordion/accordion.svelte';
-	import Button from '../button/button.svelte';
 	import { Log } from '$lib/services/logger';
 	import { ToastService, ToastFactory } from '$lib/components/toast';
-	import { PopupService } from '../popup';
-	import MediaTag from '../mediaTag/media-tag.svelte';
-	import { DestinationDirectoryDropdown } from '$lib/components';
+	import { PopupService } from '$lib/components/popup';
+	import { MediaTag, DestinationDirectoryDropdown, Accordion, Button } from '$lib/components';
 
 	const log = new Log('RenameSelectionListItem');
 	const toastService = new ToastService();

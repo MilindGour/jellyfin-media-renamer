@@ -2,7 +2,7 @@
 	import { goto } from '$app/navigation';
 	import { Button } from '$lib/components';
 	import { PopupService } from '$lib/components/popup';
-	import RenameSelectionListItem from '$lib/components/renameSelectionList/renameSelectionListItem.svelte';
+	import { RenameSelectionListItem } from '$lib/components';
 	import { API } from '$lib/services/api';
 	import { Log } from '$lib/services/logger';
 	import { JmrApplicationStore } from '$lib/stores/app-store.svelte';

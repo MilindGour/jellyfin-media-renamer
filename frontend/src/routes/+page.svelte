@@ -8,7 +8,6 @@
 	import { goto } from '$app/navigation';
 	import { Log } from '$lib/services/logger';
 	import { onMount } from 'svelte';
-	import { PopupService } from '$lib/components/popup';
 
 	const { data }: PageProps = $props();
 	const app = new JmrApplicationStore(API.http());
