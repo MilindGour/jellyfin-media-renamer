@@ -23,6 +23,7 @@
 	import { ToastService, ToastFactory } from '$lib/components/toast';
 	import { PopupService } from '$lib/components/popup';
 	import { MediaTag, DestinationDirectoryDropdown, Accordion, Button } from '$lib/components';
+	import SizeTag from '../sizeTag/sizeTag.svelte';
 
 	const log = new Log('RenameSelectionListItem');
 	const toastService = new ToastService();
@@ -48,7 +49,7 @@
 		item.selected?.map<number>((i) => (!!i.subtitle ? 2 : 1)).reduce((ac, cr) => ac + cr)
 	);
 	const renameAccordionTitle = $derived(
-		`Files selected for rename [${totalSelectedItems} items totalling ${convertToSizeString(totalSelectedSize)}]`
+		`Selected - ${totalSelectedItems} item(s), ${convertToSizeString(totalSelectedSize)}`
 	);
 
 	const totalIgnoredItems = $derived(item.ignored?.length || 0);
@@ -56,7 +57,7 @@
 		item.ignored?.map((i) => i.size).reduce((acc, cur) => acc + cur, 0)
 	);
 	const ignoredAccordionTitle = $derived(
-		`Ignored files [${totalIgnoredItems} items totalling ${convertToSizeString(totalIgnoredSize)}]`
+		`Ignored - ${totalIgnoredItems} item(s), ${convertToSizeString(totalIgnoredSize)}`
 	);
 
 	function moveToIgnored(selectedItem: RenameEntry, onlySubtitle = false) {
@@ -222,14 +223,6 @@
 				<section class="accordion-body flex flex-col gap-2">
 					{#each item.selected as selectedItem}
 						<section class="rename-item flex items-center gap-1 rounded bg-gray-50 p-3">
-							<div class="first-column min-w-20">
-								{#if typeof selectedItem.season === 'number' && typeof selectedItem.episode === 'number'}
-									<div class="episode-info">
-										{getSeasonEpisodeShortString(selectedItem.season, selectedItem.episode)}
-									</div>
-								{/if}
-								<div class="filesize text-xs">({convertToSizeString(selectedItem.media.size)})</div>
-							</div>
 							<div class="second-column grow-1">
 								<div class="media-name">
 									{getRelativePath(selectedItem.media.path, item.entry.path)}
@@ -246,6 +239,14 @@
 										>
 									{:else}
 										<span class="text-red-300">No subtitle</span>
+									{/if}
+								</div>
+								<div class="media-meta flex items-center gap-2">
+									<SizeTag bytes={selectedItem.media.size} />
+									{#if typeof selectedItem.season === 'number' && typeof selectedItem.episode === 'number'}
+										<span class="episode-info">
+											{getSeasonEpisodeShortString(selectedItem.season, selectedItem.episode)}
+										</span>
 									{/if}
 								</div>
 							</div>
@@ -281,12 +282,12 @@
 				<section class="accordion-body flex flex-col gap-2">
 					{#each item.ignored as ignoredItem}
 						<section class="rename-item flex items-center gap-1 rounded bg-gray-50 p-3">
-							<div class="first-column min-w-20">
-								<div class="filesize text-xs">({convertToSizeString(ignoredItem.size)})</div>
-							</div>
 							<div class="second-column grow-1">
 								<div class="media-name">
 									{getRelativePath(ignoredItem.path, item.entry.path)}
+								</div>
+								<div class="media-meta">
+									<SizeTag bytes={ignoredItem.size} />
 								</div>
 							</div>
 							<div class="third-column">

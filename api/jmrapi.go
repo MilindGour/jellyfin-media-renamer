@@ -381,13 +381,14 @@ func (j *JmrAPI) moveFilesWithWSProgress(in renamer.RenameMediaConfirmResponse) 
 	}
 
 	// Delete original source entries to save space and reduce duplication
-	for _, renamedItem := range in.RenamedItems {
-		if j.fileSystemProvider.DeleteDirectory(renamedItem.OldPath) != true {
-			log.Printf("Cannot delete directory / file %s", renamedItem.OldPath)
-		} else {
-			log.Printf("Deleted media directory / file: %s", renamedItem.OldPath)
-		}
-	}
+	// TODO: Uncomment the following code to enable delete after sync
+	// for _, renamedItem := range in.RenamedItems {
+	// 	if j.fileSystemProvider.DeleteDirectory(renamedItem.OldPath) != true {
+	// 		log.Printf("Cannot delete directory / file %s", renamedItem.OldPath)
+	// 	} else {
+	// 		log.Printf("Deleted media directory / file: %s", renamedItem.OldPath)
+	// 	}
+	// }
 
 }
 

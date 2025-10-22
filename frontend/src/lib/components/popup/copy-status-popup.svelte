@@ -16,6 +16,8 @@
 	const log = new Log('CopyStatusPopup');
 
 	let progressStore = $state<ProgressData>([]);
+	let autoScrollEnabled = $state<boolean>(true);
+
 	const isComplete = $derived(
 		progressStore.length > 0 && progressStore.every((p) => p.percent_complete === 100)
 	);
@@ -40,7 +42,9 @@
 	function onProgressMessage(progressData: ProgressData) {
 		log.info('message received by popup:', progressData);
 		progressStore = progressData;
-		scrollToCurrentFile();
+		if (autoScrollEnabled) {
+			scrollToCurrentFile();
+		}
 	}
 
 	function scrollToCurrentFile() {
@@ -83,6 +87,10 @@
 		{/if}
 	{/snippet}
 	{#snippet footer()}
+		<label class="mr-6 inline-flex items-center gap-2">
+			<input type="checkbox" bind:checked={autoScrollEnabled} />
+			Auto scroll
+		</label>
 		<Button disabled={!isComplete} type="primary" onclick={() => closePopup(true)}>Close</Button>
 	{/snippet}
 </PopupComponent>
