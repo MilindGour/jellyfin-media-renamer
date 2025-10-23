@@ -20,6 +20,7 @@ func NewMockHtml() *MockHtml {
 			"tmdb/search/movie?query=test+movie": testdata.MockTmdbMovieSearch,
 			"tmdb/search/tv?query=Test+TV":       testdata.MockTmdbTVShowSearch,
 			"tmdb/tv/1396/seasons":               testdata.MockTmdbTVShowSeasons,
+			"tmdb/movie/872585":                  testdata.MockTmdbMovieDetail,
 			"not-found":                          []byte(""),
 		},
 	}

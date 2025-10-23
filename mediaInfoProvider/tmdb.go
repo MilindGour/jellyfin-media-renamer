@@ -32,14 +32,43 @@ func (t *TmdbMIProvider) SearchMediaInfo(term string, year int, mediaType MediaT
 	var url string
 	var out []MediaInfo
 
+	if mediaID := t.extractMediaIDFromSearchTerm(term); len(mediaID) > 0 {
+		out = append(out, t.SearchMediaInfoByID(mediaID, mediaType))
+	} else {
+		switch mediaType {
+		case MediaTypeMovie:
+			url = fmt.Sprintf("%s/search/movie?query=%s", t.baseUrl, t.getSearchString(term, year))
+			out = t.getParsedMediaInfoListFromUrl(url, ".search_results.movie .card")
+		case MediaTypeTV:
+			url = fmt.Sprintf("%s/search/tv?query=%s", t.baseUrl, t.getSearchString(term, year))
+			out = t.getParsedMediaInfoListFromUrl(url, ".search_results.tv .card")
+		}
+	}
+
+	return out
+}
+
+func (t *TmdbMIProvider) extractMediaIDFromSearchTerm(term string) string {
+	trimmedTerm := strings.Trim(term, " \t\n\r")
+	mediaIDRe := regexp.MustCompile(`^\[\[(\d+)\]\]$`)
+	matches := mediaIDRe.FindStringSubmatch(trimmedTerm)
+	if matches != nil {
+		return matches[1]
+	}
+	return ""
+}
+
+func (t *TmdbMIProvider) SearchMediaInfoByID(mediaId string, mediaType MediaType) MediaInfo {
+	var url string
+
 	switch mediaType {
 	case MediaTypeMovie:
-		url = fmt.Sprintf("%s/search/movie?query=%s", t.baseUrl, t.getSearchString(term, year))
-		out = t.getParsedMediaInfoListFromUrl(url, ".search_results.movie .card")
+		url = fmt.Sprintf("%s/movie/%s", t.baseUrl, mediaId)
 	case MediaTypeTV:
-		url = fmt.Sprintf("%s/search/tv?query=%s", t.baseUrl, t.getSearchString(term, year))
-		out = t.getParsedMediaInfoListFromUrl(url, ".search_results.tv .card")
+		url = fmt.Sprintf("%s/tv/%s", t.baseUrl, mediaId)
 	}
+
+	out := t.getParsedMediaInfoFromDetailUrl(url)
 
 	return out
 }
@@ -93,6 +122,17 @@ func (t *TmdbMIProvider) getParsedMediaInfoListFromUrl(url string, itemSelector 
 	return t.parseScrapResultListToMediaInfo(scrapResult)
 }
 
+func (t *TmdbMIProvider) getParsedMediaInfoFromDetailUrl(url string) MediaInfo {
+	scrapResult, err := t.scrapper.Scrap(url, "#original_header", t.getDetailItemFieldmap())
+
+	if err != nil {
+		return MediaInfo{}
+	}
+	scrapResult[0]["subname"] = ""
+	scrapResult[0]["mediaId"] = url
+	return t.parseScrapResultListToMediaInfo(scrapResult)[0]
+}
+
 func (t *TmdbMIProvider) getSeasonInformation(mediaID string) []SeasonInfo {
 	url := fmt.Sprintf("%s/tv/%s/seasons", t.baseUrl, mediaID)
 	// seasonList := t.getParsedSeasonListFromUrl(url, ".media .column_wrapper .season_wrapper")
@@ -136,6 +176,16 @@ func (t *TmdbMIProvider) getSearchItemFieldmap() map[string]string {
 		"mediaId":       ".title a.result[href]",
 	}
 }
+
+func (t *TmdbMIProvider) getDetailItemFieldmap() map[string]string {
+	return map[string]string{
+		"name":          ".title h2 a",
+		"description":   ".overview",
+		"yearOfRelease": ".title .release_date",
+		"thumbnailUrl":  ".poster_wrapper .poster .image_content img.poster[src]",
+	}
+}
+
 func (t *TmdbMIProvider) parseScrapResultListToMediaInfo(in scrapper.ScrapResultList) []MediaInfo {
 	out := []MediaInfo{}
 	for _, scrapResult := range in {

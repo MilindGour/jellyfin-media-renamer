@@ -613,3 +613,38 @@ func TestTmdbMIProvider_GetJellyfinCompatibleDirectoryName(t *testing.T) {
 		})
 	}
 }
+
+func TestTmdbMIProvider_SearchMediaInfoByID(t *testing.T) {
+	type args struct {
+		mediaId   string
+		mediaType MediaType
+	}
+	tests := []struct {
+		name string
+		args args
+		want MediaInfo
+	}{
+		{
+			name: "Parse MediaInfo using mediaID",
+			args: args{
+				mediaId:   "872585",
+				mediaType: "MOVIE",
+			},
+			want: MediaInfo{
+				Name:          "Test Movie By ID",
+				Description:   "Test description of the movie by id",
+				YearOfRelease: 1992,
+				ThumbnailURL:  "https://tmdb/thumb-example.jpg",
+				MediaID:       "872585",
+			},
+		},
+	}
+	for _, tt := range tests {
+		t.Run(tt.name, func(t *testing.T) {
+			tr := NewMockTmdbMIProvider()
+			if got := tr.SearchMediaInfoByID(tt.args.mediaId, tt.args.mediaType); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("TmdbMIProvider.SearchMediaInfoByID() =\nactl %v\nwant %v", got, tt.want)
+			}
+		})
+	}
+}
