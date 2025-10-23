@@ -40,11 +40,6 @@ func (j *JMRWebSocket) UpgradeConnectionAndAddClient(w http.ResponseWriter, r *h
 func (j *JMRWebSocket) AddConnection(conn *ws.Conn) {
 	log.Println("=== A new client is being connected via WebSocket ===")
 	j.connections = append(j.connections, conn)
-
-	// Send a hello message from server to client
-	conn.WriteJSON(map[string]string{
-		"message": "Hello from server",
-	})
 }
 
 func (j *JMRWebSocket) RemoveConnection(conn *ws.Conn) {
@@ -64,6 +59,15 @@ func (j *JMRWebSocket) SendMessage(message any) {
 	}
 }
 
+func (j *JMRWebSocket) SendWSEvent(eventData EventData) {
+	j.SendMessage(EventMessage{
+		Message: Message{
+			Type: "event",
+		},
+		Data: eventData,
+	})
+}
+
 func (j *JMRWebSocket) SendProgressMessage(progress []filesystem.FileTransferProgress) {
 	j.SendMessage(ProgressMessage{
 		Message: Message{
@@ -80,4 +84,14 @@ type Message struct {
 type ProgressMessage struct {
 	Message
 	Data []filesystem.FileTransferProgress `json:"data"`
+}
+
+type EventData struct {
+	Name   string `json:"name"`
+	Detail any    `json:"detail"`
+}
+
+type EventMessage struct {
+	Message
+	Data EventData `json:"data"`
 }
