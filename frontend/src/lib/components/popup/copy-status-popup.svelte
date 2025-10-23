@@ -31,6 +31,7 @@
 	}
 
 	onMount(() => {
+		// progressStore = wsProgressJSON.data as ProgressData;
 		ws.connect();
 		ws.addListener<ProgressData>('progress', onProgressMessage);
 	});
@@ -73,10 +74,10 @@
 
 <PopupComponent title={data.title || '📑 File transfer status'}>
 	{#snippet body()}
-		<div>
+		<div class="sticky top-0 z-10 bg-white py-1">
 			Completed: {completedString}
 		</div>
-		<div class="mt-2 flex max-h-100 flex-col gap-2 overflow-auto">
+		<div class="mt-2 flex flex-col gap-2 overflow-auto">
 			{#each progressStore as item, itemIndex}
 				{@render progressItemComponent(item, itemIndex)}
 			{/each}
@@ -99,16 +100,20 @@
 {#snippet progressItemComponent(item: FileTransferData, index: number)}
 	{@const x = removeCommonSubstring(item.files.old_path, item.files.new_path)}
 	<div
-		class="progress-file-item relative flex gap-4 rounded-md p-4 {item.percent_complete === 100
+		class="progress-file-item relative flex flex-col rounded-md p-4 md:flex-row md:gap-4 {item.percent_complete ===
+		100
 			? 'bg-green-100'
 			: 'bg-gray-100'}"
 		class:current-transfer-item={item.percent_complete > 0 && item.percent_complete < 100}
 		class:completed-transfer-item={item.percent_complete === 100}
 	>
-		<div class="number-col">{index + 1}</div>
+		<div class="number-col">{index + 1}.</div>
 		<div class="info-col">
-			<div>{x.second}</div>
-			<div class="text-sm text-gray-500"><SizeTag bytes={item.total_bytes} /> {x.first}</div>
+			<div class="break-all">{x.second}</div>
+			<div class="text-sm break-all text-gray-500">
+				<SizeTag bytes={item.total_bytes} />
+				{x.first}
+			</div>
 			{#if item.percent_complete > 0 && item.percent_complete < 100}
 				<div class="progres-data mt-2">
 					<div

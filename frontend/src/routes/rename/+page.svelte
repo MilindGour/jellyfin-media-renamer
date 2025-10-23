@@ -46,7 +46,7 @@
 	<title>Renames: JMR</title>
 </svelte:head>
 
-<section class="page flex flex-col gap-4">
+<section class="page flex flex-col gap-4 pb-16">
 	<section class="cta text-right">
 		<Button onclick={restartClickHandler}>Restart</Button>
 	</section>
@@ -63,7 +63,7 @@
 			Session refreshed. Redirecting to home page...
 		{/each}
 	</section>
-	<section class="cta">
+	<section class="cta flex flex-col md:flex-row">
 		<Button disabled={confirmAndSyncDisabled} type="primary" onclick={confirmRenameClickHandler}
 			>Confirm Rename & Sync</Button
 		>

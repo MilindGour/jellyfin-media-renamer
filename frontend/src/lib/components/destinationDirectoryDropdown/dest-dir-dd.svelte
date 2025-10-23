@@ -40,7 +40,7 @@
 />
 
 {#snippet dropdownTemplate(item: DestConfig)}
-	<div class="text-lg">{item.name}</div>
+	<div class="font-semibold">{item.name}</div>
 	<p class="text-sm font-semibold text-gray-500">{getSizeString(item)}</p>
-	<p class="text-sm text-gray-500">{item.path}</p>
+	<p class="text-sm break-all text-gray-500">{item.path}</p>
 {/snippet}
