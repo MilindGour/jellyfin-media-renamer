@@ -30,3 +30,6 @@ var MockTmdbTVShowSeasons []byte
 
 //go:embed fs-structure/*
 var MockFSStructure embed.FS
+
+//go:embed html/mock-tmdb-movie-detail.html
+var MockTmdbMovieDetail []byte
