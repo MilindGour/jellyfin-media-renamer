@@ -206,7 +206,7 @@
 			</section>
 		</section>
 	</section>
-	<section class="media-target-select flex flex-col gap-2">
+	<section class="media-target-select flex flex-col items-start gap-2">
 		<label for={`dd_${id}`}>Select destination:</label>
 		<DestinationDirectoryDropdown
 			bind:value={dest}
@@ -222,13 +222,15 @@
 			{#snippet body()}
 				<section class="accordion-body flex flex-col gap-2">
 					{#each item.selected as selectedItem}
-						<section class="rename-item flex items-center gap-1 rounded bg-gray-50 p-3">
-							<div class="second-column grow-1">
+						<section
+							class="rename-item flex flex-col items-center gap-1 rounded bg-gray-50 p-3 md:flex-row"
+						>
+							<div class="first-column grow-1">
 								<div class="media-name">
 									{getRelativePath(selectedItem.media.path, item.entry.path)}
 								</div>
 								<div class="subtitle-name items-basline gap-1 text-xs text-gray-500">
-									Subtitle:
+									SUB:
 									{#if selectedItem.subtitle}
 										{getRelativePath(selectedItem.subtitle.path, item.entry.path)}
 										<Button
@@ -250,7 +252,7 @@
 									{/if}
 								</div>
 							</div>
-							<div class="third-column relative flex gap-4">
+							<div class="second-column relative flex gap-4 self-end md:self-auto">
 								<Button
 									type="mini-icon"
 									title="Move to ignored"
@@ -281,16 +283,18 @@
 			{#snippet body()}
 				<section class="accordion-body flex flex-col gap-2">
 					{#each item.ignored as ignoredItem}
-						<section class="rename-item flex items-center gap-1 rounded bg-gray-50 p-3">
-							<div class="second-column grow-1">
-								<div class="media-name">
+						<section
+							class="rename-item flex flex-col gap-1 rounded bg-gray-50 p-3 md:flex-row md:items-center"
+						>
+							<div class="first-column grow-1">
+								<div class="media-name break-all">
 									{getRelativePath(ignoredItem.path, item.entry.path)}
 								</div>
 								<div class="media-meta">
 									<SizeTag bytes={ignoredItem.size} />
 								</div>
 							</div>
-							<div class="third-column">
+							<div class="second-column self-end md:self-auto">
 								<Button
 									type="mini-icon"
 									title="Add to selected"

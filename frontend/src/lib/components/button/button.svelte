@@ -7,7 +7,7 @@
 	'primary'
 		? 'min-w-32 px-3 py-2'
 		: type === 'mini-icon'
-			? 'aspect-square rounded-full'
+			? 'aspect-square rounded-full p-1'
 			: 'px-3 py-2 hover:bg-gray-100'}"
 	class:bg-primary-bg={type === 'primary'}
 	class:text-primary-fg={type === 'primary'}

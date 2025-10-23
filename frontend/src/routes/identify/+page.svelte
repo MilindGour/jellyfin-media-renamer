@@ -42,7 +42,7 @@
 	<title>Identify: JMR</title>
 </svelte:head>
 
-<div class="identify-page flex flex-col gap-4">
+<div class="identify-page flex flex-col gap-4 pb-16">
 	<section class="cta text-right">
 		<Button onclick={searchMediaInfoClickHandler}>Search Media Info</Button>
 		<Button onclick={restartClickHandler}>Restart</Button>
@@ -54,7 +54,7 @@
 			Session refreshed. Redirecting to home page...
 		{/each}
 	</section>
-	<section class="cta">
+	<section class="cta flex flex-col md:flex-row">
 		<Button disabled={nextButtonDisabled} type="primary" onclick={nextButtonClickHandler}
 			>Next</Button
 		>

@@ -367,12 +367,22 @@ func (j *JmrAPI) moveFilesWithWSProgress(in renamer.RenameMediaConfirmResponse) 
 		allPathPairs = append(allPathPairs, item.FileRenames...)
 	}
 
+	j.ws.SendWSEvent(websocket.EventData{
+		Name:   "SYNC_STARTED",
+		Detail: nil,
+	})
+
 	progress := make(chan []filesystem.FileTransferProgress)
 	go j.fileSystemProvider.MoveFiles(allPathPairs, progress)
 
 	for p := range progress {
 		j.ws.SendProgressMessage(p)
 	}
+
+	j.ws.SendWSEvent(websocket.EventData{
+		Name:   "SYNC_FINISHED",
+		Detail: nil,
+	})
 
 	// Delete original source entries to save space and reduce duplication
 	for _, renamedItem := range in.RenamedItems {
