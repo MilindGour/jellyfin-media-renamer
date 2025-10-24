@@ -30,15 +30,24 @@
 		let output = [];
 		for (const [mountPoint, impactBytes] of Object.entries(reducedImpactList)) {
 			const mountPointObject = allDestinations.find((d) => d.mount_point === mountPoint);
-			output.push({
+
+			let outItem: any = {
 				mount_point: mountPoint,
-				total_size_bytes: mountPointObject!.total_size_kb * 1000,
-				used_size_bytes_before: mountPointObject!.used_size_kb * 1000,
-				free_size_bytes_before: mountPointObject!.free_size_kb * 1000,
-				used_size_bytes_after: mountPointObject!.used_size_kb * 1000 + impactBytes,
-				free_size_bytes_after: mountPointObject!.free_size_kb * 1000 - impactBytes,
 				difference: -1 * impactBytes
-			});
+			};
+
+			if (mountPointObject) {
+				outItem = {
+					...outItem,
+					total_size_bytes: mountPointObject!.total_size_kb * 1000,
+					used_size_bytes_before: mountPointObject!.used_size_kb * 1000,
+					free_size_bytes_before: mountPointObject!.free_size_kb * 1000,
+					used_size_bytes_after: mountPointObject!.used_size_kb * 1000 + impactBytes,
+					free_size_bytes_after: mountPointObject!.free_size_kb * 1000 - impactBytes
+				};
+			}
+
+			output.push(outItem);
 		}
 
 		return output;
@@ -100,21 +109,41 @@
 				<tbody>
 					<tr><td>Mount Point:</td><td class="pl-16 font-semibold">{impactInfo.mount_point}</td></tr
 					>
-					<tr
-						><td>Total Size:</td><td class="pl-16 font-semibold"
-							>{convertToSizeString(impactInfo.total_size_bytes)}</td
-						></tr
-					>
-					<tr
-						><td>Used Size (Before):</td><td class="pl-16 font-semibold"
-							>{convertToSizeString(impactInfo.used_size_bytes_before)}</td
-						></tr
-					>
-					<tr
-						><td>Used Size (After):</td><td class="pl-16 font-semibold"
-							>{convertToSizeString(impactInfo.used_size_bytes_after)}</td
-						></tr
-					>
+					{#if impactInfo.total_size_bytes}
+						<tr
+							><td>Total Size:</td><td class="pl-16 font-semibold"
+								>{convertToSizeString(impactInfo.total_size_bytes)}</td
+							></tr
+						>
+					{/if}
+					{#if impactInfo.used_size_bytes_before}
+						<tr
+							><td>Used Size (Before):</td><td class="pl-16 font-semibold"
+								>{convertToSizeString(impactInfo.used_size_bytes_before)}</td
+							></tr
+						>
+					{/if}
+					{#if impactInfo.used_size_bytes_after}
+						<tr
+							><td>Used Size (After):</td><td class="pl-16 font-semibold"
+								>{convertToSizeString(impactInfo.used_size_bytes_after)}</td
+							></tr
+						>
+					{/if}
+					{#if impactInfo.free_size_bytes_before}
+						<tr
+							><td>Free Size (Before):</td><td class="pl-16 font-semibold"
+								>{convertToSizeString(impactInfo.free_size_bytes_before)}</td
+							></tr
+						>
+					{/if}
+					{#if impactInfo.free_size_bytes_after}
+						<tr
+							><td>Free Size (After):</td><td class="pl-16 font-semibold"
+								>{convertToSizeString(impactInfo.free_size_bytes_after)}</td
+							></tr
+						>
+					{/if}
 					<tr
 						><td>Impact on Size:</td><td
 							class="pl-16 font-semibold {impactInfo.difference >= 0
