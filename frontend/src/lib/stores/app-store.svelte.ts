@@ -5,7 +5,8 @@ import type {
   RenameMediaResponseItem,
   Config,
   Source,
-  DestConfig
+  DestConfig,
+  ConfirmMediaRequestItem
 } from "$lib/models";
 import type { API } from "$lib/services/api";
 import { Log } from "$lib/services/logger";
@@ -84,13 +85,25 @@ export class JmrApplicationStore {
     }
   }
 
-  async confirmMediaRequest() {
+  async confirmMediaRequest(mediaSelectionAndDestinationsMerged: ConfirmMediaRequestItem[]) {
     if (this.mediaSelectionForRenames.length > 0 && this.mediaDestinationSelections.length > 0 && this.mediaSelectionForRenames.length === this.mediaDestinationSelections.length) {
       // get preview of renaming, and possibly start the renaming process
-      const result = await this.api.confirmMediaRenames(this.mediaSelectionForRenames, this.mediaDestinationSelections);
+      const result = await this.api.confirmMediaRenames(mediaSelectionAndDestinationsMerged);
       log.info("Media Confirm Response:", result);
     } else {
       log.error("Media selections and media destinations must have a non-zero equal length");
     }
+  }
+
+  mergeMediaRenamesWithDestinations(mediaSelections: RenameMediaResponseItem[], mediaDestinations: DestConfig[]): ConfirmMediaRequestItem[] {
+    const mergedItems: ConfirmMediaRequestItem[] = [];
+    for (let i = 0; i < mediaSelections.length; i++) {
+      mergedItems.push({
+        ...mediaSelections[i],
+        destination: mediaDestinations[i]
+      })
+    }
+
+    return mergedItems;
   }
 }

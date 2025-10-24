@@ -27,7 +27,7 @@ export class PopupStore {
   }
 }
 
-export enum PopupType { ConfirmYesNo, TVEpisodeEdit, FileTransferProgress, Unknown };
+export enum PopupType { ConfirmYesNo, TVEpisodeEdit, FileTransferProgress, ConfirmRenameImpact, Unknown };
 
 export class Popup {
   id?: symbol;

@@ -11,6 +11,10 @@ export function getRelativePath(fullPath: string, relativeTo: string): string {
 }
 
 export function convertToSizeString(totalBytes: number): string {
+  const isNegative = totalBytes < 0;
+  if (isNegative) {
+    totalBytes *= -1;
+  }
   if (typeof totalBytes !== "number") {
     return totalBytes;
   }
@@ -27,7 +31,10 @@ export function convertToSizeString(totalBytes: number): string {
       break;
     }
   }
-  const outValue = Math.round(outTotal * 10) / 10;
+  let outValue = Math.round(outTotal * 10) / 10;
+  if (isNegative) {
+    outValue *= -1;
+  }
   return `${outValue} ${allUnits[outUnitIndex]}`;
 }
 

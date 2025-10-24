@@ -29,11 +29,16 @@
 	}
 
 	async function confirmRenameClickHandler() {
-		const userConfirmed = await popupService.showConfirmation(
-			'Are you sure you want to go ahead with the renaming?'
+		const mergedRenamesAndDestinations = app.mergeMediaRenamesWithDestinations(
+			app.mediaSelectionForRenames,
+			app.mediaDestinationSelections
+		);
+		const userConfirmed = await popupService.showConfirmRenameImpactPopup(
+			mergedRenamesAndDestinations,
+			data.destinations
 		);
 		if (userConfirmed) {
-			await app.confirmMediaRequest();
+			await app.confirmMediaRequest(mergedRenamesAndDestinations);
 			queueMicrotask(async () => {
 				await popupService.showFileTransferStatusPopup();
 				window.location.assign('/');

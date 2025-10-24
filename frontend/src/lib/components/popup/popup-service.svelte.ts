@@ -1,9 +1,11 @@
 import ConfirmPopup from './confirm-popup.svelte';
 import TVEpisodePopup from './tv-episode-popup.svelte';
 import CopyStatusPopup from './copy-status-popup.svelte';
+import ConfirmRenameImpactPopup from './confirm-rename-impact-popup.svelte';
 import { Log } from "$lib/services/logger";
 import { Popup, PopupStore, PopupType } from "./popup-store.svelte";
 import { WebSocketService } from '$lib/services/network';
+import type { ConfirmMediaRequestItem, DestConfig } from '$lib/models';
 
 export class PopupService {
   static #instance: PopupService | null = null;
@@ -60,6 +62,22 @@ export class PopupService {
         CopyStatusPopup,
         {
           ws: new WebSocketService()
+        }
+      ));
+    } else {
+      this.#log.error("Cannot show popup. PopupStore is not initialized");
+      return Promise.reject("Cannot show popup. PopupStore is not initialized");
+    }
+  }
+
+  showConfirmRenameImpactPopup(selections: ConfirmMediaRequestItem[], allDestinations: DestConfig[]): Promise<boolean> {
+    if (this.#popupStore) {
+      return this.#popupStore.addPopup(new Popup(
+        PopupType.ConfirmRenameImpact,
+        ConfirmRenameImpactPopup,
+        {
+          selections,
+          allDestinations
         }
       ));
     } else {

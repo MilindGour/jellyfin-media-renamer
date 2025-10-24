@@ -67,15 +67,8 @@ export class API {
     }
   }
 
-  async confirmMediaRenames(mediaSelections: RenameMediaResponseItem[], mediaDestinations: DestConfig[]): Promise<any[] | null> {
+  async confirmMediaRenames(input: ConfirmMediaRequestItem[]): Promise<any[] | null> {
     try {
-      const input: ConfirmMediaRequestItem[] = [];
-      for (let i = 0; i < mediaSelections.length; i++) {
-        input.push({
-          ...mediaSelections[i],
-          destination: mediaDestinations[i]
-        })
-      }
       const apiUrl = Constants.API_POST_MEDIA_RENAMES_CONFIRM;
       const res = await this.http.postJSON<any[]>(apiUrl, input);
       return res;
