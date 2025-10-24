@@ -71,7 +71,7 @@
 
 		const fromMountPointStr =
 			allDestinations.find((dest) => input.selected[0].media.path.startsWith(dest.mount_point))
-				?.mount_point || null;
+				?.mount_point || 'Unknown';
 		const toMountPointStr = input.destination.mount_point;
 
 		if (!fromMountPointStr) {
