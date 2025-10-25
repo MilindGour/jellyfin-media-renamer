@@ -22,9 +22,6 @@
 	function searchMediaInfoClickHandler() {
 		app.searchMediaInfoProvider();
 	}
-	function restartClickHandler() {
-		window.location.assign('/');
-	}
 	function nextButtonClickHandler() {
 		app.getMediaSelectionForRenames();
 	}
@@ -43,10 +40,6 @@
 </svelte:head>
 
 <div class="identify-page flex flex-col gap-4 pb-16">
-	<section class="cta text-right">
-		<Button onclick={searchMediaInfoClickHandler}>Search Media Info</Button>
-		<Button onclick={restartClickHandler}>Restart</Button>
-	</section>
 	<section class="source-directory-info-list flex flex-col gap-6">
 		{#each app.sourceDirsWithMediaInfo as _, itemIndex}
 			<SourceDirectoryInfoItem bind:item={app.sourceDirsWithMediaInfo[itemIndex]} />
@@ -54,7 +47,8 @@
 			Session refreshed. Redirecting to home page...
 		{/each}
 	</section>
-	<section class="cta flex flex-col md:flex-row">
+	<section class="cta flex flex-col gap-2 md:flex-row">
+		<Button type="primary" onclick={searchMediaInfoClickHandler}>Search Media Info</Button>
 		<Button disabled={nextButtonDisabled} type="primary" onclick={nextButtonClickHandler}
 			>Next</Button
 		>

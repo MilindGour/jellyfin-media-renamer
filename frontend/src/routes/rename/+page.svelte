@@ -52,9 +52,6 @@
 </svelte:head>
 
 <section class="page flex flex-col gap-4 pb-16">
-	<section class="cta text-right">
-		<Button onclick={restartClickHandler}>Restart</Button>
-	</section>
 	<h1>Please adjust any selections that are not correct in following list</h1>
 	<section class="rename-selection-list mt-3 flex flex-col gap-4">
 		{#each app.mediaSelectionForRenames as _, itemIndex}

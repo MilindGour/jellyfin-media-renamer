@@ -38,6 +38,7 @@ export class JmrApplicationStore {
   async setConfig(config: Config) {
     this.config = config;
   }
+
   /* First page related methods */
   async setSource(s: Source) {
     this.#source = s;
@@ -62,15 +63,21 @@ export class JmrApplicationStore {
   /* Second page related methods */
   async searchMediaInfoProvider() {
     if (this.sourceDirsWithMediaInfo.length > 0) {
-      const result = await this.api.identifyMediaInfos(this.sourceDirsWithMediaInfo);
-      if (result && result.length === this.sourceDirsWithMediaInfo.length) {
-        // both the equal in length, can be assigned safely.
-        this.sourceDirsWithMediaInfo = result;
+      const sourcesWithoutMediaInfo = this.sourceDirsWithMediaInfo.filter(item => !item.identifiedMediaId);
+      const result = await this.api.identifyMediaInfos(sourcesWithoutMediaInfo);
+      if (result && result.length > 0) {
+        for (const resultItem of result) {
+          const targetIndex = this.sourceDirsWithMediaInfo.findIndex(s => s.sourceDirectory.entry.id === resultItem.sourceDirectory.entry.id);
+          if (targetIndex > -1) {
+            this.sourceDirsWithMediaInfo[targetIndex].identifiedMediaInfos = resultItem.identifiedMediaInfos;
+          }
+        }
       } else {
         log.error("Cannot identify media info from given names. Unknown error occured.");
       }
     }
   }
+
   async getMediaSelectionForRenames() {
     if (this.sourceDirsWithMediaInfo.length > 0) {
       const result = await this.api.getMediaSelectionsForRenames(this.sourceDirsWithMediaInfo);
