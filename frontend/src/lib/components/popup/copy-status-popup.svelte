@@ -19,6 +19,8 @@
 	let progressStore = $state<ProgressData>([]);
 	let autoScrollEnabled = $state<boolean>(true);
 
+	const anyOngoingFileTransfer = $derived<boolean>(progressStore?.length > 0);
+
 	const isComplete = $derived(
 		progressStore.length > 0 && progressStore.every((p) => p.percent_complete === 100)
 	);
@@ -39,6 +41,7 @@
 	onDestroy(() => {
 		log.info('destroying copy status popup.');
 		ws.removeListener('progress', onProgressMessage);
+		ws.disconnect();
 	});
 
 	function onProgressMessage(progressData: ProgressData) {
@@ -75,7 +78,11 @@
 <PopupComponent title={data.title || '📑 File transfer status'}>
 	{#snippet body()}
 		<div class="sticky top-0 z-10 bg-white py-1">
-			Completed: {completedString}
+			{#if anyOngoingFileTransfer}
+				Completed: {completedString}
+			{:else}
+				No file transfer operations active currently.
+			{/if}
 		</div>
 		<div class="mt-2 flex flex-col gap-2 overflow-auto">
 			{#each progressStore as item, itemIndex}
@@ -90,10 +97,19 @@
 	{/snippet}
 	{#snippet footer()}
 		<label class="mr-6 inline-flex items-center gap-2">
-			<input type="checkbox" bind:checked={autoScrollEnabled} />
+			<input
+				type="checkbox"
+				class="disabled:opacity-30"
+				disabled={!anyOngoingFileTransfer}
+				bind:checked={autoScrollEnabled}
+			/>
 			Auto scroll
 		</label>
-		<Button disabled={!isComplete} type="primary" onclick={() => closePopup(true)}>Close</Button>
+		<Button
+			disabled={!isComplete && anyOngoingFileTransfer}
+			type="primary"
+			onclick={() => closePopup(true)}>Close</Button
+		>
 	{/snippet}
 </PopupComponent>
 

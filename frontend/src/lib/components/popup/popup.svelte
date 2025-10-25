@@ -5,10 +5,15 @@
 	let popupEl: HTMLElement;
 
 	onMount(() => {
-		const allFocusables = popupEl.querySelectorAll('input, button');
+		const allFocusables = popupEl.querySelectorAll('input:not(:disabled), button:not(:disabled)');
+		console.log('All focusables:', allFocusables);
 		if (allFocusables.length > 0) {
+			console.log('Yo');
 			// focus first element
-			(allFocusables[0] as HTMLInputElement).focus();
+			queueMicrotask(() => {
+				console.log('Focusing first interactable control');
+				(allFocusables[0] as HTMLInputElement).focus();
+			});
 		}
 	});
 </script>

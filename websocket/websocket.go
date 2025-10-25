@@ -28,6 +28,7 @@ func NewJMRWebSocket() JMRWebSocket {
 
 func (j *JMRWebSocket) UpgradeConnectionAndAddClient(w http.ResponseWriter, r *http.Request, id string) error {
 	conn, err := j.upgrader.Upgrade(w, r, nil)
+	conn.EnableWriteCompression(true)
 	if err != nil {
 		return err
 	}

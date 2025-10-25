@@ -71,13 +71,14 @@ export class WebSocketService {
   static #instance: WebSocketService;
   #ws?: WebSocket;
   #log?: Log;
+  #uuid?: string;
   #listeners: { [key: string]: Array<WSCallbackFunction<any>> } = {};
 
   constructor() {
     if (!WebSocketService.#instance) {
       WebSocketService.#instance = this;
       this.#log = new Log("WebSocket");
-      // this.connect();
+      this.#uuid = uuidv4();
     }
     return WebSocketService.#instance;
   }
@@ -93,15 +94,12 @@ export class WebSocketService {
   }
 
   disconnect() {
-    if (this.#ws && this.#ws.readyState === WebSocket.OPEN) {
-      this.#ws.close();
-    }
+    this.#ws?.close();
   }
 
   getWSURL(): string {
-    const uuid = uuidv4();
     const wsBaseURL = getWSBaseUrl();
-    return `${wsBaseURL}/${uuid}`;
+    return `${wsBaseURL}/${this.#uuid}`;
   }
 
   handleOnOpen = (event: Event) => {

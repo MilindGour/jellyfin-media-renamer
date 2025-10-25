@@ -1,12 +1,20 @@
 <script lang="ts">
+	import { Button } from './components';
+	import { PopupService } from './components/popup';
+
+	const ps = new PopupService();
+
 	function logoClickHandler(e: Event) {
 		e.preventDefault();
 		window.location.assign('/');
 	}
 </script>
 
-<header class="flex justify-center py-8 sm:justify-start">
+<header class="flex items-center justify-center py-8 sm:justify-start">
 	<a href="/" onclick={logoClickHandler}>
 		<img src="/jmr.svg" alt="logo" />
 	</a>
+	<div class="right-container ml-auto">
+		<Button onclick={() => ps.showFileTransferStatusPopup()}>FTP</Button>
+	</div>
 </header>
