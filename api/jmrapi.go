@@ -111,6 +111,7 @@ func (j *JmrAPI) RegisterAPIRoutes() {
 
 	// sync page APIs
 	j.serveMux.HandleFunc("GET /api/ws/{clientid}", j.Get_WebSocket())
+	j.serveMux.HandleFunc("GET /api/ws/close/{clientid}", j.Get_CloseWebSocket())
 }
 
 func (j *JmrAPI) Get_Config() func(http.ResponseWriter, *http.Request) {
@@ -305,11 +306,23 @@ func (j *JmrAPI) Get_WebSocket() APIHandlerFn {
 			j.HandleAPIError(w, r, http.StatusBadRequest, errors.New("Client ID is required!"))
 			return
 		}
-		err := j.ws.UpgradeConnectionAndAddClient(w, r)
+		err := j.ws.UpgradeConnectionAndAddClient(w, r, clientID)
 		if err != nil {
 			j.HandleAPIError(w, r, http.StatusInternalServerError, err)
 			return
 		}
+	}
+}
+
+func (j *JmrAPI) Get_CloseWebSocket() APIHandlerFn {
+	return func(w http.ResponseWriter, r *http.Request) {
+		clientID := r.PathValue("clientid")
+		if len(clientID) == 0 {
+			j.HandleAPIError(w, r, http.StatusBadRequest, errors.New("Client ID is required!"))
+			return
+		}
+		j.ws.RemoveConnection(clientID)
+		w.WriteHeader(http.StatusOK)
 	}
 }
 

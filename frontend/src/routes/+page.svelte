@@ -11,7 +11,7 @@
 
 	const { data }: PageProps = $props();
 	const app = new JmrApplicationStore(API.http());
-	const log = new Log('Page 1');
+	const log = new Log('Select Source Page');
 
 	let source = $state<Source | null>(null);
 	let selectedSourceDirectoryItems = $state<SourceDirectory[]>([]);

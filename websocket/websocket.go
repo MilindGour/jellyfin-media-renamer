@@ -3,20 +3,19 @@ package websocket
 import (
 	"log"
 	"net/http"
-	"slices"
 
 	"github.com/MilindGour/jellyfin-media-renamer/filesystem"
 	ws "github.com/gorilla/websocket"
 )
 
 type JMRWebSocket struct {
-	connections []*ws.Conn
+	connections map[string]*ws.Conn
 	upgrader    *ws.Upgrader
 }
 
 func NewJMRWebSocket() JMRWebSocket {
 	return JMRWebSocket{
-		connections: []*ws.Conn{},
+		connections: map[string]*ws.Conn{},
 		upgrader: &ws.Upgrader{
 			ReadBufferSize:  1024,
 			WriteBufferSize: 1024,
@@ -27,28 +26,41 @@ func NewJMRWebSocket() JMRWebSocket {
 	}
 }
 
-func (j *JMRWebSocket) UpgradeConnectionAndAddClient(w http.ResponseWriter, r *http.Request) error {
+func (j *JMRWebSocket) UpgradeConnectionAndAddClient(w http.ResponseWriter, r *http.Request, id string) error {
 	conn, err := j.upgrader.Upgrade(w, r, nil)
 	if err != nil {
 		return err
 	}
-	j.AddConnection(conn)
+	j.AddConnection(conn, id)
 
 	return nil
 }
 
-func (j *JMRWebSocket) AddConnection(conn *ws.Conn) {
-	log.Println("=== A new client is being connected via WebSocket ===")
-	j.connections = append(j.connections, conn)
+func (j *JMRWebSocket) AddConnection(conn *ws.Conn, id string) {
+	log.Printf("[WebSocket] add connection: %s", id)
+	j.RemoveAllConnections()
+	j.connections[id] = conn
+	log.Printf("[WebSocket] total connections now: %d", len(j.connections))
 }
 
-func (j *JMRWebSocket) RemoveConnection(conn *ws.Conn) {
-	index := slices.Index(j.connections, conn)
-	conn.Close()
-
-	if index > -1 {
-		j.connections = append(j.connections[:index], j.connections[index+1:]...)
+func (j *JMRWebSocket) RemoveAllConnections() {
+	if len(j.connections) > 0 {
+		for id, c := range j.connections {
+			c.Close()
+			delete(j.connections, id)
+		}
 	}
+}
+
+func (j *JMRWebSocket) RemoveConnection(id string) {
+	log.Printf("[WebSocket] remove connection: %s", id)
+	theConn, isthere := j.connections[id]
+
+	if isthere {
+		theConn.Close()
+		delete(j.connections, id)
+	}
+	log.Printf("[WebSocket] total connections now: %d", len(j.connections))
 }
 
 func (j *JMRWebSocket) SendMessage(message any) {

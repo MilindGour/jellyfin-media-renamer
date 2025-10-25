@@ -77,7 +77,7 @@ func (j *JmrFS) GetDirectorySize(in DirEntry) int64 {
 func (j *JmrFS) moveSingleFile(fromPath, toPath string, channel chan FileTransferProgress, totalBytes int64) {
 
 	// start file transfer using rsync
-	rsyncCmd := exec.Command("rsync", "-avz", "--info=progress2", fromPath, toPath)
+	rsyncCmd := exec.Command("rsync", "--bwlimit=1M", "-avz", "--info=progress2", fromPath, toPath)
 	stdOutPipe, errOut := rsyncCmd.StdoutPipe()
 	stdErrPipe, errErr := rsyncCmd.StderrPipe()
 

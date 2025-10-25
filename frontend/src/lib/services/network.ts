@@ -81,16 +81,21 @@ export class WebSocketService {
     }
     return WebSocketService.#instance;
   }
+
   connect() {
-    if (this.#ws && this.#ws.readyState === WebSocket.OPEN) {
-      this.#ws.close(0, "Initializing another instance");
-    }
+    this.disconnect();
     const wsurl = this.getWSURL();
     this.#ws = new WebSocket(wsurl);
 
     this.#ws.onopen = this.handleOnOpen;
     this.#ws.onclose = this.handleOnClose;
     this.#ws.onmessage = this.handleOnMessage;
+  }
+
+  disconnect() {
+    if (this.#ws && this.#ws.readyState === WebSocket.OPEN) {
+      this.#ws.close();
+    }
   }
 
   getWSURL(): string {
