@@ -96,15 +96,12 @@
 		{/if}
 	{/snippet}
 	{#snippet footer()}
-		<label class="mr-6 inline-flex items-center gap-2">
-			<input
-				type="checkbox"
-				class="disabled:opacity-30"
-				disabled={!anyOngoingFileTransfer}
-				bind:checked={autoScrollEnabled}
-			/>
-			Auto scroll
-		</label>
+		{#if anyOngoingFileTransfer}
+			<label class="mr-6 inline-flex items-center gap-2">
+				<input type="checkbox" class="disabled:opacity-30" bind:checked={autoScrollEnabled} />
+				Auto scroll
+			</label>
+		{/if}
 		<Button
 			disabled={!isComplete && anyOngoingFileTransfer}
 			type="primary"
