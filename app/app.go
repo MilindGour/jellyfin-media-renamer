@@ -5,6 +5,8 @@ import (
 	"github.com/MilindGour/jellyfin-media-renamer/config"
 	"github.com/MilindGour/jellyfin-media-renamer/filesystem"
 	mediainfoprovider "github.com/MilindGour/jellyfin-media-renamer/mediaInfoProvider"
+	"github.com/MilindGour/jellyfin-media-renamer/network"
+	newmedia "github.com/MilindGour/jellyfin-media-renamer/new-media"
 	"github.com/MilindGour/jellyfin-media-renamer/renamer"
 	"github.com/MilindGour/jellyfin-media-renamer/websocket"
 )
@@ -21,6 +23,7 @@ type JmrApplication struct {
 func NewJmrApplication(isDev bool) *JmrApplication {
 	fsProvider := filesystem.NewJmrFS()
 	ws := websocket.NewJMRWebSocket()
+	newms := newmedia.NewNewMedia(network.NewHttpResponse())
 
 	if isDev {
 		// DEV mode
@@ -30,7 +33,7 @@ func NewJmrApplication(isDev bool) *JmrApplication {
 
 		return &JmrApplication{
 			cfg:     configProvider,
-			api:     api.NewJmrApi(configProvider, fsProvider, ren, mediaInfoProvider, ws),
+			api:     api.NewJmrApi(configProvider, fsProvider, ren, mediaInfoProvider, ws, *newms),
 			ren:     ren,
 			devMode: true,
 		}
@@ -42,7 +45,7 @@ func NewJmrApplication(isDev bool) *JmrApplication {
 
 		return &JmrApplication{
 			cfg:     configProvider,
-			api:     api.NewJmrApi(configProvider, fsProvider, ren, mediaInfoProvider, ws),
+			api:     api.NewJmrApi(configProvider, fsProvider, ren, mediaInfoProvider, ws, *newms),
 			ren:     ren,
 			devMode: false,
 		}

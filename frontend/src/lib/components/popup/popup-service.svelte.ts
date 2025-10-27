@@ -23,13 +23,14 @@ export class PopupService {
     this.#popupStore = store;
   }
 
-  showConfirmation(confirmText: string): Promise<boolean> {
+  showConfirmation(confirmText: string, title: string = ""): Promise<boolean> {
     if (this.#popupStore) {
       return this.#popupStore.addPopup(new Popup(
         PopupType.ConfirmYesNo,
         ConfirmPopup,
         {
           bodyText: confirmText,
+          ...(title?.length > 0 ? { title } : null)
         }
       ))
     } else {

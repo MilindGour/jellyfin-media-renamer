@@ -15,6 +15,9 @@ export const Constants = {
   API_POST_IDENTIFY_CONFIRM_MEDIA_INFO: "api/media/confirm-info",
   API_POST_MEDIA_RENAMES: "api/media/rename",
   API_POST_MEDIA_RENAMES_CONFIRM: "api/media/rename-confirm",
+
+  API_GET_NEW_MEDIA_SEARCH_RESULTS: "api/new-media/search",
+  API_POST_ADD_NEW_MEDIA: "api/new-media/download"
 };
 
 export function GetApiBaseUrl(): string {
