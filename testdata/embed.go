@@ -33,3 +33,6 @@ var MockFSStructure embed.FS
 
 //go:embed html/mock-tmdb-movie-detail.html
 var MockTmdbMovieDetail []byte
+
+//go:embed new_media_search_response.json
+var MockNewMediaSearchResponse []byte

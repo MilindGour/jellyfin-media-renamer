@@ -94,11 +94,11 @@ func TestHttpHtml_GetHTML(t *testing.T) {
 
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			h := &HttpHtml{
+			h := &HttpResponse{
 				retries: tt.fields.retries,
 				client:  tt.fields.client,
 			}
-			got, err := h.GetHTML(tt.args.url)
+			got, err := h.GetResponse(tt.args.url)
 			if (err != nil) != tt.wantErr {
 				t.Errorf("HttpHtml.GetHTML() error = %v, wantErr %v", err, tt.wantErr)
 				return

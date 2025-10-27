@@ -77,7 +77,7 @@ func TestGoQuery_Scrap(t *testing.T) {
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
 			var g GoQueryScrapper = GoQueryScrapper{
-				htmlProvider: network.NewMockHtml(),
+				htmlProvider: network.NewMockResponse(),
 			}
 			got, gotErr := g.Scrap(tt.url, tt.itemSel, tt.fieldMap)
 			if gotErr != nil {

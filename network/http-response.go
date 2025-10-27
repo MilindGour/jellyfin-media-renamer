@@ -5,12 +5,12 @@ import (
 	"net/http"
 )
 
-type HttpHtml struct {
+type HttpResponse struct {
 	retries int
 	client  *http.Client
 }
 
-func (h *HttpHtml) GetHTML(url string) (*http.Response, error) {
+func (h *HttpResponse) GetResponse(url string) (*http.Response, error) {
 	var err error
 	var res *http.Response
 
@@ -27,8 +27,8 @@ func (h *HttpHtml) GetHTML(url string) (*http.Response, error) {
 	return res, fmt.Errorf("Cannot get html from url: %s, even after %d attempts", url, h.retries)
 }
 
-func NewHttpHtml() *HttpHtml {
-	return &HttpHtml{
+func NewHttpResponse() *HttpResponse {
+	return &HttpResponse{
 		retries: 5,
 		client:  &http.Client{},
 	}

@@ -9,24 +9,25 @@ import (
 	"github.com/MilindGour/jellyfin-media-renamer/testdata"
 )
 
-type MockHtml struct {
+type MockResponse struct {
 	mockHtmlMap map[string][]byte
 }
 
-func NewMockHtml() *MockHtml {
-	return &MockHtml{
+func NewMockResponse() *MockResponse {
+	return &MockResponse{
 		mockHtmlMap: map[string][]byte{
 			"mock-scrap-html":                    testdata.MockScrapHtml,
 			"tmdb/search/movie?query=test+movie": testdata.MockTmdbMovieSearch,
 			"tmdb/search/tv?query=Test+TV":       testdata.MockTmdbTVShowSearch,
 			"tmdb/tv/1396/seasons":               testdata.MockTmdbTVShowSeasons,
 			"tmdb/movie/872585":                  testdata.MockTmdbMovieDetail,
+			"new-media/search/1":                 testdata.MockNewMediaSearchResponse,
 			"not-found":                          []byte(""),
 		},
 	}
 }
 
-func (h *MockHtml) GetHTML(url string) (*http.Response, error) {
+func (h *MockResponse) GetResponse(url string) (*http.Response, error) {
 	resBytes, hasMock := h.mockHtmlMap[url]
 	if !hasMock {
 		resBytes, _ = h.mockHtmlMap["not-found"]

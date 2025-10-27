@@ -2,6 +2,6 @@ package network
 
 import "net/http"
 
-type HtmlProvider interface {
-	GetHTML(url string) (*http.Response, error)
+type HttpResponseProvider interface {
+	GetResponse(url string) (*http.Response, error)
 }

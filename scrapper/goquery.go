@@ -8,22 +8,22 @@ import (
 )
 
 type GoQueryScrapper struct {
-	htmlProvider network.HtmlProvider
+	htmlProvider network.HttpResponseProvider
 }
 
 func NewGoQueryScrapper() *GoQueryScrapper {
 	return &GoQueryScrapper{
-		htmlProvider: network.NewHttpHtml(),
+		htmlProvider: network.NewHttpResponse(),
 	}
 }
 func NewMockGoQueryScrapper() *GoQueryScrapper {
 	return &GoQueryScrapper{
-		htmlProvider: network.NewMockHtml(),
+		htmlProvider: network.NewMockResponse(),
 	}
 }
 
 func (g *GoQueryScrapper) Scrap(url string, itemSel string, fieldMap map[string]string) (ScrapResultList, error) {
-	res, err := g.htmlProvider.GetHTML(url)
+	res, err := g.htmlProvider.GetResponse(url)
 	if err != nil {
 		// Unable to get html
 		return nil, err
