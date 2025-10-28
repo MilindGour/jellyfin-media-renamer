@@ -3,6 +3,7 @@ package newmedia
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"net/url"
 	"os/exec"
 
@@ -52,6 +53,7 @@ func (n *NewMedia) GetMagneticURL(item NewMediaSearchItem) string {
 func (n *NewMedia) StartDownloadNewMedia(item NewMediaSearchItem) error {
 	magnetUrl := n.GetMagneticURL(item)
 
+	log.Printf("Adding url to download queue: %s\n", magnetUrl)
 	trCmd := exec.Command("transmission-remote", "-a", magnetUrl)
 	if err := trCmd.Run(); err != nil {
 		return err
