@@ -6,6 +6,7 @@ import (
 	"log"
 	"net/url"
 	"os/exec"
+	"strings"
 
 	"github.com/MilindGour/jellyfin-media-renamer/network"
 )
@@ -37,17 +38,16 @@ func (n *NewMedia) SearchMedia(searchTerm string) []NewMediaSearchItem {
 }
 
 func (n *NewMedia) GetMagneticURL(item NewMediaSearchItem) string {
-	q := url.Values{}
-	q.Add("xt", fmt.Sprintf("urn:btih:%s", item.InfoHash))
-	q.Add("dn", url.QueryEscape(item.Name))
-
+	var sb strings.Builder
+	sb.WriteString("magnet:")
+	sb.WriteString(fmt.Sprintf("?xt=urn:btih:%s", item.InfoHash))
+	sb.WriteString(fmt.Sprintf("&dn=%s", url.QueryEscape(item.Name)))
 	allTrackers := n.getTrackers()
 	for _, tracker := range allTrackers {
-		q.Add("tr", url.QueryEscape(tracker))
+		sb.WriteString(fmt.Sprintf("&tr=%s", url.QueryEscape(tracker)))
 	}
 
-	finalURL := fmt.Sprintf("magnet:?%s", q.Encode())
-	return finalURL
+	return sb.String()
 }
 
 func (n *NewMedia) StartDownloadNewMedia(item NewMediaSearchItem) error {
