@@ -14,6 +14,7 @@ import (
 	"github.com/MilindGour/jellyfin-media-renamer/filesystem"
 	mediainfoprovider "github.com/MilindGour/jellyfin-media-renamer/mediaInfoProvider"
 	"github.com/MilindGour/jellyfin-media-renamer/middlewares"
+	newmedia "github.com/MilindGour/jellyfin-media-renamer/new-media"
 	"github.com/MilindGour/jellyfin-media-renamer/renamer"
 	"github.com/MilindGour/jellyfin-media-renamer/util"
 	"github.com/MilindGour/jellyfin-media-renamer/websocket"
@@ -27,6 +28,7 @@ type JmrAPI struct {
 	fileSystemProvider filesystem.FileSystemProvider
 	ren                renamer.Renamer
 	mip                mediainfoprovider.MediaInfoProvider
+	newms              newmedia.NewMedia
 
 	configResponse *ConfigResponse
 	allowedExts    []string
@@ -39,6 +41,7 @@ func NewJmrApi(
 	ren renamer.Renamer,
 	mip mediainfoprovider.MediaInfoProvider,
 	ws websocket.JMRWebSocket,
+	newms newmedia.NewMedia,
 ) *JmrAPI {
 	jmrApi := JmrAPI{
 		configProvider:     configProvider,
@@ -46,6 +49,7 @@ func NewJmrApi(
 		ren:                ren,
 		mip:                mip,
 		ws:                 ws,
+		newms:              newms,
 	}
 
 	return &jmrApi
@@ -112,6 +116,10 @@ func (j *JmrAPI) RegisterAPIRoutes() {
 	// sync page APIs
 	j.serveMux.HandleFunc("GET /api/ws/{clientid}", j.Get_WebSocket())
 	j.serveMux.HandleFunc("GET /api/ws/close/{clientid}", j.Get_CloseWebSocket())
+
+	// new-media APIs
+	j.serveMux.HandleFunc("GET /api/new-media/search", j.Get_NewMediaSearch())
+	j.serveMux.HandleFunc("POST /api/new-media/download", j.Post_NewMediaDownload())
 }
 
 func (j *JmrAPI) Get_Config() func(http.ResponseWriter, *http.Request) {
@@ -373,6 +381,41 @@ func (j *JmrAPI) Post_StartCopy() APIHandlerFn {
 	}
 }
 
+func (j *JmrAPI) Get_NewMediaSearch() APIHandlerFn {
+	return func(w http.ResponseWriter, r *http.Request) {
+		urlQuery := r.URL.Query()
+		searchTerm := urlQuery.Get("term")
+
+		if len(searchTerm) == 0 {
+			j.HandleAPIError(w, r, http.StatusBadRequest, errors.New("term is required"))
+			return
+		}
+
+		searchResult := j.newms.SearchMedia(searchTerm)
+		w.Write(ToJSON(searchResult))
+	}
+}
+
+func (j *JmrAPI) Post_NewMediaDownload() APIHandlerFn {
+	return func(w http.ResponseWriter, r *http.Request) {
+		var request newmedia.NewMediaSearchItem
+		err := json.NewDecoder(r.Body).Decode(&request)
+
+		if err != nil {
+			j.HandleAPIError(w, r, http.StatusBadRequest, err)
+			return
+		}
+
+		err = j.newms.StartDownloadNewMedia(request)
+		if err != nil {
+			j.HandleAPIError(w, r, http.StatusInternalServerError, err)
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
+	}
+}
+
 func (j *JmrAPI) moveFilesWithWSProgress(in renamer.RenameMediaConfirmResponse) {
 	// Start the copy task
 	allPathPairs := []filesystem.PathPair{}
@@ -405,7 +448,6 @@ func (j *JmrAPI) moveFilesWithWSProgress(in renamer.RenameMediaConfirmResponse) 
 			log.Printf("Deleted media directory / file: %s", renamedItem.OldPath)
 		}
 	}
-
 }
 
 func (j *JmrAPI) HandleAPIError(w http.ResponseWriter, r *http.Request, errorCode int, err error) {

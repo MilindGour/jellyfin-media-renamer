@@ -8,6 +8,7 @@ import DestinationDirectoryDropdown from './destinationDirectoryDropdown/dest-di
 import MediaTag from './mediaTag/media-tag.svelte';
 import MediaSearchList from './mediasearchlist/media-search-list.svelte';
 import SizeTag from './sizeTag/sizeTag.svelte';
+import NewMediaSearchItemComponent from './new-media-search-item/nmsi.svelte';
 
 export {
   Dropdown,
@@ -19,5 +20,6 @@ export {
   DestinationDirectoryDropdown,
   MediaTag,
   MediaSearchList,
-  SizeTag
+  SizeTag,
+  NewMediaSearchItemComponent
 }
