@@ -398,8 +398,21 @@ func (j *JmrAPI) Get_NewMediaSearch() APIHandlerFn {
 
 func (j *JmrAPI) Post_NewMediaDownload() APIHandlerFn {
 	return func(w http.ResponseWriter, r *http.Request) {
-		// TODO: Implement start download
-		w.Write([]byte("Not implemented yet"))
+		var request newmedia.NewMediaSearchItem
+		err := json.NewDecoder(r.Body).Decode(&request)
+
+		if err != nil {
+			j.HandleAPIError(w, r, http.StatusBadRequest, err)
+			return
+		}
+
+		err = j.newms.StartDownloadNewMedia(request)
+		if err != nil {
+			j.HandleAPIError(w, r, http.StatusInternalServerError, err)
+			return
+		}
+
+		w.WriteHeader(http.StatusOK)
 	}
 }
 

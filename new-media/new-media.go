@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/url"
+	"os/exec"
 
 	"github.com/MilindGour/jellyfin-media-renamer/network"
 )
@@ -46,6 +47,17 @@ func (n *NewMedia) GetMagneticURL(item NewMediaSearchItem) string {
 
 	finalURL := fmt.Sprintf("magnet:?%s", q.Encode())
 	return finalURL
+}
+
+func (n *NewMedia) StartDownloadNewMedia(item NewMediaSearchItem) error {
+	magnetUrl := n.GetMagneticURL(item)
+
+	trCmd := exec.Command("transmission-remote", "-a", magnetUrl)
+	if err := trCmd.Run(); err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (n *NewMedia) getTrackers() []string {
