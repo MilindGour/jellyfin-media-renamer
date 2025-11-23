@@ -4,21 +4,20 @@ services:
     container_name: jmr_frontend
     build: 
       context: ./frontend
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     environment:
       - API_BASE=http://jmr_backend:7749
     ports:
-      - 5173:5173
+      - 3000:3000
     depends_on:
       - jmr_backend
-    volumes:
-      - ./frontend:/app
-      - /app/node_modules
   jmr_backend:
     container_name: jmr_backend
     build:
       context: ./backend
-      dockerfile: Dockerfile.dev
+      dockerfile: Dockerfile
     ports:
       - 7749:7749
+    volumes:
+      - ./backend/config.json:/config/jmr.config.json
 

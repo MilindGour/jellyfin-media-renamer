@@ -4,24 +4,17 @@ import (
 	"encoding/json"
 	"log"
 	"os"
-	"path"
 )
 
 type JmrConfig struct {
 	config *Config
 }
 
-func NewDevJmrConfig() *JmrConfig {
-	cfg := JmrConfig{}
-	cfg.config = cfg.ParseFromFilename("config.json")
-	log.Println("Reading DEV config.json")
-	return &cfg
-}
 func NewJmrConfig() *JmrConfig {
 	// location of production config file must be in:
 	// $HOME/.config/jmr/jmr.conf
 
-	configLocation := path.Join(os.Getenv("HOME"), ".config/jmr/jmr.config.json")
+	configLocation := "/config/jmr.config.json"
 	log.Printf("Reading config from location %s", configLocation)
 	cfg := JmrConfig{}
 	cfg.config = cfg.ParseFromFilename(configLocation)
@@ -88,6 +81,7 @@ func (j *JmrConfig) ParseFromBytes(config []byte) *Config {
 func (j *JmrConfig) ParseFromFilename(filename string) *Config {
 	data, err := os.ReadFile(filename)
 	if err != nil {
+		log.Printf("Error parsing config file. More info: %s", err.Error())
 		return nil
 	}
 	return j.ParseFromBytes(data)

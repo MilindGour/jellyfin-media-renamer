@@ -27,7 +27,7 @@ func NewJmrApplication(isDev bool) *JmrApplication {
 
 	if isDev {
 		// DEV mode
-		configProvider := config.NewDevJmrConfig()
+		configProvider := config.NewJmrConfig()
 		mediaInfoProvider := mediainfoprovider.NewTmdbMIProvider()
 		ren := renamer.NewJmrRenamerV1(mediaInfoProvider, fsProvider, configProvider, ws)
 

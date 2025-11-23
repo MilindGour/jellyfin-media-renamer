@@ -146,6 +146,6 @@ func TestJmrRenamer_ConfirmEntriesForRename(t *testing.T) {
 
 	fmt.Printf("Total entries: %d\n", len(request))
 
-	j := NewJmrRenamerV1(mediainfoprovider.NewMockTmdbMIProvider(), filesystem.NewJmrFS(), config.NewDevJmrConfig(), websocket.NewJMRWebSocket())
+	j := NewJmrRenamerV1(mediainfoprovider.NewMockTmdbMIProvider(), filesystem.NewJmrFS(), config.NewJmrConfig(), websocket.NewJMRWebSocket())
 	j.ConfirmEntriesForRename(request)
 }
