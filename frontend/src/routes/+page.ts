@@ -4,6 +4,8 @@ import { Constants } from "$lib/stores/constants";
 import type { PageLoad } from "./$types";
 
 export const load: PageLoad = async ({ fetch }) => {
+  const configUrl = getApiUrl(Constants.API_GET_CONFIG);
+  console.log("API Config Url:", configUrl);
   const rest = await fetch(getApiUrl(Constants.API_GET_CONFIG));
   const config = await rest.json() as Config;
 

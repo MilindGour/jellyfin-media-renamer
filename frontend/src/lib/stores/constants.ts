@@ -1,8 +1,7 @@
 import { dev } from '$app/environment';
 
 export const Constants = {
-  API_BASE_URL_DEV: "http://localhost:7749",
-  API_BASE_URL: "https://jmr.miracular.in",
+  API_BASE_URL: '/backend',
   WS_BASE_URL_DEV: "ws://localhost:7749/api/ws",
   WS_BASE_URL: "wss://jmr.miracular.in/api/ws",
 
@@ -21,7 +20,7 @@ export const Constants = {
 };
 
 export function GetApiBaseUrl(): string {
-  return dev ? Constants.API_BASE_URL_DEV : Constants.API_BASE_URL;
+  return Constants.API_BASE_URL;
 }
 
 export function getWSBaseUrl(): string {
