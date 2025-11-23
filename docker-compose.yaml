@@ -1,4 +1,4 @@
-name: jmr_prod
+name: jmr
 services:
   jmr_frontend:
     container_name: jmr_frontend

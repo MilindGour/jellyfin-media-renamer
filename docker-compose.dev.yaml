@@ -1,7 +1,7 @@
 name: jmr_dev
 services:
   jmr_frontend:
-    container_name: jmr_frontend
+    container_name: jmr_frontend_dev
     build: 
       context: ./frontend
       dockerfile: Dockerfile.dev
@@ -15,7 +15,7 @@ services:
       - ./frontend:/app
       - /app/node_modules
   jmr_backend:
-    container_name: jmr_backend
+    container_name: jmr_backend_dev
     build:
       context: ./backend
       dockerfile: Dockerfile.dev
