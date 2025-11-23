@@ -1,6 +1,6 @@
 import { v4 as uuidv4 } from 'uuid';
 import { loaderService } from "$lib/components/loader";
-import { Constants, GetApiBaseUrl, getWSBaseUrl } from "$lib/stores/constants";
+import { GetApiBaseUrl, getWSBaseUrl } from "$lib/stores/constants";
 import { Log } from "./logger";
 
 function getBaseUrl(): string {
@@ -8,14 +8,13 @@ function getBaseUrl(): string {
 }
 
 export function getApiUrl(url: string, searchParams: URLSearchParams | null = null): string {
-  const _url = new URL(url, getBaseUrl());
-  if (searchParams !== null) {
-    for (const [spName, spValue] of searchParams.entries()) {
-      _url.searchParams.append(spName, spValue);
-    }
-  }
+  const baseUrl = getBaseUrl();
 
-  return _url.href;
+  let finalUrl = `${baseUrl}/${url}`;
+  if (searchParams !== null) {
+    finalUrl += '?' + searchParams.toString();
+  }
+  return finalUrl;
 }
 
 export class HttpService {
