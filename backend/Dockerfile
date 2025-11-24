@@ -8,6 +8,7 @@ RUN go build -o jmr_backend .
 
 # Runner layer
 FROM alpine:latest
+RUN apk add --no-cache rsync
 WORKDIR /app
 COPY --from=builder /app/jmr_backend ./
 EXPOSE 7749
