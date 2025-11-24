@@ -14,32 +14,8 @@
   },
   "source": [
     {
-      "name": "Test Mix",
-      "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_mix"
-    },
-    {
-      "name": "Test Empty",
-      "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/test_empty"
-    },
-    {
-      "name": "Data TVs",
-      "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/data_tv"
-    },
-    {
-      "name": "Media Movies",
-      "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/media_movies"
-    },
-    {
-      "name": "Media TVs",
-      "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/media_tv"
-    },
-    {
-      "name": "Transmission Downloads",
-      "path": "/Users/milindgour/Documents/workspace/personal/test-structure/source_folders/transmission_downloads"
-    },
-    {
-      "name": "Test data",
-      "path": "/Users/milindgour/Documents/workspace/personal/jellyfin-media-renamer/testdata/fs-structure"
+      "name": "Test Media Dev",
+      "path": "/mnt/media"
     }
   ],
   "destination": [
