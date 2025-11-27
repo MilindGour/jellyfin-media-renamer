@@ -85,6 +85,7 @@ export class WebSocketService {
   connect() {
     this.disconnect();
     const wsurl = this.getWSURL();
+    this.#log?.info("Connecting to websocket:", wsurl);
     this.#ws = new WebSocket(wsurl);
 
     this.#ws.onopen = this.handleOnOpen;

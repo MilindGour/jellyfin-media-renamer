@@ -1,9 +1,6 @@
-import { dev } from '$app/environment';
-
 export const Constants = {
   API_BASE_URL: '/backend',
-  WS_BASE_URL_DEV: "ws://localhost:7749/api/ws",
-  WS_BASE_URL: "wss://jmr.miracular.in/api/ws",
+  WS_BASE_URL: "/ws",
 
   API_GET_CONFIG: "api/config",
   API_GET_SOURCE: "api/sources",
@@ -24,6 +21,6 @@ export function GetApiBaseUrl(): string {
 }
 
 export function getWSBaseUrl(): string {
-  return dev ? Constants.WS_BASE_URL_DEV : Constants.WS_BASE_URL;
+  return Constants.WS_BASE_URL;
 }
 
