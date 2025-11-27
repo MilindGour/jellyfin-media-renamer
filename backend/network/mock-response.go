@@ -42,3 +42,7 @@ func (h *MockResponse) GetResponse(url string) (*http.Response, error) {
 	w.Write(resBytes)
 	return w.Result(), nil
 }
+
+func (h *MockResponse) PostJSON(url string, body any, headers *http.Header) (*http.Response, error) {
+	return nil, nil
+}

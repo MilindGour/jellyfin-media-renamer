@@ -412,7 +412,12 @@ func (j *JmrAPI) Post_NewMediaDownload() APIHandlerFn {
 			return
 		}
 
+		successRes := map[string]bool{
+			"success": true,
+		}
+
 		w.WriteHeader(http.StatusOK)
+		w.Write(ToJSON(successRes))
 	}
 }
 

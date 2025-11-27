@@ -18,6 +18,8 @@ services:
       dockerfile: Dockerfile
     ports:
       - 7749:7749
+    environment:
+      -   TRANSMISSION_RPC_URL=http://transmission:9091/transmission/rpc
     volumes:
       - ./backend/config.json:/config/jmr.config.json
 

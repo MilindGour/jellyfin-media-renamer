@@ -22,7 +22,8 @@ export class NewMediaStore {
 
   async addItemToDownloadQueue(item: NewMediaSearchItem) {
     try {
-      return await this.#http.postJSON<boolean>(Constants.API_POST_ADD_NEW_MEDIA, item);
+      await this.#http.postJSON<void>(Constants.API_POST_ADD_NEW_MEDIA, item);
+      return true;
     } catch {
       return false;
     }

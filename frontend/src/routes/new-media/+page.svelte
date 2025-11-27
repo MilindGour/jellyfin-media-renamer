@@ -1,17 +1,31 @@
 <script lang="ts">
 	import { Button, NewMediaSearchItemComponent } from '$lib/components';
 	import { PopupService } from '$lib/components/popup';
+	import { ToastBuilder, ToastService } from '$lib/components/toast';
+	import { ToastType } from '$lib/components/toast/toast-models';
 	import { HttpService } from '$lib/services/network';
 	import { NewMediaStore, type NewMediaSearchItem } from '$lib/stores/new-media-store.svelte';
 
 	const nmStore = new NewMediaStore(new HttpService());
 	const ps = new PopupService();
+	const ts = new ToastService();
 	let searchFieldText = $state<string>('');
 
 	function newMediaSearchItemClickHandler(item: NewMediaSearchItem) {
-		ps.showConfirmation(item.name, 'Add following to download queue?').then((yes) => {
+		ps.showConfirmation(item.name, 'Add following to download queue?').then(async (yes) => {
 			if (yes) {
-				nmStore.addItemToDownloadQueue(item);
+				const addSuccessful = await nmStore.addItemToDownloadQueue(item);
+				if (addSuccessful) {
+					ts.show(
+						new ToastBuilder('Added the download successfully').setType(ToastType.SUCCESS).build()
+					);
+				} else {
+					ts.show(
+						new ToastBuilder('Unknown error occured while adding to download queue.')
+							.setType(ToastType.ERROR)
+							.build()
+					);
+				}
 			}
 		});
 	}

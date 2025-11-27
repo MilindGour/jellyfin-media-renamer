@@ -21,7 +21,10 @@ services:
       dockerfile: Dockerfile.dev
     ports:
       - 7749:7749
+    environment:
+      -   TRANSMISSION_RPC_URL=https://downloads.miracular.in/transmission/rpc
     volumes:
+      - ./backend:/app
       - ./backend/config.json:/config/jmr.config.json
       - /home/milind/workspace/test_filesystem:/mnt/media
 

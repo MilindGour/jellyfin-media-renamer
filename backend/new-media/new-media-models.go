@@ -14,3 +14,23 @@ type NewMediaSearchItem struct {
 	Category string `json:"category"`
 	Imdb     string `json:"imdb"`
 }
+
+type TransmissionRPCPayload struct {
+	Tag       string `json:"tag,omitempty"`
+	Method    string `json:"method"`
+	Arguments any    `json:"arguments,omitempty"`
+}
+
+type TransmissionRPCResponse struct {
+	Tag       string `json:"tag,omitempty"`
+	Result    string `json:"result"`
+	Arguments any    `json:"arguments,omitempty"`
+}
+
+type TransmissionTorrentAddArguments struct {
+	Filename string `json:"filename"`
+}
+
+type TransmissionHeader struct {
+	XTransmissionSessionId string `json:"X-Transmission-Session-Id"`
+}
