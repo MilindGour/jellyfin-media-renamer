@@ -1,6 +1,6 @@
 export const Constants = {
   API_BASE_URL: '/backend',
-  WS_BASE_URL: "/ws",
+  WS_BASE_URL: "/api/ws",
 
   API_GET_CONFIG: "api/config",
   API_GET_SOURCE: "api/sources",
